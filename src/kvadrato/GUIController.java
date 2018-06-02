@@ -171,12 +171,12 @@ public class GUIController implements Initializable
     {
       case FIRST_SCREEN:
       case MENU:
-      case STARTING_THE_GAME:
         updateBigSquareThings(time);
         updateSettingsSquareThings(time);
         updateHelpSquareThings(time);
         updateQuitSquareThings(time);
         break;
+      case STARTING_THE_GAME:
     }
   }
   /**
