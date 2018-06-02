@@ -128,10 +128,10 @@ public class GUIController implements Initializable
   // Jest ważna.
   void goToState(State state)
   {
+    this.state=state;
     switch(state)
     {
       case FIRST_SCREEN:
-        this.state=State.FIRST_SCREEN;
         settingsSquare.setVisible(false);
         helpSquare.setVisible(false);
         quitSquare.setVisible(false);
@@ -142,9 +142,6 @@ public class GUIController implements Initializable
         quitSquareTranslateTarget=0.0;
         break;
       case MENU:
-        //System.out.println("qwerty");
-        this.state=State.MENU;
-        //System.out.println("zxcv");
         settingsSquare.setVisible(true);
         helpSquare.setVisible(true);
         quitSquare.setVisible(true);
@@ -154,6 +151,10 @@ public class GUIController implements Initializable
         settingsSquareTranslateTarget=150.0;
         helpSquareTranslateTarget=150.0;
         quitSquareTranslateTarget=150.0;
+        break;
+      case STARTING_THE_GAME:
+        sizeMultiplier=3.0;
+        bigSquareScaleTarget=sizeMultiplier;
         break;
       case THE_GAME:
         break;
@@ -170,6 +171,7 @@ public class GUIController implements Initializable
     {
       case FIRST_SCREEN:
       case MENU:
+      case STARTING_THE_GAME:
         updateBigSquareThings(time);
         updateSettingsSquareThings(time);
         updateHelpSquareThings(time);
@@ -272,6 +274,10 @@ public class GUIController implements Initializable
     if(state==State.FIRST_SCREEN)
     {
       goToState(State.MENU);
+    }
+    else if(state==State.MENU)
+    {
+      goToState(State.STARTING_THE_GAME);
     }
   }
 
