@@ -1,0 +1,432 @@
+package kvadrato.game;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.Condition;
+import java.util.Vector;
+import kvadrato.game.entityinterfaces.EntityWithCollisions;
+import kvadrato.game.collision.*;
+/**
+ * Chyba najbardziej ważna klasa w programie.
+ * Jest w niej cały stan świata gry.
+ */
+public final class World
+{
+  /**
+   * Domyślna ilość odświeżeń świata w sekundzie przy szybkości 1.
+   */
+  public final static int DefaultTickrate=120;
+  /**
+   * Najmniejszy możliwy do ustawienia tickrate.
+   */
+  public final static int MinTickrate=1;
+  /**
+   * W tym są wszystkie jednostki na świecie.
+   */
+  private Vector<Entity> ents;
+  //private Entity[] ents;
+  /**
+   * Ilość odświeżeń świata na sekundę przy szybkości ustawionej na jeden.
+   */
+  private int tickrate;
+  /**
+   * Mnożnik szybkości świata, działa tak, że przy wpisaniu 2.0 cały świat
+   * będzie działał dwa razy szybciej, no chyba że komputer nie da rady tego tak
+   * szybko zrobić.
+   */
+  private double speed;
+  /**
+   * Wyliczana przy zmianie tickrate'u i szybkości ilość nanosekund, którą ma
+   * czekać wątek, zanim zrobi następny krok.
+   */
+  private int tickNanosReal;
+  /**
+   * Wyliczana przy zmianie tickrate'u i szybkości ilość nanosekund, która
+   * mija co krok w świecie gry.
+   */
+  private int tickNanosWorld;
+  /**
+   * Ilość kroków, którą ma zrobić na świecie wątek w pętli, zanim będzie n
+   * cokolwiek czekać.
+   */
+  private int immediatelyTicks;
+  /**
+   * Muteks od świata, jest zajmowany przy chyba prawie każdej funkcji
+   * wywoływanej z zewnątrz.
+   */
+  private Lock worldLock;
+  //private Lock conditionLock;
+  /**
+   * Zmienna warunkowa taka fajna.
+   */
+  private Condition condition;
+  /**
+   * Wątek, który robi wszystko na świecie.
+   */
+  private WorldThread thread;
+  /**
+   * Zmienna, która jest ma prawdę tylko, gdzy wątek ma być zamknięty, finalizer
+   * ustawia ją.
+   */
+  private boolean ender;
+  /**
+   * Najzwyklejszy i jedyny potrzebny konstruktor.
+   */
+  public World()
+  {
+    ender=false;
+    worldLock=new ReentrantLock();
+    worldLock.lock(); // nie wiem, czy to jest potrzebne
+    //conditionLock=new ReentrantLock();
+    try
+    {
+      condition=worldLock.newCondition();
+      ents=new Vector<Entity>();
+
+      // Ustawiamy ilość odświeżeń świata przez jedną sekundę.
+      tickrate=DefaultTickrate;
+
+      // Najpierw świat jest zatrzymany, więc ustawiamy jego szybkość na zero.
+      speed=0.0;
+
+      // Obliczenie czasu czekania na później.
+      //tickNanos=(int)(1000000000/tickrate);
+      updateTickNanos();
+
+      // Nie skaczemy od razu.
+      immediatelyTicks=0;
+
+      // Tworzymy wątek, który zajmuje się tym światem.
+      thread=new WorldThread(this);
+    }
+    finally
+    {
+      worldLock.unlock();
+    }
+  }
+  /**
+   * Funkcja, która wylicza czas, jaki ma być czekany co krok i jaki czas mija
+   * co krok na świecie.
+   */
+  private void updateTickNanos()
+  {
+    tickNanosWorld=1000000000/tickrate;
+
+    // Gdy prędkość jest zerem, to wyjdzie bezużyteczna liczba, ale i tak wtedy
+    // nie jest używana, więc to nie przeszkadza.
+    tickNanosReal=(int)(1000000000/speed/tickrate);
+  }
+  /**
+   * To wywołuje GARBAGE COLLECTOR, jak kasuje świat. Jest to taka funkcja
+   * do kończenia wątku i tak dalej.
+   */
+  protected void finalize()
+  {
+    worldLock.lock();
+    try
+    {
+      ender=true;
+    }
+    finally
+    {
+      worldLock.unlock();
+    }
+    condition.signal();
+    try
+    {
+      thread.join();
+    }
+    catch(InterruptedException e)
+    {
+      System.out.println
+      (
+        "AAAAAAAaaaaaaaAAAAaaAAaaAaaAaaAaaAaaAaaAAaaAaa!!!!!!11!111!1111!11!11!"
+        // "!11!1111!11!!1"
+      );
+    }
+    finally
+    {
+      do{}while(false);
+      // Do exactly nothing. lol
+      // POLSKAAAAAAAAAAAAAA
+    }
+  }
+  /**
+   * Ustawia ilość zmian świata na sekundę.
+   * @param tr ilość do ustawienia
+   */
+  public void setTickrate(int tr)
+   throws GameException
+  {
+    worldLock.lock();
+    try{setTickrate_inside(tr);}
+    finally{worldLock.unlock();}
+  }
+  void setTickrate_inside(int tr)
+   throws GameException
+  {
+    if(tr<MinTickrate)
+      throw new GameException();
+    tickrate=tr;
+    updateTickNanos();
+    condition.signal();
+  }
+  /**
+   * Ustawia mnożnik szybkości świata, ogólnie to jeśli jest zero, to mamy
+   * zatrzymany świat.
+   * @param s mnożnik
+   */
+  public void setSpeed(double s)
+   throws GameException
+  {
+    worldLock.lock();
+    try{setSpeed_inside(s);}
+    finally{worldLock.unlock();}
+  }
+  void setSpeed_inside(double s)
+   throws GameException
+  {
+    if(s<0.0)
+      throw new GameException();
+    speed=s;
+    updateTickNanos();
+    condition.signal();
+    // to jeszcze nie wszystko
+  }
+  /**
+   * Dodaje jednostkę do świata.
+   * @param ent jednostka, któ©a ma być dodana, ma być gotowa i nie być w żadnym
+   * świecie
+   */
+  public void addEntity(Entity ent)
+    throws GameException
+  {
+    worldLock.lock();
+    try{addEntity_inside(ent);}
+    finally{worldLock.unlock();}
+  }
+  void addEntity_inside(Entity ent)
+    throws GameException
+  {
+    if(ent.world!=null)
+    {
+      throw new GameException();
+    }
+    // Tutaj dodamy tą jednostkę do tablicy.
+    ents.addElement(ent);
+  }
+  /**
+   * Usuwa jednostkę ze świata, tylko ze świata.
+   * @param ent należąca do danego świata jednostka
+   */
+  public void removeEntity(Entity ent)
+    throws GameException
+  {
+    worldLock.lock();
+    try{removeEntity_inside(ent);}
+    finally{worldLock.unlock();}
+  }
+  void removeEntity_inside(Entity ent)
+    throws GameException
+  {
+    if(ent.world!=this)
+    {
+      throw new GameException();
+    }
+    ent.remove();
+    return;
+  }
+  /**
+   * Ta funkcja usuwa wszystkie jednostki na świecie.
+   */
+  public void removeAllEntities()
+  {
+    worldLock.lock();
+    try{removeAllEntities_inside();}
+    finally{worldLock.unlock();}
+  }
+  void removeAllEntities_inside()
+  {
+    for(int i=0;i<ents.size();++i)
+    {
+      ents.get(i).remove();
+    }
+    updateAll_inside();
+  }
+  /**
+   * Ta funkcja robi jeden krok na świecie, nic skomplikowanego.
+   */
+  private void oneTick()
+  {
+    Entity ent;
+    computeCollisions();
+    for(int i=0;i<ents.size();++i)
+    {
+      ent=ents.get(i);
+      ent.state.fix(this);
+      ent.doThings();
+    }
+    updateAll_inside();
+  }
+  /**
+   * Ta funkcja zamienia stan wszystkich jednostek na nowy.
+   */
+  public void updateAll()
+  {
+    worldLock.lock();
+    try{updateAll_inside();}
+    finally{worldLock.unlock();}
+  }
+  private void updateAll_inside()
+  {
+    Entity ent;
+    for(int i=0;i<ents.size();++i)
+    {
+      ent=ents.get(i);
+      if(ent.isRemoved())
+      {
+        ents.remove(i);
+        --i;
+        continue;
+      }
+      ents.get(i).update();
+    }
+  }
+  /**
+   * Ta funkcja zwraca ile czasu mija co krok. Colowo nie nazywa się
+   * getTickNanosWorld, bo to nie jest getter, a jest ładnie, gdy gettery
+   * są publiczne.
+   */
+  int getDeltaTime()
+  {
+    return tickNanosWorld;
+  }
+  /**
+   * Czas czekania co krok. Celowo nie nazywa się getTickNanosReal, bo nie jest
+   * to publiczny getter.
+   */
+  int getWaitTime()
+  {
+    return tickNanosReal;
+  }
+  /**
+   * Ta funkcja zwraca, czy świat nie jest zatrzymany
+   */
+  boolean runs()
+  {
+    return speed!=0.0;
+  }
+  /**
+   * Ta funkcja oblicza kolizje wszystkich możliwych obiektów na świecie
+   * i wpisuje je do tych obiektów.
+   */
+  private void computeCollisions()
+  {
+    int theEnd1=ents.size()-1;
+    int theEnd2=ents.size();
+    EntityWithCollisions ent1;
+    EntityWithCollisions ent2;
+    Collision collision;
+    for(int i=0;i<theEnd1;++i)
+    {
+      if(!(ents.get(i)instanceof EntityWithCollisions))
+        continue;
+      for(int j=i+1;j<theEnd2;++j)
+      {
+        if(!(ents.get(i)instanceof EntityWithCollisions))
+          continue;
+        // Teraz wiemy, że mamy parę dwóch możliwych do zderzenia obiektów.
+        ent1=(EntityWithCollisions)ents.get(i);
+        ent2=(EntityWithCollisions)ents.get(j);
+        collision=Collision.compute
+        (
+          ent1.getCollisionShape(),
+          ent2.getCollisionShape()
+        );
+        if(collision!=null)
+        {
+          ent1.addCollision(ent2,collision);
+          ent2.addCollision(ent1,collision);
+        }
+      }
+    }
+  }
+  /**
+   * To jest klasa, która ma wątek zajmujący się wszystkim, co się dzieje na
+   * świecie.
+   */
+  static class WorldThread extends Thread
+  {
+    private World world;
+    /**
+     * Tutaj też bym coś napisał, ale na razie nie wiem, co.
+     */
+    WorldThread(World w)
+    {
+      world=w;
+    }
+    /**
+     * Zwykła wątkowa funkcja, która ma być wywołana, jak wątek ma działać.
+     */
+    public void run()// throws InterruptedException
+    {
+      //if(false)
+      //  throw new InterruptedException();
+      long remainingTime;
+      world.worldLock.lock();
+      try
+      {
+        while(true)
+        {
+          while(world.immediatelyTicks>0)
+          {
+            --world.immediatelyTicks;
+            world.oneTick();
+          }
+          if(world.runs())
+          {
+            // Wiemy, że świat nie jest zatrzymany, więc czekamy na przerwanie
+            // albo na wyznaczony czas.
+            remainingTime=world.condition.awaitNanos(world.getWaitTime());
+          }
+          else
+          {
+            // Świat jest zatrzymany, więc czekamy na coś w nieskończonośc.
+            world.condition.await();
+
+            // Czekaliśmy w nieskończoność, więc na pewno było przerwane, więc
+            // ustawiamy tak, że było przerwane.
+            remainingTime=1;
+          }
+          if(world.ender) // Nieważne, czy przerwane, czy nie, jeśli ma być
+                          // skończone, to bezwzględnie kończymy.
+          {
+            return;
+            // Wtedy join już się zrobi.
+            // Wiem, że ten komentarz nie jest potrzebny, ale mogę później nie
+            // pamiętać, o co tu chodzi.
+          }
+          if(remainingTime>0) // przerwane
+          {
+            // Dodatkowo, po przerwaniu czekanie ustawia się jeszcze raz, więc
+            // wtedy świat jest tak naprawdę spowolniony, ale to nie
+            // przeszkadza. Przynajmniej na razie.
+            continue;
+          }
+          else // minął czas
+          {
+            world.oneTick();
+            continue;
+          }
+        }
+      }
+      catch(InterruptedException exc)
+      {
+        // Nie mam pojęcia, co tu zrobić.
+      }
+      finally
+      {
+        world.worldLock.unlock();
+      }
+    }
+  }
+}
