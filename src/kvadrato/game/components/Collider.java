@@ -84,7 +84,11 @@ public class Collider extends Component
     // Fix może być pusty, bo nigdy nie bęzie w liście jednostki, której nie ma
     // na świecie.
   }
-  public void doThings(){}
+  public void doThings()
+  {
+    if(fn!=null)
+      collisions.forEach((k,v)->{fn.accept(this.getEntity(),k,v);});
+  }
   public void update()
   {
     if(shapeNew!=null)

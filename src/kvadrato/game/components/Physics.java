@@ -14,16 +14,62 @@ class Physics extends Component
 
   private Type type;
 
-  private Vector2d place;
-  private Vector2d velocity;
-  private Vector2d acceleration;
+  private Transform place;
+  private Transform velocity;
+  private Transform acceleration;
 
-  Vector2d getPlace()
+
+  private Transform placeNew;
+  private Transform velocityNew;
+  private Transform accelerationNew;
+
+  Physics()
   {
-    return new Vector2d();
+    type=STATIC;
+    place=new Transform();
+    velocity=new Transform();
+    acceleration=new Transform();
+
+    placeNew=new Transform();
+    velocityNew=new Transform();
+    accelerationNew=new Transform();
   }
 
-  public void fix(){}
+  Transform getPlace()
+  {
+    return place;
+  }
+  Transform getVelocity()
+  {
+    return velocity;
+  }
+  Transform getAcceleration()
+  {
+    return acceleration;
+  }
+
+  void addPlace(Transform x)
+  {
+    placeNew=placeNew.add(x);
+  }
+  void addVelocity(Transform x)
+  {
+    velocityNew=velocityNew.add(x);
+  }
+  void addAcceleration(Transform x)
+  {
+    accelerationNew=accelerationNew.add(x);
+  }
+
+  public void fix()
+  {
+    placeNew=place;
+    velocityNew=velocity;
+    accelerationNew=0.0;//acceleration;
+  }
   public void doThings(){}
-  public void update(){}
+  public void update()
+  {
+    place=placeNew
+  }
 }

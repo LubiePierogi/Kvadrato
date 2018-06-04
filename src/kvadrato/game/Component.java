@@ -8,7 +8,7 @@ public abstract class Component
 
 
 
-  public Entity ent;
+  Entity ent;
 
   protected final Entity getEntity()
   {
