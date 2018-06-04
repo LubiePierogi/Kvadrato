@@ -20,6 +20,20 @@ import java.util.ResourceBundle;
 import java.lang.Math;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import java.lang.reflect.*;
+/*
+import javafx.embed.swing.SwingNode;
+import javax.swing.SwingUtilities;
+import javax.swing.JButton;
+import com.jogamp.opengl.GLAutoDrawable;
+import com.jogamp.opengl.GLEventListener;
+import com.jogamp.opengl.GLProfile;
+import com.jogamp.opengl.GLCapabilities;
+import com.jogamp.opengl.awt.GLCanvas;
+import javax.swing.JComponent;
+import javax.swing.JRootPane;
+import java.awt.BorderLayout;
+*/
 
 public class GUIController implements Initializable
 {
@@ -27,8 +41,10 @@ public class GUIController implements Initializable
   {
     FIRST_SCREEN,
     MENU,
+    RETURN_TO_FIRST_SCREEN,
     STARTING_THE_GAME,
     THE_GAME,
+    THE_GAME_PAUSE,
     SETTINGS,
     HELP,
   }
@@ -37,26 +53,39 @@ public class GUIController implements Initializable
   private Stage window;
   long lastAnimationUpdate=0;
   double stateClock;
-  double sizeMultiplier;
 
   public StackPane theRoot;
 
   public StackPane almostRoot;
 
+  public StackPane mainMenu;
+
+/*
+  public SwingNode backgroundSwing;
+
+  public SwingOpenGLCanvas oglCanvas;
+*/
+
   public Group bigSquare;
-  public double bigSquareTranslateTarget;
-  public double bigSquareScaleTarget;
+  //public double bigSquareTranslateTarget;
+  //public double bigSquareScaleTarget;
 
   public Group settingsSquare;
-  public double settingsSquareTranslateTarget;
+  //public double settingsSquareTranslateTarget;
 
   public Group helpSquare;
-  public double helpSquareTranslateTarget;
+  //public double helpSquareTranslateTarget;
 
   public Group quitSquare;
-  public double quitSquareTranslateTarget;
+  //public double quitSquareTranslateTarget;
 
   AnimationTimer animationTimer;
+
+  /**
+   * Ta zmienna wskazuje, co jest teraz zaznaczone, czy tam na czym jest myszka.
+   */
+  public Object theTarget;
+  public Object keyBoardTarget;
 
   public GUIController()
   {
@@ -75,7 +104,6 @@ public class GUIController implements Initializable
   public void initialize(URL location,ResourceBundle resources)
   {
     goToState(State.FIRST_SCREEN);
-    bigSquareScaleTarget=1.0;
     animationTimer=new AnimationTimer()
     {
       public void handle(long now)
@@ -100,6 +128,18 @@ public class GUIController implements Initializable
       }
     };
     animationTimer.start();
+    /*oglCanvas=new SwingOpenGLCanvas();
+    SwingUtilities.invokeLater(new Runnable()
+    {
+      public void run()
+      {
+
+        JComponent jc=new JRootPane();
+        jc.add(oglCanvas.getGlCanvas(),BorderLayout.CENTER);
+        backgroundSwing.setContent(jc);
+
+      }
+    });*/
   }
   /**
    * Następna inicjalizacja, ale taka później.
@@ -135,26 +175,13 @@ public class GUIController implements Initializable
         settingsSquare.setVisible(false);
         helpSquare.setVisible(false);
         quitSquare.setVisible(false);
-        sizeMultiplier=1.125;
-        bigSquareTranslateTarget=0.0;
-        settingsSquareTranslateTarget=0.0;
-        helpSquareTranslateTarget=0.0;
-        quitSquareTranslateTarget=0.0;
         break;
       case MENU:
         settingsSquare.setVisible(true);
         helpSquare.setVisible(true);
         quitSquare.setVisible(true);
-        sizeMultiplier=1.0625;
-        bigSquareScaleTarget=sizeMultiplier;
-        bigSquareTranslateTarget=-60.0;
-        settingsSquareTranslateTarget=150.0;
-        helpSquareTranslateTarget=150.0;
-        quitSquareTranslateTarget=150.0;
         break;
       case STARTING_THE_GAME:
-        sizeMultiplier=3.0;
-        bigSquareScaleTarget=sizeMultiplier;
         break;
       case THE_GAME:
         break;
@@ -167,16 +194,77 @@ public class GUIController implements Initializable
   void doStateWork(double time)
   {
     stateClock+=time;
+    double x,y;
     switch(this.state)
     {
       case FIRST_SCREEN:
+        {
+          y=theTarget==bigSquare?1.125:1.0;
+          x=bigSquare.getScaleX();
+          makeInterpolation(bigSquare,y,time,"scaleX","scaleY");
+          makeInterpolation(bigSquare,0.0,time,"translateY");
+          /*
+          // Duży kwadrat - wielkość
+          y=calculateInterpolation
+            (x,y,time);
+          bigSquare.setScaleX(y);
+          bigSquare.setScaleY(y);
+
+          // Duży kwadrat - miejsce
+          y=0.0;
+          x=bigSquare.getTranslateY();
+          bigSquare.setTranslateY(calculateInterpolation(x,y,time));
+          */
+        }
+        break;
       case MENU:
-        updateBigSquareThings(time);
-        updateSettingsSquareThings(time);
-        updateHelpSquareThings(time);
-        updateQuitSquareThings(time);
+        {
+          y=theTarget==bigSquare?1.0625:1.0;
+          makeInterpolation(bigSquare,y,time,"scaleX","scaleY");
+          makeInterpolation(bigSquare,-60.0,time,"translateY");
+        }
+        {
+          // settingsSquare
+          y=theTarget==settingsSquare?180.0:150;
+          makeInterpolation(settingsSquare,y,time,"translateY");
+
+          // helpSquare
+          y=theTarget==helpSquare?180.0:150;
+          makeInterpolation(helpSquare,y,time,"translateY");
+
+          // quitSquare
+          y=theTarget==quitSquare?180.0:150;
+          makeInterpolation(quitSquare,y,time,"translateY");
+          /*
+          x=quitSquare.getTranslateY();
+          y=calculateInterpolation(x,y,time);
+          quitSquare.setTranslateY(y);
+          */
+        }
         break;
       case STARTING_THE_GAME:
+        {
+          goToState(State.THE_GAME);
+        }
+        break;
+      case THE_GAME:
+        if(stateClock<2.0)
+        {
+          x=mainMenu.getScaleX();
+          y=2.7;
+          y=calculateInterpolation(x,y,time);
+          mainMenu.setScaleX(y);
+          mainMenu.setScaleY(y);
+
+          x=mainMenu.getOpacity();
+          y=0.0;
+          y=calculateInterpolation(x,y,time);
+          mainMenu.setOpacity(y);
+          if(y==0.0)
+          {
+            mainMenu.setVisible(false);
+          }
+        }
     }
   }
   /**
@@ -185,67 +273,64 @@ public class GUIController implements Initializable
   public static double
     calculateInterpolation(double now,double target,double time)
   {
+    if(now!=target)
     {
-      if(now!=target)
+      double a=target-now;
+      double b=Math.signum(a);
+      double neww=now+time*(a*6.0+0.12*b);
+      if(b*(neww-target)>0)
+        neww=target;
+      return neww;
+    }
+    return now;
+  }
+  /**
+   * Funkcja do zmieniania warotści jakichś rzeczy z interpolacją.
+   */
+  public void makeInterpolation
+    (Object thing,double target,double time,String ... numbers)
+  {
+    try
+    {
+      Class c=thing.getClass();
+      Class[] params=new Class[0];
+      Method meth=c.getMethod
+      (
+        "get"+
+        numbers[0].substring(0,1).toUpperCase()+
+        numbers[0].substring(1),
+        params
+      );
+      Object[] arglist=new Object[0];
+      Object ret=meth.invoke(thing,arglist);
+      Double retv=(Double)ret;
+      // Do wyliczenia początku brany jest tylko pierszy element z tablicy.
+      double x=Double.valueOf(retv);
+      double y=calculateInterpolation(x,target,time);
+      for(int i=0;i<numbers.length;++i)
       {
-        double a=target-now;
-        double b=Math.signum(a);
-        double neww=now+time*(a*6.0+0.12*b);
-        if(b*(neww-target)>0)
-          neww=target;
-        return neww;
+        params=new Class[1];
+        params[0]=Double.TYPE;
+        meth=c.getMethod
+        (
+          "set"+
+          numbers[i].substring(0,1).toUpperCase()+
+          numbers[i].substring(1),
+          params
+        );
+        arglist=new Object[1];
+        arglist[0]=new Double(y);
+        ret=meth.invoke(thing,arglist);
       }
-      return now;
+    }
+    catch(NoSuchMethodException exc){}
+    catch(IllegalAccessException exc){}
+    catch(InvocationTargetException exc){}
+    finally
+    {
+
     }
   }
-
-
-
-
-
-
-  //////
-  //
-  //
-  //     Tutaj są funkcje od przesuwania poszczególnych elementów na scenie.
-  //
-  //
-  //////
-
-  public void updateBigSquareThings(double time)
-  {
-    // Duży kwadrat - wielkość
-    double neww=calculateInterpolation
-      (bigSquare.getScaleX(),bigSquareScaleTarget,time);
-    bigSquare.setScaleX(neww);
-    bigSquare.setScaleY(neww);
-
-    // Duży kwadrat - miejsce
-    bigSquare.setTranslateY
-    (
-      calculateInterpolation
-        (bigSquare.getTranslateY(),bigSquareTranslateTarget,time)
-    );
-  }
-  public void updateSettingsSquareThings(double time)
-  {
-    double neww=calculateInterpolation
-      (settingsSquare.getTranslateY(),settingsSquareTranslateTarget,time);
-    settingsSquare.setTranslateY(neww);
-  }
-  public void updateHelpSquareThings(double time)
-  {
-    double neww=calculateInterpolation
-      (helpSquare.getTranslateY(),helpSquareTranslateTarget,time);
-    helpSquare.setTranslateY(neww);
-  }
-  public void updateQuitSquareThings(double time)
-  {
-    double neww=calculateInterpolation
-      (quitSquare.getTranslateY(),quitSquareTranslateTarget,time);
-    quitSquare.setTranslateY(neww);
-  }
-
 
 
 
@@ -261,12 +346,12 @@ public class GUIController implements Initializable
   // bigSquare
   public void bigSquareEntered()
   {
-    bigSquareScaleTarget=sizeMultiplier;
+    theTarget=bigSquare;
   }
   public void bigSquareExited()
   {
-    //System.out.print("   "+theRoot.getHeight()+"   "+theRoot.heightProperty().getValue()+"\n");
-    bigSquareScaleTarget=1.0;
+    if(state==State.FIRST_SCREEN)
+    theTarget=null;
   }
   public void bigSquareClicked()
   {
@@ -284,11 +369,10 @@ public class GUIController implements Initializable
   //settingsSquare
   public void settingsSquareEntered()
   {
-    settingsSquareTranslateTarget+=20.0;
+    theTarget=settingsSquare;
   }
   public void settingsSquareExited()
   {
-    settingsSquareTranslateTarget-=20.0;
   }
   public void settingsSquareClicked()
   {
@@ -298,11 +382,11 @@ public class GUIController implements Initializable
   //helpSquare
   public void helpSquareEntered()
   {
-    helpSquareTranslateTarget+=30.0;
+    theTarget=helpSquare;
   }
   public void helpSquareExited()
   {
-    helpSquareTranslateTarget-=30.0;
+    return;
   }
   public void helpSquareClicked()
   {
@@ -312,11 +396,11 @@ public class GUIController implements Initializable
   //quitSquare
   public void quitSquareEntered()
   {
-    quitSquareTranslateTarget+=30.0;
+    theTarget=quitSquare;
   }
   public void quitSquareExited()
   {
-    quitSquareTranslateTarget-=30.0;
+    return;
   }
   public void quitSquareClicked()
   {

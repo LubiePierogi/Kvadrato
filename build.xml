@@ -1,27 +1,35 @@
 <?xml version="1.0"?>
   <project name="Kvadrato" default="compile">
+    <path id="3classpath">
+      <fileset dir="libs">
+        <include name="**/*.jar"/>
+      </fileset>
+    </path>
+    <manifestclasspath property="libs.cp" jarfile="Kvadrato.jar">
+      <classpath refid="3classpath"/>
+    </manifestclasspath>
     <target name="clean" description="delete all ??non-source?? files">
       <delete dir="build"/>
-      <delete file="KvadratoDebug.jar"/>
       <delete file="Kvadrato.jar"/>
     </target>
-    <target name="compile" depends="debug"/>
-    <target name="debug" description="make class files">
+    <target name="compile" description="make class files">
       <mkdir dir="build"/>
-      <javac srcdir="src" destdir="build" includeantruntime="false"/>
+      <javac srcdir="src" destdir="build" includeantruntime="false">
+        <classpath refid="3classpath"/>
+      </javac>
     </target>
     <target name="jar" depends="compile" description="create jar">
-      <jar destfile="KvadratoDebug.jar">
+      <jar destfile="Kvadrato.jar">
         <fileset dir="build" includes="**/*.class"/>
         <fileset dir="src" includes="**/*.fxml"/>
         <manifest>
           <attribute name="Main-Class" value="kvadrato.App"/>
+          <attribute name="Class-Path" value="${libs.cp}"/>
         </manifest>
       </jar>
     </target>
-    <target name="roll" depends="clean,jar,run">
-    </target>
+    <target name="roll" depends="clean,jar,run"/>
     <target name="run" depends="jar">
-      <java fork="true" jar="KvadratoDebug.jar"/>
+      <java fork="true" jar="Kvadrato.jar"/>
     </target>
   </project>

@@ -1,8 +1,9 @@
-package kvadrato;
-import javafx.beans.NamedArg;
+//package kvadrato;
+//import javafx.beans.NamedArg;
 /**
  * To klasa, która przechowuje float, bo tak.
  */
+ /*
 public class GUINumber
 {
   private float value;
@@ -23,3 +24,4 @@ public class GUINumber
     return value;
   }
 }
+*/
