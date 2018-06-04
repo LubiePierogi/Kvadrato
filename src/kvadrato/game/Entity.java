@@ -1,21 +1,26 @@
 package kvadrato.game;
-abstract public class Entity
+
+import java.util.Map;
+import java.util.TreeMap;
+
+public class Entity
 {
   /**
    * Ta zmienna przechowuje, w którym świecie jest jednostka.
    * Będzie tylko jedenświat, ale tak jest ładnie.
    */
   World world;
-  EntityState state;
-  EntityState stateNew;
   private boolean hasToBeRemoved;
+  Map<String,Component> components;
+  String prefabName;
   /**
    * Konstuktor, który jest tylko po to, żeby ustawić zmienną hasToBeRemoved
-   * na false.
+   * na false i żeby zrobić tablicę skłądników.
    */
   public Entity()
   {
     hasToBeRemoved=false;
+    components=new TreeMap<String,Component>();
   }
   /**
    * Funkcja ustawiająca, że jednostka ma być usunięta ze świata.
@@ -31,11 +36,24 @@ abstract public class Entity
   {
     return hasToBeRemoved;
   }
+  public final void fix()
+  {
+    components.forEach((k,v)->
+    {
+      v.fix();
+    });
+  }
   /**
    * Funkcja zmieniająca stan jednostki lub świata co każdy krok. Tworzy ona
    * nowy stan i zmienia tylko jego.
    */
-  public abstract void doThings();
+  public final void doThings()
+  {
+    components.forEach((k,v)->
+    {
+      v.doThings();
+    });
+  }
   /**
    * Funkcja wpisująca nowy stan jednostki w miejsce aktualnego/starego.
    */
@@ -43,18 +61,23 @@ abstract public class Entity
   // i ustawienie nowego stanu na null.
   public final void update()
   {
-    if(stateNew!=null)
+    components.forEach((k,v)->
     {
-      state=stateNew;
-      stateNew=null;
-    }
+      v.update();
+    });
   }
-  /**
-   * Ta funkcja służy do stworzenia nowego stanu w jednostce.
-   */
-  void forkState()
+  public final void addComponent(String name)
+    throws ClassNotFoundException,InstantiationException,IllegalAccessException
   {
-    stateNew=state.clone();
+    Class c=Class.forName("kvadrato.game.components."+name);
+    Component co=(Component)c.newInstance();
+    co.ent=this;
+    components.put(name,co);
+
+  }
+  public final Component getComponent(String name)
+  {
+    return components.get(name);
   }
   /**
    * Funkcja zwracająca świat, na którym jest jednostka.

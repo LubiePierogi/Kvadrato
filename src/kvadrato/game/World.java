@@ -5,6 +5,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.Vector;
 import kvadrato.game.entityinterfaces.EntityWithCollisions;
 import kvadrato.game.collision.*;
+import kvadrato.game.Entity;
 /**
  * Chyba najbardziej ważna klasa w programie.
  * Jest w niej cały stan świata gry.
@@ -75,8 +76,8 @@ public final class World
   {
     ender=false;
     worldLock=new ReentrantLock();
-    worldLock.lock(); // nie wiem, czy to jest potrzebne
-    //conditionLock=new ReentrantLock();
+    worldLock.lock();
+
     try
     {
       condition=worldLock.newCondition();
@@ -102,6 +103,14 @@ public final class World
     {
       worldLock.unlock();
     }
+  }
+  public void lock()
+  {
+    worldLock.lock();
+  }
+  public void unlock()
+  {
+    worldLock.unlock();
   }
   /**
    * Funkcja, która wylicza czas, jaki ma być czekany co krok i jaki czas mija
@@ -157,13 +166,6 @@ public final class World
   public void setTickrate(int tr)
    throws GameException
   {
-    worldLock.lock();
-    try{setTickrate_inside(tr);}
-    finally{worldLock.unlock();}
-  }
-  void setTickrate_inside(int tr)
-   throws GameException
-  {
     if(tr<MinTickrate)
       throw new GameException();
     tickrate=tr;
@@ -178,13 +180,6 @@ public final class World
   public void setSpeed(double s)
    throws GameException
   {
-    worldLock.lock();
-    try{setSpeed_inside(s);}
-    finally{worldLock.unlock();}
-  }
-  void setSpeed_inside(double s)
-   throws GameException
-  {
     if(s<0.0)
       throw new GameException();
     speed=s;
@@ -192,40 +187,27 @@ public final class World
     condition.signal();
     // to jeszcze nie wszystko
   }
-  /**
-   * Dodaje jednostkę do świata.
-   * @param ent jednostka, któ©a ma być dodana, ma być gotowa i nie być w żadnym
-   * świecie
-   */
-  public void addEntity(Entity ent)
-    throws GameException
+  public Entity createEntity()
   {
-    worldLock.lock();
-    try{addEntity_inside(ent);}
-    finally{worldLock.unlock();}
-  }
-  void addEntity_inside(Entity ent)
-    throws GameException
-  {
-    if(ent.world!=null)
-    {
-      throw new GameException();
-    }
-    // Tutaj dodamy tą jednostkę do tablicy.
+    Entity ent=new Entity();
     ents.addElement(ent);
+    ent.world=this;
+    return ent;
+  }
+  public void spawn(String name)
+    throws ClassNotFoundException,InstantiationException,IllegalAccessException
+  {
+    Class c=Class.forName("kvadrato.game.prefabs."+name);
+    Prefab x=(Prefab)c.newInstance();
+    Entity ent=createEntity();
+    ent.prefabName=name;
+    x.makeEntity(ent);
   }
   /**
    * Usuwa jednostkę ze świata, tylko ze świata.
    * @param ent należąca do danego świata jednostka
    */
   public void removeEntity(Entity ent)
-    throws GameException
-  {
-    worldLock.lock();
-    try{removeEntity_inside(ent);}
-    finally{worldLock.unlock();}
-  }
-  void removeEntity_inside(Entity ent)
     throws GameException
   {
     if(ent.world!=this)
@@ -240,23 +222,17 @@ public final class World
    */
   public void removeAllEntities()
   {
-    worldLock.lock();
-    try{removeAllEntities_inside();}
-    finally{worldLock.unlock();}
-  }
-  void removeAllEntities_inside()
-  {
     for(int i=0;i<ents.size();++i)
     {
       ents.get(i).remove();
     }
-    updateAll_inside();
+    updateAll();
   }
   /**
    * Ta funkcja robi jeden krok na świecie, nic skomplikowanego.
    */
   private void oneTick()
-  {
+  {/*
     Entity ent;
     computeCollisions();
     for(int i=0;i<ents.size();++i)
@@ -265,18 +241,12 @@ public final class World
       ent.state.fix(this);
       ent.doThings();
     }
-    updateAll_inside();
+    updateAll();*/
   }
   /**
    * Ta funkcja zamienia stan wszystkich jednostek na nowy.
    */
-  public void updateAll()
-  {
-    worldLock.lock();
-    try{updateAll_inside();}
-    finally{worldLock.unlock();}
-  }
-  private void updateAll_inside()
+  private void updateAll()
   {
     Entity ent;
     for(int i=0;i<ents.size();++i)
@@ -296,7 +266,7 @@ public final class World
    * getTickNanosWorld, bo to nie jest getter, a jest ładnie, gdy gettery
    * są publiczne.
    */
-  int getDeltaTime()
+  public int getDeltaTime()
   {
     return tickNanosWorld;
   }
@@ -304,14 +274,14 @@ public final class World
    * Czas czekania co krok. Celowo nie nazywa się getTickNanosReal, bo nie jest
    * to publiczny getter.
    */
-  int getWaitTime()
+  public int getWaitTime()
   {
     return tickNanosReal;
   }
   /**
    * Ta funkcja zwraca, czy świat nie jest zatrzymany
    */
-  boolean runs()
+  public boolean runs()
   {
     return speed!=0.0;
   }
@@ -321,6 +291,7 @@ public final class World
    */
   private void computeCollisions()
   {
+    /*
     int theEnd1=ents.size()-1;
     int theEnd2=ents.size();
     EntityWithCollisions ent1;
@@ -348,7 +319,7 @@ public final class World
           ent2.addCollision(ent1,collision);
         }
       }
-    }
+    }*/
   }
   /**
    * To jest klasa, która ma wątek zajmujący się wszystkim, co się dzieje na

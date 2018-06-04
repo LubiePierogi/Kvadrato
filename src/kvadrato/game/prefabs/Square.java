@@ -1,17 +1,28 @@
-package kvadrato.game;
-import kvadrato.game.entityinterfaces.*;
+package kvadrato.game.prefabs;
+
 import java.util.Vector;
-import kvadrato.game.collision.Collision;
-import kvadrato.game.collision.Shape;
+import kvadrato.game.Prefab;
+import kvadrato.game.Entity;
 /**
  * Klasa kwadratu, którym steruje gracz.
  */
-public class Square
+public class Square extends Prefab
+{
+  public void makeEntity(Entity ent)
+    throws ClassNotFoundException,InstantiationException,IllegalAccessException
+  {
+    ent.addComponent("Physics");
+    ent.addComponent("Camera");
+  }
+
+}
+/*
   extends Entity
   implements
     EntityWithPlace,ControllableEntity,EntityWithView,
     DynamicEntity,EntityWithCollisions
 {
+  /*
   public void doThings()
   {
 
@@ -61,7 +72,7 @@ public class Square
   public Shape getCollisionShape()
   {
     return null;
-  }
+  }*//*
   public SquareCord getCord()
   {
     return ((State)state).cord;
@@ -73,7 +84,7 @@ public class Square
     if(stateNew==null)
       forkState();
     ((State)stateNew).cord=cord;
-  }
+  }*//*
   static class State extends EntityState
   {
     Vector2d place;
@@ -86,5 +97,5 @@ public class Square
       if(cord!=null&&cord.getWorld()!=world)
         cord=null;
     }
-  }
-}
+  }*/
+//}
