@@ -2,10 +2,13 @@ package kvadrato.game;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.Condition;
-import java.util.Vector;
+import java.util.ArrayList;
 import kvadrato.game.entityinterfaces.EntityWithCollisions;
 import kvadrato.game.collision.*;
 import kvadrato.game.Entity;
+import java.util.Collections;
+import kvadrato.game.Component;
+import kvadrato.game.components.Collider;
 /**
  * Chyba najbardziej ważna klasa w programie.
  * Jest w niej cały stan świata gry.
@@ -23,7 +26,7 @@ public final class World
   /**
    * W tym są wszystkie jednostki na świecie.
    */
-  private Vector<Entity> ents;
+  private ArrayList<Entity> ents;
   //private Entity[] ents;
   /**
    * Ilość odświeżeń świata na sekundę przy szybkości ustawionej na jeden.
@@ -81,7 +84,7 @@ public final class World
     try
     {
       condition=worldLock.newCondition();
-      ents=new Vector<Entity>();
+      ents=new ArrayList<Entity>();
 
       // Ustawiamy ilość odświeżeń świata przez jedną sekundę.
       tickrate=DefaultTickrate;
@@ -190,7 +193,7 @@ public final class World
   public Entity createEntity()
   {
     Entity ent=new Entity();
-    ents.addElement(ent);
+    ents.add(ent);
     ent.world=this;
     return ent;
   }
@@ -232,16 +235,16 @@ public final class World
    * Ta funkcja robi jeden krok na świecie, nic skomplikowanego.
    */
   private void oneTick()
-  {/*
+  {
     Entity ent;
     computeCollisions();
     for(int i=0;i<ents.size();++i)
     {
       ent=ents.get(i);
-      ent.state.fix(this);
+      ent.fix();
       ent.doThings();
     }
-    updateAll();*/
+    updateAll();
   }
   /**
    * Ta funkcja zamienia stan wszystkich jednostek na nowy.
@@ -291,35 +294,38 @@ public final class World
    */
   private void computeCollisions()
   {
-    /*
     int theEnd1=ents.size()-1;
     int theEnd2=ents.size();
-    EntityWithCollisions ent1;
-    EntityWithCollisions ent2;
+    Entity ent1;
+    Entity ent2;
+    Collider col1;
+    Collider col2;
     Collision collision;
     for(int i=0;i<theEnd1;++i)
     {
-      if(!(ents.get(i)instanceof EntityWithCollisions))
+      ent1=ents.get(i);
+      col1=(Collider)ent1.getComponent("Collider");
+      if(col1==null)
         continue;
       for(int j=i+1;j<theEnd2;++j)
       {
-        if(!(ents.get(i)instanceof EntityWithCollisions))
+        ent2=ents.get(i);
+        col2=(Collider)ent2.getComponent("Collider");
+        if(col2==null)
           continue;
         // Teraz wiemy, że mamy parę dwóch możliwych do zderzenia obiektów.
-        ent1=(EntityWithCollisions)ents.get(i);
-        ent2=(EntityWithCollisions)ents.get(j);
         collision=Collision.compute
         (
-          ent1.getCollisionShape(),
-          ent2.getCollisionShape()
+          col1.getTransformedShape(),
+          col2.getTransformedShape()
         );
         if(collision!=null)
         {
-          ent1.addCollision(ent2,collision);
-          ent2.addCollision(ent1,collision);
+          col1.addCollision(ent2,collision);
+          col2.addCollision(ent1,collision);
         }
       }
-    }*/
+    }
   }
   /**
    * To jest klasa, która ma wątek zajmujący się wszystkim, co się dzieje na

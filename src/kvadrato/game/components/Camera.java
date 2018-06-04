@@ -20,7 +20,7 @@ class Camera extends Component
     double scale;
     if(eyeFn==null)
     {
-      Physics ph=(Physics)ent.getComponent("Physics");
+      Physics ph=(Physics)getEntity().getComponent("Physics");
       if(ph!=null)
       {
         place=ph.getPlace();

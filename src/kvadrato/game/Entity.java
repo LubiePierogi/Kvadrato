@@ -79,6 +79,10 @@ public class Entity
   {
     return components.get(name);
   }
+  public final boolean hasComponent(String name)
+  {
+    return components.containsKey(name);
+  }
   /**
    * Funkcja zwracająca świat, na którym jest jednostka.
    */

@@ -5,7 +5,15 @@ public abstract class Component
   public abstract void fix();
   public abstract void doThings();
   public abstract void update();
-  protected Entity ent;
+
+
+
+  public Entity ent;
+
+  protected final Entity getEntity()
+  {
+    return ent;
+  }
 
 
   //getDeltaTime();
