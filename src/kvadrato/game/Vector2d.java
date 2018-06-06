@@ -3,7 +3,7 @@ import java.lang.Math;
 /**
  * Wektor z dwoma wymiarami. Jest to klasa niezmiennicza czy jakoś tak.
  */
-public final class Vector2d
+public class Vector2d
 {
   public final double x;
   public final double y;

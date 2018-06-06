@@ -8,6 +8,7 @@ import kvadrato.game.Entity;
 import java.util.Collections;
 import kvadrato.game.Component;
 import kvadrato.game.components.Collider;
+import kvadrato.game.components.Camera;
 /**
  * Chyba najbardziej ważna klasa w programie.
  * Jest w niej cały stan świata gry.
@@ -325,6 +326,27 @@ public final class World
         }
       }
     }
+  }
+  /**
+   * Ta funkcja daje obiekt klasy ViewOfWorld, gdzie są rzeczy potrzebne
+   * do narysowania świata, i graficzne opakowanie może to wykorzystać
+   * do narysowania świata.
+   * @param where Jednoskta, dla której ma być brany widok.
+   */
+  ViewOfWorld getView(Entity where)
+  {
+    ViewOfWorld view=new ViewOfWorld();
+    if(where.getWorld()!=this)
+    {
+      // Próba wyciągnięcia widoku od jednostki nie z tego świata.
+      return view;
+    }
+    Eye eye;
+    if(where.hasComponent("Camera"))
+    {
+      eye=((Camera)where.getComponent("Camera")).getEye();
+    }
+    return view;
   }
   /**
    * To jest klasa, która ma wątek zajmujący się wszystkim, co się dzieje na

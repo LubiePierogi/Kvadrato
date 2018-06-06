@@ -8,6 +8,13 @@ public final class Eye
   public final double y;
   public final double angle;
   public final double scale;
+  public Eye()
+  {
+    x=0.0;
+    y=0.0;
+    angle=0.0;
+    scale=1.0;
+  }
   public Eye(double x,double y,double angle,double scale)
   {
     this.x=x;

@@ -6,7 +6,7 @@ import kvadrato.game.Vector2d;
 import kvadrato.game.Transform;
 import java.util.function.Supplier;
 
-class Camera extends Component
+public class Camera extends Component
 {
   private Supplier<Eye> eyeFn;
   public void setFn(Supplier<Eye>fn)
@@ -14,7 +14,7 @@ class Camera extends Component
     eyeFn=fn;
   }
 
-  Eye getEye()
+  public Eye getEye()
   {
     Transform place;
     double scale;
