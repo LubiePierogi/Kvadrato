@@ -4,7 +4,7 @@ import kvadrato.game.Component;
 import kvadrato.game.Vector2d;
 import kvadrato.game.Transform;
 
-class Physics extends Component
+public class Physics extends Component
 {
   public enum Type
   {
@@ -24,7 +24,9 @@ class Physics extends Component
   private Transform velocityNew;
   private Transform accelerationNew;
 
-  Physics()
+  private double mass;
+
+  public Physics()
   {
     type=Type.STATIC;
     place=new Transform();
@@ -34,22 +36,44 @@ class Physics extends Component
     placeNew=new Transform();
     velocityNew=new Transform();
     accelerationNew=new Transform();
+
+    mass=1.0;
   }
 
-  Transform getPlace()
+  public Type getType()
+  {
+    return type;
+  }
+
+  public void setType(Type t)
+  {
+    type=t;
+  }
+
+  public double getMass()
+  {
+    return mass;
+  }
+
+  public void setMass(double m)
+  {
+    mass=m;
+  }
+
+  public Transform getPlace()
   {
     return place;
   }
-  Transform getVelocity()
+  public Transform getVelocity()
   {
     return velocity;
   }
 
-  void addPlace(Transform x)
+  public void addPlace(Transform x)
   {
     placeNew=placeNew.add(x);
   }
-  void addVelocity(Transform x)
+  public void addVelocity(Transform x)
   {
     velocityNew=velocityNew.add(x);
   }

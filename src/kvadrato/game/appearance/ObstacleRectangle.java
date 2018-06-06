@@ -2,7 +2,7 @@ package kvadrato.game.appearance;
 
 import kvadrato.game.Color;
 
-public class Rectangle implements AppearanceElement
+public class ObstacleRectangle implements AppearanceElement
 {
   public double centerX;
   public double centerY;

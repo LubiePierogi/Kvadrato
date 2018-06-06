@@ -6,26 +6,28 @@ import java.util.ArrayList;
 import java.util.List;
 import kvadrato.game.appearance.AppearanceElement;
 
-class Appearance extends Component
+public class Appearance extends Component
 {
-  Appearance()
+
+  List<AppearanceElement> elements;
+
+
+  public Appearance()
   {
     elements=new ArrayList<AppearanceElement>();
   }
 
-  List<AppearanceElement> elements;
-
-  void clear()
+  public void clear()
   {
     elements.clear();
   }
 
-  void addElement(AppearanceElement e)
+  public void addElement(AppearanceElement e)
   {
     elements.add(e);
   }
 
-  List<AppearanceElement> getElements()
+  public List<AppearanceElement> getElements()
   {
     return Collections.unmodifiableList(elements);
   }
