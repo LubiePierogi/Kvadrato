@@ -1,4 +1,4 @@
-package kvadrato.game;
+package kvadrato.game.prefabs;
 /**
  * Klasa przeszkód, które trzeba omijać.
  */

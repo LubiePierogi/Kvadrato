@@ -1,5 +1,5 @@
-package kvadrato.game;
-import kvadrato.game.entityinterfaces.*;
+package kvadrato.game.prefabs;
+import kvadrato.game.Prefab;
 /**
  * To jest klasa obiektu, który nie jest widoczny w grze, ale gracz cały czas
  * jest do niego przyczepiony i środek ekranu jest ustawwiony w miejscu,

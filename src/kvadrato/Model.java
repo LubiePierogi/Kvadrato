@@ -1,8 +1,7 @@
 package kvadrato;
 import kvadrato.game.World;
-import kvadrato.game.entityinterfaces.ControllableEntity;
-import kvadrato.game.entityinterfaces.EntityWithView;
 import kvadrato.game.Vector2d;
+import kvadrato.game.Entity;
 import kvadrato.game.prefabs.Square;
 
 public class Model
@@ -15,8 +14,8 @@ public class Model
   /**
   * Ta zmienna przechowuje, którym czymś na świecie jest gracz.
   */
-  ControllableEntity playerControlPointer;
-  EntityWithView viewPointer;
+  Entity playerControlPointer;
+  Entity viewPointer;
   /**
   * Domyślny konstruktor.
   */

@@ -2,6 +2,7 @@ package kvadrato.game.components;
 
 import kvadrato.game.Component;
 import kvadrato.game.Vector2d;
+import kvadrato.game.Transform;
 
 class Physics extends Component
 {
@@ -25,7 +26,7 @@ class Physics extends Component
 
   Physics()
   {
-    type=STATIC;
+    type=Type.STATIC;
     place=new Transform();
     velocity=new Transform();
     acceleration=new Transform();
@@ -43,10 +44,6 @@ class Physics extends Component
   {
     return velocity;
   }
-  Transform getAcceleration()
-  {
-    return acceleration;
-  }
 
   void addPlace(Transform x)
   {
@@ -56,20 +53,19 @@ class Physics extends Component
   {
     velocityNew=velocityNew.add(x);
   }
-  void addAcceleration(Transform x)
-  {
-    accelerationNew=accelerationNew.add(x);
-  }
 
   public void fix()
   {
     placeNew=place;
     velocityNew=velocity;
-    accelerationNew=0.0;//acceleration;
   }
   public void doThings(){}
   public void update()
   {
-    place=placeNew
+    if(type!=Type.STATIC)
+    {
+      place=placeNew.add(velocity);
+      velocity=velocityNew;
+    }
   }
 }

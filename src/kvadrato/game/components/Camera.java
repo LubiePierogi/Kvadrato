@@ -3,6 +3,7 @@ package kvadrato.game.components;
 import kvadrato.game.Eye;
 import kvadrato.game.Component;
 import kvadrato.game.Vector2d;
+import kvadrato.game.Transform;
 import java.util.function.Supplier;
 
 class Camera extends Component
@@ -15,8 +16,7 @@ class Camera extends Component
 
   Eye getEye()
   {
-    Vector2d place;
-    double angle;
+    Transform place;
     double scale;
     if(eyeFn==null)
     {
@@ -27,13 +27,12 @@ class Camera extends Component
       }
       else
       {
-        place=new Vector2d();
+        place=new Transform();
       }
-      angle=0.0;
       scale=1.0;
     }
     else return eyeFn.get();
-    return new Eye(place.x,place.y,angle,scale);
+    return new Eye(place.x,place.y,place.angle,scale);
   }
 
   public void fix(){}

@@ -6,23 +6,23 @@ public class Transform
   final public double x;
   final public double y;
   final public double angle;
-  Transform()
+  public Transform()
   {
-    x=0;y=0;angle=0;
+    x=0.0;y=0.0;angle=0.0;
   }
-  Transform(double x,double y,double angle)
+  public Transform(double x,double y,double angle)
   {
     this.x=x;
     this.y=y;
     this.angle=angle;
   }
-  Transform(Vector2d v)
+  public Transform(Vector2d v)
   {
     x=v.x;
     y=v.y;
     angle=0;
   }
-  Transform(Vector2d v double a)
+  public Transform(Vector2d v,double a)
   {
     x=v.x;
     y=v.y;
@@ -46,7 +46,7 @@ public class Transform
       this.angle+other.angle
     );
   }
-  public Vector2d sub(Transform other)
+  public Transform sub(Transform other)
   {
     return new Transform
     (
@@ -74,7 +74,7 @@ public class Transform
   }
   public Transform rotate(double angle)
   {
-    return new Vector2d(x*Math.cos(angle)-y*Math.sin(angle),y*Math.cos(angle)+x*Math.sin(angle),this.angle+angle);
+    return new Transform(x*Math.cos(angle)-y*Math.sin(angle),y*Math.cos(angle)+x*Math.sin(angle),this.angle+angle);
   }
   public Transform neg()
   {

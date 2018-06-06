@@ -3,7 +3,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.Condition;
 import java.util.ArrayList;
-import kvadrato.game.entityinterfaces.EntityWithCollisions;
 import kvadrato.game.collision.*;
 import kvadrato.game.Entity;
 import java.util.Collections;
