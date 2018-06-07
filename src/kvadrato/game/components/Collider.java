@@ -34,7 +34,7 @@ public class Collider extends Component
    */
   TriConsumer<Entity,Entity,Collision> fn;
 
-  Collider()
+  public Collider()
   {
     collisions=new TreeMap<Entity,Collision>();
   }

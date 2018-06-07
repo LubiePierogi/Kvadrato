@@ -7,7 +7,7 @@ public final class Eye
   public final double x;
   public final double y;
   public final double angle;
-  public final double scale;
+  public final double scale; // Im większa tym mniej widać.
   public Eye()
   {
     x=0.0;

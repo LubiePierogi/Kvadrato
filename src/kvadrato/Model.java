@@ -6,6 +6,8 @@ import kvadrato.game.Entity;
 import kvadrato.game.prefabs.Square;
 import kvadrato.game.GameException;
 import kvadrato.game.ViewOfWorld;
+import kvadrato.game.Transform;
+import kvadrato.game.components.Physics;
 
 public class Model
 {
@@ -84,18 +86,12 @@ public class Model
       Entity player=wa.spawn("Square");
       playerControlPointer=player;
       viewPointer=player;
+      Entity dwa=wa.spawn("Square");
+      ((Physics)dwa.getComponent("Physics")).addPlace(new Transform(3,4,0));
     }
-    catch(ClassNotFoundException exc)
+    catch(GameException exc)
     {
-
-    }
-    catch(InstantiationException exc)
-    {
-
-    }
-    catch(IllegalAccessException exc)
-    {
-
+      System.out.println("trololololololololo");
     }
     finally
     {

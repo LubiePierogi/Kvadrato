@@ -1,6 +1,8 @@
 package kvadrato.game.appearance;
 
-public interface AppearanceElement
+public class AppearanceElement
 {
-  
+  public double x;
+  public double y;
+  public double angle;
 }

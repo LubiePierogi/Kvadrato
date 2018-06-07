@@ -25,10 +25,23 @@ public final class Renderer
     context.setFill(Backgrounds.bgToColor(bgColor));
     context.fillRect(0,0,800,600);
     List<AppearanceElement> list=view.getThings();
-    list.forEach(x->
+    for(AppearanceElement x:list)
     {
       String className=x.getClass().getName();
       System.out.println(className);
-    });
+      // kvadrato.game.appearance.
+      // kvadrato.view.ae.
+      // 25
+      className="kvadrato.view.ae."+className.substring(25);
+      try
+      {
+        Class c=Class.forName(className);
+      }
+      catch(ClassNotFoundException exc)
+      {}
+      //catch(IllegalAccessException exc)
+      //{}
+    }
+
   }
 }

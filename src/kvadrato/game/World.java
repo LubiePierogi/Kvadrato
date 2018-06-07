@@ -3,6 +3,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.Condition;
 import java.util.ArrayList;
+import java.util.List;
 import kvadrato.game.collision.*;
 import kvadrato.game.Entity;
 import java.util.Collections;
@@ -10,6 +11,11 @@ import kvadrato.game.Component;
 import kvadrato.game.components.Collider;
 import kvadrato.game.components.Camera;
 import kvadrato.game.WorldAccess;
+import kvadrato.game.other.BackgroundColor;
+import kvadrato.game.appearance.AppearanceElement;
+import kvadrato.game.components.Appearance;
+import kvadrato.game.components.Physics;
+import kvadrato.game.GameException;
 /**
  * Chyba najbardziej ważna klasa w programie.
  * Jest w niej cały stan świata gry.
@@ -234,15 +240,29 @@ public final class World
     ent.world=this;
     return ent;
   }
-  Entity spawn(String name)
-    throws ClassNotFoundException,InstantiationException,IllegalAccessException
+  Entity spawn(String name) throws GameException
   {
-    Class c=Class.forName("kvadrato.game.prefabs."+name);
-    Prefab x=(Prefab)c.newInstance();
-    Entity ent=createEntity();
-    ent.prefabName=name;
-    x.makeEntity(ent);
-    return ent;
+    try
+    {
+      Class c=Class.forName("kvadrato.game.prefabs."+name);
+      Prefab x=(Prefab)c.newInstance();
+      Entity ent=createEntity();
+      ent.prefabName=name;
+      x.makeEntity(ent);
+      return ent;
+    }
+    catch(ClassNotFoundException exc)
+    {
+      throw new GameException();
+    }
+    catch(InstantiationException exc)
+    {
+      throw new GameException();
+    }
+    catch(IllegalAccessException exc)
+    {
+      throw new GameException();
+    }
   }
   /**
    * Usuwa jednostkę ze świata, tylko ze świata.
@@ -394,21 +414,64 @@ public final class World
   /**
    * Ta funkcja daje obiekt klasy ViewOfWorld, gdzie są rzeczy potrzebne
    * do narysowania świata, i graficzne opakowanie może to wykorzystać
-   * do narysowania świata.
+   * do narysowania św``iata.
    * @param where Jednoskta, dla której ma być brany widok.
    */
   ViewOfWorld getView(Entity where)
   {
+    System.out.println("#!@*(#@$($)(#@*))");
     ViewOfWorld view=new ViewOfWorld();
+    Eye eye;
     if(where==null||where.getWorld()!=this)
     {
       // Próba wyciągnięcia widoku z niczego albo z jednostki nie z tego świata.
-      return view;
+      eye=new Eye();
     }
-    Eye eye;
-    if(where.hasComponent("Camera"))
+    else
     {
-      eye=((Camera)where.getComponent("Camera")).getEye();
+      System.out.println("zcxxczzcxxczzcx");
+      if(where.hasComponent("Camera"))
+      {
+        eye=((Camera)where.getComponent("Camera")).getEye();
+      }
+      else
+        eye=new Eye();
+    }
+
+    System.out.println("zxccxzxcz");
+    view.scale=eye.scale;
+    view.place=new Transform(eye.x,eye.y,eye.angle);
+    Vector2d vector=new Vector2d(eye.x,eye.y);
+    Vector2d vector2;
+    for(Entity x:ents)
+    {
+      System.out.println("ZXCZXCZXCX");
+      System.out.println(x.getName());
+      Physics ph=(Physics)x.getComponent("Physics");
+      Appearance ap=(Appearance)x.getComponent("Appearance");
+      System.out.print("###"+(ph!=null)+'\n'+"###"+(ap!=null)+'\n');
+      if(ph==null||ap==null)
+        continue;
+      System.out.println("~!@W#ER");
+      Transform temp=ph.getPlace();
+      vector2=new Vector2d(temp.x,temp.y);
+      vector2=vector.sub(vector2);
+      System.out.println("nike "+vector2.dist()+" adidas");
+      if(vector2.dist()>15/eye.scale)
+        continue;
+      List<AppearanceElement>list=ap.getElements();
+      if(list==null)
+        continue;
+      System.out.println("@@@@@@@@@@@@@@@@@@@@@");
+      for(AppearanceElement e:list)
+      {
+        Transform tr=new Transform(e.x,e.y,e.angle);
+        tr=tr.sub(temp);
+        e.x=tr.x;
+        e.y=tr.y;
+        e.angle=tr.angle;
+        view.things.add(e);
+      }
     }
     return view;
   }

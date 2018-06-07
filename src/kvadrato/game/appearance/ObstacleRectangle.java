@@ -1,21 +1,13 @@
 package kvadrato.game.appearance;
 
-import kvadrato.game.Color;
+import kvadrato.game.other.BackgroundColor;
 
-public class ObstacleRectangle implements AppearanceElement
+public class ObstacleRectangle extends AppearanceElement
 {
-  public double centerX;
-  public double centerY;
-  public double x;
-  public double y;
-  public double angle;
 
-  public Color color;
+  public BackgroundColor color;
 
-  /**
-   * Ten odnośnik może być nullem, jeśli jest, to nie ma otoczki wokół
-   * prostokąta.
-   */
-  public Color outline;
-  public double outlineWidth;
+  public double width;
+  public double height;
+
 }

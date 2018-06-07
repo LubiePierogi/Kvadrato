@@ -44,7 +44,7 @@ public class WorldAccess
     world.setSpeed(s);
   }
   public Entity spawn(String name)
-    throws ClassNotFoundException,InstantiationException,IllegalAccessException
+    throws GameException
   {
     return world.spawn(name);
     // Chyba do zmiany.
