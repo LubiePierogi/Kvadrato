@@ -21,6 +21,7 @@ import java.lang.Math;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import java.lang.reflect.*;
+import kvadrato.game.GameException;
 /*
 import javafx.embed.swing.SwingNode;
 import javax.swing.SwingUtilities;
@@ -153,6 +154,12 @@ public class GUIController implements Initializable
    */
   public void closeProgram()
   {
+    try
+    {
+      model.haltWorld();
+    }
+    catch(GameException exc)
+    {}
     window.close();
   }
   /**
@@ -182,6 +189,7 @@ public class GUIController implements Initializable
         quitSquare.setVisible(true);
         break;
       case STARTING_THE_GAME:
+        startNewGame();
         break;
       case THE_GAME:
         break;
@@ -244,12 +252,6 @@ public class GUIController implements Initializable
         break;
       case STARTING_THE_GAME:
         {
-          goToState(State.THE_GAME);
-        }
-        break;
-      case THE_GAME:
-        if(stateClock<2.0)
-        {
           x=mainMenu.getScaleX();
           y=2.7;
           y=calculateInterpolation(x,y,time);
@@ -263,8 +265,28 @@ public class GUIController implements Initializable
           if(y==0.0)
           {
             mainMenu.setVisible(false);
+            goToState(State.THE_GAME);
           }
         }
+        break;
+      case THE_GAME:
+        break;
+    }
+  }
+  /**
+   * Ta funkcja wywołuje zaczęcie nowej gry w modelu.
+   */
+  void startNewGame()
+  {
+    try
+    {
+      model.cookLevelStart();
+      model.pushWorld();
+      System.out.println("Tutaj jest");
+    }
+    catch(GameException exc)
+    {
+      System.out.println("ojhjuijkkjioi");
     }
   }
   /**

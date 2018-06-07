@@ -4,12 +4,16 @@ import kvadrato.game.Eye;
 import kvadrato.game.Component;
 import kvadrato.game.Vector2d;
 import kvadrato.game.Transform;
-import java.util.function.Supplier;
+import kvadrato.game.components.Camera;
+import kvadrato.game.Entity;
+import java.util.function.Function;
 
 public class Camera extends Component
 {
-  private Supplier<Eye> eyeFn;
-  public void setFn(Supplier<Eye>fn)
+  private Function<Entity,Eye> eyeFn;
+
+
+  public void setFn(Function<Entity,Eye>fn)
   {
     eyeFn=fn;
   }
@@ -31,7 +35,7 @@ public class Camera extends Component
       }
       scale=1.0;
     }
-    else return eyeFn.get();
+    else return eyeFn.apply(this.getEntity());
     return new Eye(place.x,place.y,place.angle,scale);
   }
 

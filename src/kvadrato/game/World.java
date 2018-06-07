@@ -79,11 +79,19 @@ public final class World
   {
     ender=false;
     worldLock=new ReentrantLock();
-    worldLock.lock();
 
+    condition=worldLock.newCondition();
+    thread=null;
+  }
+  public void init() throws GameException
+  {
+    worldLock.lock();
+    if(thread!=null)
+    {
+      throw new GameException;
+    }
     try
     {
-      condition=worldLock.newCondition();
       ents=new ArrayList<Entity>();
 
       // Ustawiamy ilość odświeżeń świata przez jedną sekundę.
@@ -101,6 +109,10 @@ public final class World
 
       // Tworzymy wątek, który zajmuje się tym światem.
       thread=new WorldThread(this);
+
+      // Ruszamy ten wątek.
+
+      thread.start();
     }
     finally
     {
@@ -128,12 +140,12 @@ public final class World
     tickNanosReal=(int)(1000000000/speed/tickrate);
   }
   /**
-   * To wywołuje GARBAGE COLLECTOR, jak kasuje świat. Jest to taka funkcja
-   * do kończenia wątku i tak dalej.
+   * Funkcja do zamykania wątku.
    */
-  protected void finalize()
+  public void close()
   {
     worldLock.lock();
+    if()
     try
     {
       ender=true;
@@ -160,7 +172,13 @@ public final class World
       do{}while(false);
       // Do exactly nothing. lol
       // POLSKAAAAAAAAAAAAAA
-    }
+    }}
+  /**
+   * To wywołuje GARBAGE COLLECTOR, jak kasuje świat. Jest to taka funkcja
+   * do kończenia wątku i tak dalej.
+   */
+  protected void finalize()
+  {
   }
   /**
    * Ustawia ilość zmian świata na sekundę.
@@ -190,14 +208,14 @@ public final class World
     condition.signal();
     // to jeszcze nie wszystko
   }
-  public Entity createEntity()
+  private Entity createEntity()
   {
     Entity ent=new Entity();
     ents.add(ent);
     ent.world=this;
     return ent;
   }
-  public void spawn(String name)
+  public Entity spawn(String name)
     throws ClassNotFoundException,InstantiationException,IllegalAccessException
   {
     Class c=Class.forName("kvadrato.game.prefabs."+name);
@@ -205,6 +223,7 @@ public final class World
     Entity ent=createEntity();
     ent.prefabName=name;
     x.makeEntity(ent);
+    return ent;
   }
   /**
    * Usuwa jednostkę ze świata, tylko ze świata.
@@ -236,15 +255,33 @@ public final class World
    */
   private void oneTick()
   {
-    Entity ent;
+    System.out.println("Test fajny");
+    fixAll();
     computeCollisions();
+    doThingsAll();
+    updateAll();
+  }
+  /**
+   */
+  private void doThingsAll()
+  {
+    Entity ent;
+    for(int i=0;i<ents.size();++i)
+    {
+      ent=ents.get(i);
+      ent.doThings();
+    }
+  }
+  /**
+   */
+  private void fixAll()
+  {
+    Entity ent;
     for(int i=0;i<ents.size();++i)
     {
       ent=ents.get(i);
       ent.fix();
-      ent.doThings();
     }
-    updateAll();
   }
   /**
    * Ta funkcja zamienia stan wszystkich jednostek na nowy.
@@ -261,7 +298,7 @@ public final class World
         --i;
         continue;
       }
-      ents.get(i).update();
+      ent.update();
     }
   }
   /**

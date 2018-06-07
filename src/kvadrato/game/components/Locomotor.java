@@ -1,6 +1,6 @@
 package kvadrato.game.components;
 
-import java.util.function.Supplier;
+import java.util.function.Function;
 import kvadrato.game.components.Physics;
 import kvadrato.game.Component;
 import kvadrato.game.Transform;
@@ -8,10 +8,10 @@ import kvadrato.game.Entity;
 
 public class Locomotor extends Component
 {
-  Supplier<Transform> fn;
+  Function<Entity,Transform> fn;
 
 
-  public void setFn(Supplier<Transform> func)
+  public void setFn(Function<Entity,Transform> func)
   {
     fn=func;
   }
@@ -20,7 +20,7 @@ public class Locomotor extends Component
   public Transform getAcceleration()
   {
     if(fn!=null)
-      return fn.get();
+      return fn.apply(this.getEntity());
     return new Transform();
   }
 

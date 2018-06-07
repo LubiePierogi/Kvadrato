@@ -5,15 +5,31 @@ import kvadrato.game.other.BackgroundColor;
 
 public class SquareComponent extends Component
 {
-  public void fix(){}
-  public void doThings(){}
-  public void update(){}
 
-  BackgroundColor color;
+  private BackgroundColor color;
+  private BackgroundColor colorNew;
 
-
-  SquareComponent()
+  public SquareComponent()
   {
     color=BackgroundColor.WHITE;
+    colorNew=null;
+  }
+  public BackgroundColor getColor()
+  {
+    return color;
+  }
+  public void setColor(BackgroundColor c)
+  {
+    colorNew=c;
+  }
+
+
+
+  public void fix(){}
+  public void doThings(){}
+  public void update()
+  {
+    color=colorNew;
+    colorNew=null;
   }
 }
