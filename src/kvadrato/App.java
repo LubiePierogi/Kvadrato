@@ -24,15 +24,23 @@ public class App extends Application
   public void start(Stage mainStage) throws IOException
   {
     model=new Model();
-    win=mainStage;
-    win.setTitle("Kvadrato");
-    FXMLLoader loader=new FXMLLoader(getClass().getResource("view/gui.fxml"));
-    Parent root=loader.load();
-    GUIController controller=loader.<GUIController>getController();
-    controller.setModel(model);
-    controller.setWindow(win);
-    controller.anotherInitialization();
-    win.setScene(new Scene(root));
-    win.show();
+    try
+    {
+      model.init();
+      win=mainStage;
+      win.setTitle("Kvadrato");
+      FXMLLoader loader=new FXMLLoader(getClass().getResource("view/gui.fxml"));
+      Parent root=loader.load();
+      GUIController controller=loader.<GUIController>getController();
+      controller.setModel(model);
+      controller.setWindow(win);
+      controller.anotherInitialization();
+      win.setScene(new Scene(root));
+      win.show();
+    }
+    finally
+    {
+      model.close();
+    }
   }
 }

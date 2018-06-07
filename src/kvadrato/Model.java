@@ -26,6 +26,13 @@ public class Model
   */
   public Model() throws GameException
   {
+    // Tutaj nic się nie dzieje.
+  }
+  /**
+   * Model musi być zainicjalizowany.
+   */
+  public void init() throws GameException
+  {
     world=new World();
     world.init();
   }
@@ -35,6 +42,9 @@ public class Model
    */
   public void close()
   {
+    System.out.println("ZAMYKANIE MODELU!!!");
+    if(world==null)
+      return;
     try
     {
       world.close();
@@ -44,6 +54,14 @@ public class Model
       // Ten wyjątek można całkiem zignorować, bo i tak mamy pewność, że świat
       // został zamknięty.
     }
+    finally
+    {
+      world=null;
+    }
+  }
+  protected void finalize()
+  {
+    //close();
   }
   public void clearTheWorld()
   {
@@ -60,6 +78,9 @@ public class Model
   public void cookLevelStart()
   {
     wa=world.getAccess();
+    System.out.println("isjpidsfpjgioerhjiojeroireooerroijiojigjoirejgoiueruhu"+
+    "iohoiugjoiijrfgijrfighroiejifgtjreifgterjgoijreoigujrhjgiojerokjgjiorejgi"+
+    "kerjiogjdfiogjioffjgiofdjigjidfsjgidfjsigidfjgijeriogjiperjgi");
     try
     {
       Entity gracz=wa.spawn("Square");

@@ -171,18 +171,25 @@ public final class World
     {
       throw new GameException();
     }
+    System.out.println("2134567");
     try
     {
       ender=true;
     }
     finally
     {
+      System.out.println("yyyyyyyyyyyyyyyy");
       worldLock.unlock();
+      System.out.println("xxxxxxxxxxxxxx");
     }
+    System.out.println("vvvvvvvvvvvvvvvvvvvvv");
     condition.signal();
+    System.out.println("YYYYYYYYYYYYYYYYYYYYYYY");
     try
     {
+      System.out.println("qqqqqqqqqqqqq");
       thread.join();
+      System.out.println("QQQQQQQQQQQQQQQQQq");
     }
     catch(InterruptedException e)
     {
@@ -197,7 +204,8 @@ public final class World
       do{}while(false);
       // Do exactly nothing. lol
       // POLSKAAAAAAAAAAAAAA
-    }}
+    }
+  }
   /**
    * To wywołuje GARBAGE COLLECTOR, jak kasuje świat. Jest to taka funkcja
    * do kończenia wątku i tak dalej.
