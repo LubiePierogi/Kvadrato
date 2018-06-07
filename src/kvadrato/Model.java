@@ -1,5 +1,6 @@
 package kvadrato;
 import kvadrato.game.World;
+import kvadrato.game.WorldAccess;
 import kvadrato.game.Vector2d;
 import kvadrato.game.Entity;
 import kvadrato.game.prefabs.Square;
@@ -7,11 +8,14 @@ import kvadrato.game.GameException;
 
 public class Model
 {
-  //View view; // I tak bdzie tylko jeden.
   /**
    * Świat, na którym się gra. Ten obiekt jest pusty, jeśli nie mamy świata.
    */
   World world;
+  /**
+   * Zmienna, przez która model dostaje się do świata.
+   */
+  WorldAccess wa;
   /**
   * Ta zmienna przechowuje, którym czymś na świecie jest gracz.
   */
@@ -20,28 +24,45 @@ public class Model
   /**
   * Domyślny konstruktor.
   */
-  public Model()
+  public Model() throws GameException
   {
     world=new World();
+    world.init();
+  }
+  /**
+   * Ta funkcja musi być wywołana przed zamknięciem programu, bo inaczej wątek
+   * świata będzie blokował to zamknięcie.
+   */
+  public void close()
+  {
+    try
+    {
+      world.close();
+    }
+    catch(GameException exc)
+    {
+      // Ten wyjątek można całkiem zignorować, bo i tak mamy pewność, że świat
+      // został zamknięty.
+    }
   }
   public void clearTheWorld()
   {
-    world.lock();
+    wa=world.getAccess();
     try
     {
-      world.removeAllEntities();
+      wa.removeAllEntities();
     }
     finally
     {
-      world.unlock();
+      wa.drop();
     }
   }
   public void cookLevelStart()
   {
-    world.lock();
+    wa=world.getAccess();
     try
     {
-      Entity gracz=world.spawn("Square");
+      Entity gracz=wa.spawn("Square");
       playerControlPointer=gracz;
       viewPointer=gracz;
       System.out.println("Tu tesz");
@@ -60,33 +81,33 @@ public class Model
     }
     finally
     {
-      world.unlock();
+      wa.drop();
     }
   }
   public void pushWorld() throws GameException
   {
-    world.lock();
+    wa=world.getAccess();
     try
     {
       System.out.println("No i jeszcze tu");
-      world.setSpeed(1.0);
+      wa.setSpeed(1.0);
       System.out.println("A tutaj jusz pewnie nie");
     }
     finally
     {
-      world.unlock();
+      wa.drop();
     }
   }
   public void haltWorld() throws GameException
   {
-    world.lock();
+    wa=world.getAccess();
     try
     {
-      world.setSpeed(0.0);
+      wa.setSpeed(0.0);
     }
     finally
     {
-      world.unlock();
+      wa.drop();
     }
   }
 }
