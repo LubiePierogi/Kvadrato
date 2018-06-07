@@ -9,7 +9,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.fxml.FXMLLoader;
-
+import kvadrato.game.GameException;
 
 //
 public class App extends Application
@@ -18,29 +18,35 @@ public class App extends Application
   static Stage win;
   public static void main(String[] args)
   {
-    launch(args);
-  }
-  @Override
-  public void start(Stage mainStage) throws IOException
-  {
-    model=new Model();
     try
     {
-      model.init();
-      win=mainStage;
-      win.setTitle("Kvadrato");
-      FXMLLoader loader=new FXMLLoader(getClass().getResource("view/gui.fxml"));
-      Parent root=loader.load();
-      GUIController controller=loader.<GUIController>getController();
-      controller.setModel(model);
-      controller.setWindow(win);
-      controller.anotherInitialization();
-      win.setScene(new Scene(root));
-      win.show();
+      model=new Model();
+      launch(args);
+      System.out.println("jiopepoiuegoueyfoiuhyereouhwreoiuheweouhouehuoewrghu"+
+      "iopguioierwyuo0i0ewru8reyuioerwgoiuewgoiuurweoiuuier");
+    }
+    catch(GameException exc)
+    {
+      System.out.println("Nie udało się włączyć gry.");
     }
     finally
     {
       model.close();
     }
+  }
+  @Override
+  public void start(Stage mainStage) throws IOException
+  {
+    model.init();
+    win=mainStage;
+    win.setTitle("Kvadrato");
+    FXMLLoader loader=new FXMLLoader(getClass().getResource("view/gui.fxml"));
+    Parent root=loader.load();
+    GUIController controller=loader.<GUIController>getController();
+    controller.setModel(model);
+    controller.setWindow(win);
+    win.setScene(new Scene(root));
+    controller.anotherInitialization();
+    win.show();
   }
 }

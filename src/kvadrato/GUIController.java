@@ -22,6 +22,9 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import java.lang.reflect.*;
 import kvadrato.game.GameException;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.canvas.Canvas;
+
 /*
 import javafx.embed.swing.SwingNode;
 import javax.swing.SwingUtilities;
@@ -80,13 +83,14 @@ public class GUIController implements Initializable
   public Group quitSquare;
   //public double quitSquareTranslateTarget;
 
+  public Canvas gameCanvas;
+
   AnimationTimer animationTimer;
 
   /**
    * Ta zmienna wskazuje, co jest teraz zaznaczone, czy tam na czym jest myszka.
    */
   public Object theTarget;
-  public Object keyBoardTarget;
 
   public GUIController()
   {
@@ -115,8 +119,16 @@ public class GUIController implements Initializable
         double h=theRoot.getHeight();
         almostRoot.setScaleY(h/600.0);
         almostRoot.setScaleX(h/600.0);
-        almostRoot.setPrefWidth(800.0*w/h);
-        almostRoot.setPrefHeight(600.0);
+        //almostRoot.setPrefWidth(800.0*w/h);
+        //almostRoot.setPrefHeight(600.0);
+
+        gameCanvas.setWidth(800.0);
+        gameCanvas.setHeight(600.0);
+
+
+        Renderer.draw(gameCanvas.getGraphicsContext2D(),model);
+
+
         if(lastAnimationUpdate<=0)
         {
           lastAnimationUpdate=now;
@@ -128,7 +140,6 @@ public class GUIController implements Initializable
         lastAnimationUpdate=now;
       }
     };
-    animationTimer.start();
     /*oglCanvas=new SwingOpenGLCanvas();
     SwingUtilities.invokeLater(new Runnable()
     {
@@ -141,6 +152,7 @@ public class GUIController implements Initializable
 
       }
     });*/
+    //theRoot.requestFocus();
   }
   /**
    * Następna inicjalizacja, ale taka później.
@@ -148,6 +160,9 @@ public class GUIController implements Initializable
   void anotherInitialization()
   {
     window.setOnCloseRequest(e->{e.consume();closeRequest();});
+    theRoot.getScene().setOnKeyPressed(e->keyPressed(e));
+    theRoot.getScene().setOnKeyReleased(e->keyReleased(e));
+    animationTimer.start();
   }
   /**
    * Funkcja zamykająca okno, a więc i program.
@@ -299,7 +314,7 @@ public class GUIController implements Initializable
     {
       double a=target-now;
       double b=Math.signum(a);
-      double neww=now+time*(a*6.0+0.12*b);
+      double neww=now+time*(a*9.0+0.24*b);
       if(b*(neww-target)>0)
         neww=target;
       return neww;
@@ -427,5 +442,34 @@ public class GUIController implements Initializable
   public void quitSquareClicked()
   {
     closeRequest();
+  }
+  public void keyPressed(KeyEvent ev)
+  {
+    System.out.println("Key pressed.");
+    switch(ev.getCode())
+    {
+      case ESCAPE:
+        if(state==State.FIRST_SCREEN)
+        {
+          goToState(State.MENU);
+          break;
+        }
+        if(state==State.MENU)
+        {
+          theTarget=quitSquare;
+        }
+        break;
+      case ENTER:
+        if(state==State.FIRST_SCREEN||
+           state==State.MENU)
+        {
+          if(theTarget==quitSquare)
+            quitSquareClicked();
+        }
+    }
+  }
+  public void keyReleased(KeyEvent ev)
+  {
+    System.out.println("Key released.");
   }
 }

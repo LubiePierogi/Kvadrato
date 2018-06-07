@@ -19,7 +19,7 @@ public final class World
   /**
    * Domyślna ilość odświeżeń świata w sekundzie przy szybkości 1.
    */
-  public final static int DefaultTickrate=120;
+  public final static int DefaultTickrate=12;
   /**
    * Najmniejszy możliwy do ustawienia tickrate.
    */
@@ -63,7 +63,7 @@ public final class World
   /**
    * Zmienna warunkowa taka fajna.
    */
-  private Condition condition;
+  //private Condition condition;
   /**
    * Wątek, który robi wszystko na świecie.
    */
@@ -81,7 +81,7 @@ public final class World
     ender=false;
     worldLock=new ReentrantLock();
 
-    condition=worldLock.newCondition();
+    //condition=worldLock.newCondition();
     thread=null;
   }
   public void init() throws GameException
@@ -111,9 +111,6 @@ public final class World
       // Tworzymy wątek, który zajmuje się tym światem.
       thread=new WorldThread(this);
 
-      // Ruszamy ten wątek.
-
-      thread.start();
     }
     finally
     {
@@ -127,7 +124,7 @@ public final class World
   void unlock()
   {
     worldLock.unlock();
-  }
+  }/*
   void await() throws InterruptedException
   {
     condition.await();
@@ -135,10 +132,15 @@ public final class World
   long awaitNanos(long x) throws InterruptedException
   {
     return condition.awaitNanos(x);
-  }
+  }*/
   boolean decImmediatelyTicks()
   {
-    return immediatelyTicks--!=0;
+    if(immediatelyTicks>0)
+    {
+      --immediatelyTicks;
+      return true;
+    }
+    return false;
   }
   public WorldAccess getAccess()
   {
@@ -167,43 +169,19 @@ public final class World
   public void close() throws GameException
   {
     worldLock.lock();
-    if(thread==null)
-    {
-      throw new GameException();
-    }
-    System.out.println("2134567");
     try
     {
-      ender=true;
+      if(thread==null)
+      {
+        throw new GameException();
+      }
+      System.out.println("2134567");
+      thread.halt();
+      thread.shutdown();
     }
     finally
     {
-      System.out.println("yyyyyyyyyyyyyyyy");
       worldLock.unlock();
-      System.out.println("xxxxxxxxxxxxxx");
-    }
-    System.out.println("vvvvvvvvvvvvvvvvvvvvv");
-    condition.signal();
-    System.out.println("YYYYYYYYYYYYYYYYYYYYYYY");
-    try
-    {
-      System.out.println("qqqqqqqqqqqqq");
-      thread.join();
-      System.out.println("QQQQQQQQQQQQQQQQQq");
-    }
-    catch(InterruptedException e)
-    {
-      System.out.println
-      (
-        "AAAAAAAaaaaaaaAAAAaaAAaaAaaAaaAaaAaaAaaAAaaAaa!!!!!!11!111!1111!11!11!"
-        // "!11!1111!11!!1"
-      );
-    }
-    finally
-    {
-      do{}while(false);
-      // Do exactly nothing. lol
-      // POLSKAAAAAAAAAAAAAA
     }
   }
   /**
@@ -233,7 +211,7 @@ public final class World
       throw new GameException();
     tickrate=tr;
     updateTickNanos();
-    condition.signal();
+    thread.reschedule();
   }
   /**
    * Ustawia mnożnik szybkości świata, ogólnie to jeśli jest zero, to mamy
@@ -247,8 +225,7 @@ public final class World
       throw new GameException();
     speed=s;
     updateTickNanos();
-    condition.signal();
-    // to jeszcze nie wszystko
+    thread.reschedule();
   }
   private Entity createEntity()
   {
@@ -302,6 +279,15 @@ public final class World
     computeCollisions();
     doThingsAll();
     updateAll();
+  }
+  /**
+   */
+  void doImmediatelyTicks(int x) throws GameException
+  {
+    if(x<0)
+      throw new GameException();
+    immediatelyTicks+=x;
+    thread.reschedule();
   }
   /**
    */
@@ -427,4 +413,5 @@ public final class World
     }
     return view;
   }
+  
 }

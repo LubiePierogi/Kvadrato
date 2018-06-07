@@ -5,22 +5,23 @@ import kvadrato.game.Vector2d;
 import kvadrato.game.Entity;
 import kvadrato.game.prefabs.Square;
 import kvadrato.game.GameException;
+import kvadrato.game.ViewOfWorld;
 
 public class Model
 {
   /**
    * Świat, na którym się gra. Ten obiekt jest pusty, jeśli nie mamy świata.
    */
-  World world;
+  private World world;
   /**
    * Zmienna, przez która model dostaje się do świata.
    */
-  WorldAccess wa;
+  private WorldAccess wa;
   /**
   * Ta zmienna przechowuje, którym czymś na świecie jest gracz.
   */
-  Entity playerControlPointer;
-  Entity viewPointer;
+  private Entity playerControlPointer;
+  private Entity viewPointer;
   /**
   * Domyślny konstruktor.
   */
@@ -78,15 +79,11 @@ public class Model
   public void cookLevelStart()
   {
     wa=world.getAccess();
-    System.out.println("isjpidsfpjgioerhjiojeroireooerroijiojigjoirejgoiueruhu"+
-    "iohoiugjoiijrfgijrfighroiejifgtjreifgterjgoijreoigujrhjgiojerokjgjiorejgi"+
-    "kerjiogjdfiogjioffjgiofdjigjidfsjgidfjsigidfjgijeriogjiperjgi");
     try
     {
-      Entity gracz=wa.spawn("Square");
-      playerControlPointer=gracz;
-      viewPointer=gracz;
-      System.out.println("Tu tesz");
+      Entity player=wa.spawn("Square");
+      playerControlPointer=player;
+      viewPointer=player;
     }
     catch(ClassNotFoundException exc)
     {
@@ -110,9 +107,7 @@ public class Model
     wa=world.getAccess();
     try
     {
-      System.out.println("No i jeszcze tu");
       wa.setSpeed(1.0);
-      System.out.println("A tutaj jusz pewnie nie");
     }
     finally
     {
@@ -125,6 +120,18 @@ public class Model
     try
     {
       wa.setSpeed(0.0);
+    }
+    finally
+    {
+      wa.drop();
+    }
+  }
+  public ViewOfWorld getWorldView()
+  {
+    wa=world.getAccess();
+    try
+    {
+      return wa.getView(viewPointer);
     }
     finally
     {

@@ -79,5 +79,8 @@ public class WorldAccess
   {
     return world.getView(where);
   }
-
+  public void doImmediatelyTicks(int x) throws GameException
+  {
+    world.doImmediatelyTicks(x);
+  }
 }
