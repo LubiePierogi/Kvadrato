@@ -73,17 +73,14 @@ public class Entity
   public final void addComponent(String name)
     throws ClassNotFoundException,InstantiationException,IllegalAccessException
   {
-    System.out.print("addComponent "+name);
     Class c=Class.forName("kvadrato.game.components."+name);
     Component co=(Component)c.newInstance();
     co.ent=this;
     components.put(name,co);
-    System.out.print("\n"+(co!=null)+'\n'+(components.get(name)!=null)+'\n');
   }
   public final Component getComponent(String name)
   {
     Component x=components.get(name);
-    System.out.println("[][]:::::: "+name+" "+(x!=null));
     return x;
   }
   public final boolean hasComponent(String name)

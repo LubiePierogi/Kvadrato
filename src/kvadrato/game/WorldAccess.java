@@ -75,9 +75,9 @@ public class WorldAccess
   {
     return world.runs();
   }
-  public ViewOfWorld getView(Entity where)
+  public ViewOfWorld getView(Entity where,double distance)
   {
-    return world.getView(where);
+    return world.getView(where,distance);
   }
   public void doImmediatelyTicks(int x) throws GameException
   {

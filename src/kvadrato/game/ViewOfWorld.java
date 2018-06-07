@@ -12,8 +12,7 @@ public class ViewOfWorld
 {
   BackgroundColor backgroundColor;
   List<AppearanceElement> things;
-  double scale;
-  Transform place;
+  //Eye eye;
 
   public BackgroundColor getBackground()
   {
@@ -23,14 +22,10 @@ public class ViewOfWorld
   {
     return Collections.unmodifiableList(things);
   }
-  public double getScale()
-  {
-    return scale;
-  }
-  public Transform getPlace()
-  {
-    return place;
-  }
+  //public Eye getEye()
+  //{
+  //  return eye;
+  //}
   ViewOfWorld()
   {
     backgroundColor=BackgroundColor.WHITE; // Domyślny kolor to biały.

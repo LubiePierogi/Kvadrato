@@ -7,41 +7,61 @@ import kvadrato.game.ViewOfWorld;
 import kvadrato.game.appearance.AppearanceElement;
 import kvadrato.game.other.BackgroundColor;
 import kvadrato.view.Backgrounds;
+import kvadrato.view.ae.ViewAppearanceElement;
+import java.lang.Math;
+import java.lang.reflect.Constructor;
 
 public final class Renderer
 {
   private Renderer(){}
 
-
-
+  public static void set(GraphicsContext context,AppearanceElement e)
+  {
+    context.setTransform(1.,0.,0.,1.,0.,0.);
+    context.translate(e.x,e.y);
+    context.translate(400.,300.);
+    context.scale(e.x*200.,e.x*200.);
+    context.rotate(e.angle*180./Math.PI);
+    //context.translate(e.x,e.y);
+    //context.scale(200.*e.scale,200.*e.scale);
+    //context.rotate(e.angle*180/Math.PI);
+  }
 
   public static void draw(GraphicsContext context,Model model)
   {
     //System.out.println("qwertyuiop");
     //context.setFill(new Color(1,0,1,1));
     //context.fillRect(2,2,300,300);
+    double width=800;
+    double height=600;
     ViewOfWorld view=model.getWorldView();
     BackgroundColor bgColor=view.getBackground();
+    ViewAppearanceElement vae;
     context.setFill(Backgrounds.bgToColor(bgColor));
-    context.fillRect(0,0,800,600);
+    context.fillRect(0,0,width,height);
     List<AppearanceElement> list=view.getThings();
-    for(AppearanceElement x:list)
+    for(AppearanceElement e:list)
     {
-      String className=x.getClass().getName();
-      System.out.println(className);
+      String className=e.getClass().getName();
       // kvadrato.game.appearance.
       // kvadrato.view.ae.
       // 25
-      className="kvadrato.view.ae."+className.substring(25);
+      className="kvadrato.view.ae.View"+className.substring(25);
+      //System.out.println(className);
       try
       {
         Class c=Class.forName(className);
+        vae=(ViewAppearanceElement)c.newInstance();
+        vae.set(e);
+        Renderer.set(context,e);
+        vae.draw(context);
       }
       catch(ClassNotFoundException exc)
       {}
-      //catch(IllegalAccessException exc)
-      //{}
+      catch(IllegalAccessException exc)
+      {}
+      catch(InstantiationException exc)
+      {}
     }
-
   }
 }

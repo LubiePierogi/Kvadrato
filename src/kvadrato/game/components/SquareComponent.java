@@ -29,7 +29,8 @@ public class SquareComponent extends Component
   public void doThings(){}
   public void update()
   {
-    color=colorNew;
+    if(colorNew!=null)
+      color=colorNew;
     colorNew=null;
   }
 }

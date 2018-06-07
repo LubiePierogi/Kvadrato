@@ -87,7 +87,7 @@ public class Model
       playerControlPointer=player;
       viewPointer=player;
       Entity dwa=wa.spawn("Square");
-      ((Physics)dwa.getComponent("Physics")).addPlace(new Transform(3,4,0));
+      ((Physics)dwa.getComponent("Physics")).addPlace(new Transform(1.5,2,0));
     }
     catch(GameException exc)
     {
@@ -127,7 +127,7 @@ public class Model
     wa=world.getAccess();
     try
     {
-      return wa.getView(viewPointer);
+      return wa.getView(viewPointer,15.0);
     }
     finally
     {

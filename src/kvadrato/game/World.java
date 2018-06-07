@@ -181,7 +181,6 @@ public final class World
       {
         throw new GameException();
       }
-      System.out.println("2134567");
       thread.halt();
       thread.shutdown();
     }
@@ -417,60 +416,56 @@ public final class World
    * do narysowania św``iata.
    * @param where Jednoskta, dla której ma być brany widok.
    */
-  ViewOfWorld getView(Entity where)
+  ViewOfWorld getView(Entity where,double distance)
   {
-    System.out.println("#!@*(#@$($)(#@*))");
     ViewOfWorld view=new ViewOfWorld();
     Eye eye;
-    if(where==null||where.getWorld()!=this)
+    Vector2d seenEntityCoords;
+    Vector2d eyeCoords;
+    Camera camera;
+    Physics physics;
+    Appearance appearance;
+    double trueDistance;
+    Transform seenEntityPlace;
+    Vector2d diff;
+    if(where==null||where.getWorld()!=this||(camera=(Camera)where.getComponent("Camera"))==null)
     {
       // Próba wyciągnięcia widoku z niczego albo z jednostki nie z tego świata.
       eye=new Eye();
     }
     else
     {
-      System.out.println("zcxxczzcxxczzcx");
-      if(where.hasComponent("Camera"))
-      {
-        eye=((Camera)where.getComponent("Camera")).getEye();
-      }
-      else
-        eye=new Eye();
+      eye=camera.getEye();
     }
-
-    System.out.println("zxccxzxcz");
-    view.scale=eye.scale;
-    view.place=new Transform(eye.x,eye.y,eye.angle);
-    Vector2d vector=new Vector2d(eye.x,eye.y);
-    Vector2d vector2;
+    trueDistance=distance/eye.scale;
+    eyeCoords=new Vector2d(eye.x,eye.y);
     for(Entity x:ents)
     {
-      System.out.println("ZXCZXCZXCX");
-      System.out.println(x.getName());
-      Physics ph=(Physics)x.getComponent("Physics");
-      Appearance ap=(Appearance)x.getComponent("Appearance");
-      System.out.print("###"+(ph!=null)+'\n'+"###"+(ap!=null)+'\n');
-      if(ph==null||ap==null)
+      physics=(Physics)x.getComponent("Physics");
+      appearance=(Appearance)x.getComponent("Appearance");
+      if(physics==null||appearance==null)
         continue;
-      System.out.println("~!@W#ER");
-      Transform temp=ph.getPlace();
-      vector2=new Vector2d(temp.x,temp.y);
-      vector2=vector.sub(vector2);
-      System.out.println("nike "+vector2.dist()+" adidas");
-      if(vector2.dist()>15/eye.scale)
+      seenEntityPlace=physics.getPlace();
+      seenEntityCoords=new Vector2d(seenEntityPlace.x,seenEntityPlace.y);
+      diff=seenEntityCoords.sub(eyeCoords);
+      if(diff.dist()>trueDistance)
         continue;
-      List<AppearanceElement>list=ap.getElements();
+      List<AppearanceElement>list=appearance.getElements();
       if(list==null)
         continue;
-      System.out.println("@@@@@@@@@@@@@@@@@@@@@");
       for(AppearanceElement e:list)
       {
+        // Na razie ignorujemy skalę.
         Transform tr=new Transform(e.x,e.y,e.angle);
-        tr=tr.sub(temp);
+        Transform ey=new Transform(eye.x,eye.y,eye.angle);
+        tr=tr.sub(ey);
+        tr=tr.add(seenEntityPlace);
         e.x=tr.x;
         e.y=tr.y;
         e.angle=tr.angle;
+        e.scale=e.scale;
         view.things.add(e);
+        //System.out.print("x: "+e.x+"\ny: "+e.y+"\nkąt: "+e.angle+'\n');
       }
     }
     return view;
