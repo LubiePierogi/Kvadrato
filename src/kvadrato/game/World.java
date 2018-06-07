@@ -19,7 +19,7 @@ public final class World
   /**
    * Domyślna ilość odświeżeń świata w sekundzie przy szybkości 1.
    */
-  public final static int DefaultTickrate=12;
+  public final static int DefaultTickrate=120;
   /**
    * Najmniejszy możliwy do ustawienia tickrate.
    */
@@ -274,7 +274,6 @@ public final class World
    */
   void oneTick()
   {
-    System.out.println("Test fajny");
     fixAll();
     computeCollisions();
     doThingsAll();
@@ -401,9 +400,9 @@ public final class World
   ViewOfWorld getView(Entity where)
   {
     ViewOfWorld view=new ViewOfWorld();
-    if(where.getWorld()!=this)
+    if(where==null||where.getWorld()!=this)
     {
-      // Próba wyciągnięcia widoku od jednostki nie z tego świata.
+      // Próba wyciągnięcia widoku z niczego albo z jednostki nie z tego świata.
       return view;
     }
     Eye eye;
@@ -413,5 +412,5 @@ public final class World
     }
     return view;
   }
-  
+
 }

@@ -4,17 +4,18 @@ import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
 import kvadrato.game.Transform;
+import kvadrato.game.other.BackgroundColor;
 
 import kvadrato.game.appearance.AppearanceElement;
 
 public class ViewOfWorld
 {
-  Color backgroundColor;
+  BackgroundColor backgroundColor;
   List<AppearanceElement> things;
   double scale;
   Transform place;
 
-  public Color getBackground()
+  public BackgroundColor getBackground()
   {
     return backgroundColor;
   }
@@ -32,7 +33,7 @@ public class ViewOfWorld
   }
   ViewOfWorld()
   {
-    backgroundColor=new Color(255,255,255); // Domyślny kolor to biały.
+    backgroundColor=BackgroundColor.WHITE; // Domyślny kolor to biały.
     things=new ArrayList();
   }
   // Settery nie są tu potrzebne, bo i tak ustawia tamte pola funkcja z klasy
