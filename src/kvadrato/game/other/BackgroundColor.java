@@ -6,7 +6,7 @@ public enum BackgroundColor
   GREEN,
   YELLOW,
   CYAN,
-  MAGENTA,
+  PURPLE,
   RED,
   BROWN,
   ORANGE,

@@ -479,6 +479,30 @@ public class GUIController implements Initializable
       case LEFT:
         model.getControlThing().set("left","q");
         break;
+      case Q:
+        model.getControlThing().set("color","q");
+        break;
+      case W:
+        model.getControlThing().set("color","w");
+        break;
+      case E:
+        model.getControlThing().set("color","e");
+        break;
+      case R:
+        model.getControlThing().set("color","r");
+        break;
+      case A:
+        model.getControlThing().set("color","a");
+        break;
+      case S:
+        model.getControlThing().set("color","s");
+        break;
+      case D:
+        model.getControlThing().set("color","d");
+        break;
+      case F:
+        model.getControlThing().set("color","f");
+        break;
     }
   }
   public void keyReleased(KeyEvent ev)

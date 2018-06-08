@@ -24,7 +24,7 @@ public final class Backgrounds
         return new Color(0.9,0.9,0.03,1.0);
       case CYAN:
         return new Color(0.3,0.88,0.92,1.0);
-      case MAGENTA:
+      case PURPLE:
         return new Color(0.80,0.03,0.83,1.0);
       case RED:
         return new Color(0.89,0.0,0.0,1.0);

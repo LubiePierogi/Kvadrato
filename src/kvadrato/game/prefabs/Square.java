@@ -55,6 +55,37 @@ public class Square extends Prefab
         a=a.add(new Transform(0,0,-.8));
       if(!right&&left)
         a=a.add(new Transform(0,0,.8));
+
+
+      String cc=ct.get("color");
+      SquareComponent sc=(SquareComponent)ent.getComponent("SquareComponent");
+      switch(cc)
+      {
+        case "q":
+          sc.setColor(BackgroundColor.BLUE);
+          break;
+        case "w":
+          sc.setColor(BackgroundColor.GREEN);
+          break;
+        case "e":
+          sc.setColor(BackgroundColor.YELLOW);
+          break;
+        case "r":
+          sc.setColor(BackgroundColor.CYAN);
+          break;
+        case "a":
+          sc.setColor(BackgroundColor.PURPLE);
+          break;
+        case "s":
+          sc.setColor(BackgroundColor.RED);
+          break;
+        case "d":
+          sc.setColor(BackgroundColor.BROWN);
+          break;
+        case "f":
+          sc.setColor(BackgroundColor.ORANGE);
+          break;
+      }
     }
     return a;
   };

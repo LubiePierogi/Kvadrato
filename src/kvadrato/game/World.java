@@ -16,6 +16,7 @@ import kvadrato.game.appearance.AppearanceElement;
 import kvadrato.game.components.Appearance;
 import kvadrato.game.components.Physics;
 import kvadrato.game.GameException;
+import kvadrato.game.components.SquareComponent;
 /**
  * Chyba najbardziej ważna klasa w programie.
  * Jest w niej cały stan świata gry.
@@ -442,7 +443,7 @@ public final class World
     {
       eye=camera.getEye();
     }
-    eye=new Eye();
+    //eye=new Eye();
     trueDistance=distance/eye.scale;
     eyeCoords=new Vector2d(eye.x,eye.y);
     for(Entity x:ents)
@@ -462,9 +463,9 @@ public final class World
       for(AppearanceElement e:list)
       {
         // Na razie ignorujemy skalę.
-        Transform tr=new Transform(e.x,e.y,e.angle);
-        Transform ey=new Transform(eye.x,eye.y,eye.angle);
-        //tr=tr.sub(ey);
+        Transform tr=new Transform(e.x,e.y,e.angle);//e.angle);
+        Transform ey=new Transform(eye.x,eye.y,0.0);
+        tr=tr.sub(ey);
         tr=tr.add(seenEntityPlace);
         e.x=tr.x;
         e.y=tr.y;
@@ -480,6 +481,14 @@ public final class World
 
         view.things.add(e);
         //System.out.print("x: "+e.x+"\ny: "+e.y+"\nkąt: "+e.angle+"\nskala: "+e.scale+'\n');
+      }
+    }
+    if(where!=null)
+    {
+      SquareComponent sc=(SquareComponent)where.getComponent("SquareComponent");
+      if(sc!=null)
+      {
+        view.backgroundColor=sc.getColor();
       }
     }
     return view;
