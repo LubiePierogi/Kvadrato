@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.paint.RadialGradient?>
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Rectangle?>
@@ -118,6 +119,60 @@
                   strokeWidth="24.0"
                 />
               </Group>
+          </children>
+        </StackPane>
+        <StackPane
+          fx:id="pauseMenu"
+          visible="false"
+        >
+          <children>
+                <Group
+                  fx:id="pauseRestart"
+                  translateX="-200.0"
+                  onMouseEntered="#pauseRestartEntered"
+                  onMouseExited="#pauseRestartExited"
+                  onMouseClicked="#pauseRestartClicked"
+                >
+                  <Rectangle
+                    fill="$squareGradient"
+                    width="160.0"
+                    height="160.0"
+                    stroke="#00000050"
+                    strokeType="INSIDE"
+                    strokeWidth="24.0"
+                  />
+                </Group>
+                <Group
+                  fx:id="pauseResume"
+                  onMouseEntered="#pauseResumeEntered"
+                  onMouseExited="#pauseResumeExited"
+                  onMouseClicked="#pauseResumeClicked"
+                >
+                  <Rectangle
+                    fill="$squareGradient"
+                    width="160.0"
+                    height="160.0"
+                    stroke="#00000050"
+                    strokeType="INSIDE"
+                    strokeWidth="24.0"
+                  />
+                </Group>
+                <Group
+                  fx:id="pauseQuit"
+                  translateX="200.0"
+                  onMouseEntered="#pauseQuitEntered"
+                  onMouseExited="#pauseQuitExited"
+                  onMouseClicked="#pauseQuitClicked"
+                >
+                  <Rectangle
+                    fill="$squareGradient"
+                    width="160.0"
+                    height="160.0"
+                    stroke="#00000050"
+                    strokeType="INSIDE"
+                    strokeWidth="24.0"
+                  />
+                </Group>
           </children>
         </StackPane>
       </children>

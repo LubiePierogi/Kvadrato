@@ -51,6 +51,7 @@ public class GUIController implements Initializable
     THE_GAME_PAUSE,
     SETTINGS,
     HELP,
+    RESUME_GAME,
   }
   State state;
   private Model model;
@@ -84,6 +85,20 @@ public class GUIController implements Initializable
   //public double quitSquareTranslateTarget;
 
   public Canvas gameCanvas;
+
+
+  public StackPane pauseMenu;
+  public Group pauseRestart;
+  public Group pauseResume;
+  public Group pauseQuit;
+
+
+
+
+
+
+
+
 
   AnimationTimer animationTimer;
 
@@ -208,6 +223,15 @@ public class GUIController implements Initializable
         break;
       case THE_GAME:
         break;
+      case THE_GAME_PAUSE:
+        mainMenu.setVisible(false);
+        pauseMenu.setVisible(true);
+        pauseGame();
+        break;
+      case RESUME_GAME:
+        pauseMenu.setVisible(false);
+        resumeGame();
+        break;
     }
     stateClock=0.0;
   }
@@ -226,18 +250,6 @@ public class GUIController implements Initializable
           x=bigSquare.getScaleX();
           makeInterpolation(bigSquare,y,time,"scaleX","scaleY");
           makeInterpolation(bigSquare,0.0,time,"translateY");
-          /*
-          // Duży kwadrat - wielkość
-          y=calculateInterpolation
-            (x,y,time);
-          bigSquare.setScaleX(y);
-          bigSquare.setScaleY(y);
-
-          // Duży kwadrat - miejsce
-          y=0.0;
-          x=bigSquare.getTranslateY();
-          bigSquare.setTranslateY(calculateInterpolation(x,y,time));
-          */
         }
         break;
       case MENU:
@@ -285,6 +297,26 @@ public class GUIController implements Initializable
         }
         break;
       case THE_GAME:
+      {
+
+      }
+        break;
+      case THE_GAME_PAUSE:
+      {
+        x=1.;
+        y=1.2;
+        makeInterpolation(pauseRestart,theTarget==pauseRestart?y:x,time,
+          "scaleX","scaleY");
+        makeInterpolation(pauseResume,theTarget==pauseResume?y:x,time,
+          "scaleX","scaleY");
+        makeInterpolation(pauseQuit,theTarget==pauseQuit?y:x,time,
+          "scaleX","scaleY");
+      }
+        break;
+      case RESUME_GAME:
+      {
+        goToState(State.THE_GAME);
+      }
         break;
     }
   }
@@ -303,6 +335,24 @@ public class GUIController implements Initializable
     {
       //System.out.println("ojhjuijkkjioi");
     }
+  }
+  void pauseGame()
+  {
+    try
+    {
+      model.haltWorld();
+    }
+    catch(GameException exc)
+    {}
+  }
+  void resumeGame()
+  {
+    try
+    {
+      model.pushWorld();
+    }
+    catch(GameException exc)
+    {}
   }
   /**
    * To jest funkcja używana przy przesuwaniu elementów w czasie.
@@ -443,6 +493,51 @@ public class GUIController implements Initializable
   {
     closeRequest();
   }
+
+
+
+  public void pauseRestartEntered()
+  {
+    theTarget=pauseRestart;
+  }
+  public void pauseRestartExited()
+  {
+  }
+  public void pauseRestartClicked()
+  {
+  }
+
+
+
+
+
+  public void pauseResumeEntered()
+  {
+    theTarget=pauseResume;
+  }
+  public void pauseResumeExited()
+  {
+  }
+  public void pauseResumeClicked()
+  {
+  }
+
+
+  public void pauseQuitEntered()
+  {
+    theTarget=pauseQuit;
+  }
+  public void pauseQuitExited()
+  {
+  }
+  public void pauseQuitClicked()
+  {
+  }
+
+
+
+
+
   public void keyPressed(KeyEvent ev)
   {
     ////System.out.println("Key pressed.");
@@ -452,11 +547,18 @@ public class GUIController implements Initializable
         if(state==State.FIRST_SCREEN)
         {
           goToState(State.MENU);
-          break;
         }
-        if(state==State.MENU)
+        else if(state==State.MENU)
         {
           theTarget=quitSquare;
+        }
+        else if(state==State.THE_GAME||state==State.STARTING_THE_GAME)
+        {
+          goToState(State.THE_GAME_PAUSE);
+        }
+        else if(state==State.THE_GAME_PAUSE)
+        {
+          goToState(State.RESUME_GAME);
         }
         break;
       case ENTER:
