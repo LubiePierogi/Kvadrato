@@ -52,9 +52,9 @@ public class Square extends Prefab
       if(!up&&down)
         a=a.add(new Transform(-.25,0,0));
       if(right&&!left)
-        a=a.add(new Transform(0,0,-.8));
+        a=a.add(new Transform(0,0,-1.8));
       if(!right&&left)
-        a=a.add(new Transform(0,0,.8));
+        a=a.add(new Transform(0,0,1.8));
 
 
       String cc=ct.get("color");
@@ -107,15 +107,10 @@ public class Square extends Prefab
     ent.addComponent("Locomotor");
     ent.addComponent("Control");
 
-
     // Appearance
     {
       Appearance q=(Appearance)ent.getComponent("Appearance");
       q.setFn(appearanceFn);
-//      SquareSquare sqsq=new SquareSquare();
-//      sqsq.colorOfSquare=BackgroundColor.WHITE;
-//      q.addElement(new SquareSquare());
-
     }
 
     // Physics

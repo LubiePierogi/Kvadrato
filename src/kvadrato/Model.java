@@ -10,6 +10,7 @@ import kvadrato.game.Transform;
 import kvadrato.game.components.Physics;
 import kvadrato.game.components.Control;
 import kvadrato.game.ControlThing;
+import kvadrato.game.components.ObstacleComponent;
 
 public class Model
 {
@@ -52,7 +53,7 @@ public class Model
    */
   public void close()
   {
-    //System.out.println("ZAMYKANIE MODELU!!!");
+    ////System.out.println("ZAMYKANIE MODELU!!!");
     ct=null;
     if(world==null)
       return;
@@ -97,11 +98,25 @@ public class Model
       ((Control)player.getComponent("Control")).setThing(ct);
       //Entity dwa=wa.spawn("Square");
       ((Physics)player.getComponent("Physics")).addPlace(new Transform(0.15,0.2,3.14159*0.25));
-      Entity dwa=wa.spawn("Square");
+      Entity two=wa.spawn("Square");
+      ((Physics)two.getComponent("Physics")).addPlace(new Transform(-1.,-1.,0.));
+
+
+      Entity enemy=wa.spawn("Obstacle");
+      ((Physics)enemy.getComponent("Physics")).addPlace(new Transform(.5,-.5,0));
+      ((ObstacleComponent)enemy.getComponent("ObstacleComponent")).setSize(0.2,0.1);
+
+      enemy=wa.spawn("Obstacle");
+      ((Physics)enemy.getComponent("Physics")).addPlace(new Transform(2.5,-3.5,0));
+
+
+
+      enemy=wa.spawn("Obstacle");
+      ((Physics)enemy.getComponent("Physics")).addPlace(new Transform(-.8,0,0));
     }
     catch(GameException exc)
     {
-      System.out.println("trololololololololo");
+      //System.out.println("trololololololololo");
     }
     finally
     {

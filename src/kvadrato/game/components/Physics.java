@@ -103,9 +103,10 @@ public class Physics extends Component
   }
   public void update()
   {
+    place=placeNew.add(velocity.mul(getDelta()));
+    // do zmiany na addVec
     if(type!=Type.STATIC)
     {
-      place=placeNew.add(velocity.mul(getDelta()));
       velocity=velocityNew;
     }
     //System.out.print("Miejsce:\n## "+place.x+"\n## "+place.y+"\nPrędkość:\n## "+velocity.x+"\n### "+velocity.y+'\n');

@@ -294,13 +294,13 @@ public final class World
    */
   void oneTick()
   {
-    System.out.println("p[ikoiopopikoiopiojoijofd]");
+    //System.out.println("p[ikoiopopikoiopiojoijofd]");
     fixAll();
     computeCollisions();
     doThingsAll();
-    System.out.println("ZXCCZXXCZCXZXCZXCZ");
+    //System.out.println("ZXCCZXXCZCXZXCZXCZ");
     updateAll();
-    System.out.println("pierogi");
+    //System.out.println("pierogi");
   }
   /**
    */
@@ -316,10 +316,10 @@ public final class World
   private void doThingsAll()
   {
     Entity ent;
-    System.out.println("DOTHINGSALL");
+    //System.out.println("DOTHINGSALL");
     for(int i=0;i<ents.size();++i)
     {
-      System.out.println("-- "+i+" --");
+      //System.out.println("-- "+i+" --");
       ent=ents.get(i);
       ent.doThings();
     }
@@ -462,6 +462,11 @@ public final class World
         continue;
       for(AppearanceElement e:list)
       {
+        if(x.getName().equals("Obstacle"))
+        {
+          //System.out.println("%%%%%%%%%%%%%%%%%\n"+seenEntityPlace.x+'\n'+seenEntityPlace.y);
+
+        }
         // Na razie ignorujemy skalę.
         Transform tr=new Transform(e.x,e.y,e.angle);//e.angle);
         Transform ey=new Transform(eye.x,eye.y,0.0);
@@ -480,7 +485,7 @@ public final class World
 ///////
 
         view.things.add(e);
-        //System.out.print("x: "+e.x+"\ny: "+e.y+"\nkąt: "+e.angle+"\nskala: "+e.scale+'\n');
+        ////System.out.print("x: "+e.x+"\ny: "+e.y+"\nkąt: "+e.angle+"\nskala: "+e.scale+'\n');
       }
     }
     if(where!=null)

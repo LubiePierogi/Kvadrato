@@ -19,23 +19,21 @@ public class Locomotor extends Component
 
   public Transform getAcceleration()
   {
-    System.out.println("getAcceleration 1");
+    ////System.out.println("getAcceleration 1");
     Transform q;
-    System.out.println("getAcceleration 2");
+    ////System.out.println("getAcceleration 2");
     if(fn!=null)
-      q=//return
-       fn.apply(this.getEntity());
-    else q=//return
-     new
-    Transform();
-    System.out.print("[][][] "+q.x+"\n[][][] "+q.y+'\n');
+      q=fn.apply(this.getEntity());
+    else q=new Transform();
+    ////System.out.print("[][][] "+q.x+"\n[][][] "+q.y+'\n');
+    //q=((Physics)e.getComponent("Physics")).getPlace
     return q;
   }
 
   public void fix(){}
   public void doThings()
   {
-    System.out.println("ewropjpifjpojopwej");
+    //System.out.println("ewropjpifjpojopwej");
     Entity e=getEntity();
     Physics q=(Physics)e.getComponent("Physics");
     if(q==null)

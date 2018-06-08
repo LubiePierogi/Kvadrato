@@ -53,7 +53,7 @@ public class Entity
    */
   public final void doThings()
   {
-    System.out.println("vvvvvvvvvvvvvvvvvvvvv");
+    //System.out.println("vvvvvvvvvvvvvvvvvvvvv");
     components.forEach((k,v)->
     {
       v.doThings();
@@ -66,10 +66,17 @@ public class Entity
   // i ustawienie nowego stanu na null.
   public final void update()
   {
-    components.forEach((k,v)->
+    try
     {
-      v.update();
-    });
+      components.forEach((k,v)->
+      {
+        v.update();
+      });
+    }
+    catch(Throwable exc)
+    {
+      exc.printStackTrace();
+    }
   }
   public final void addComponent(String name)
     throws ClassNotFoundException,InstantiationException,IllegalAccessException

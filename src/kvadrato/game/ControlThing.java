@@ -13,7 +13,7 @@ public class ControlThing
   }
   public synchronized String get(String what)
   {
-    System.out.println("Wywołano get w ControlThing dla "+what+"!");
+    //System.out.println("Wywołano get w ControlThing dla "+what+"!");
     String x=q.get(what);
     if(x==null)
       return "";

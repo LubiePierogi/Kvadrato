@@ -22,12 +22,12 @@ public class App extends Application
     {
       model=new Model();
       launch(args);
-      System.out.println("jiopepoiuegoueyfoiuhyereouhwreoiuheweouhouehuoewrghu"+
-      "iopguioierwyuo0i0ewru8reyuioerwgoiuewgoiuurweoiuuier");
+      //System.out.println("jiopepoiuegoueyfoiuhyereouhwreoiuheweouhouehuoewrghu"+
+      //"iopguioierwyuo0i0ewru8reyuioerwgoiuewgoiuurweoiuuier");
     }
     catch(GameException exc)
     {
-      System.out.println("Nie udało się włączyć gry.");
+      //System.out.println("Nie udało się włączyć gry.");
     }
     finally
     {

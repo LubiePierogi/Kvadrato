@@ -21,6 +21,8 @@ public class ViewSquareSquare extends ViewAppearanceElement
   }
   public void draw(GraphicsContext context)
   {
+    if(bg==null)
+      bg=BackgroundColor.WHITE;
     switch(bg)
     {
       case WHITE:

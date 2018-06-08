@@ -22,15 +22,12 @@ public final class Renderer
     context.scale(e.scale*200.,-e.scale*200.);
     context.rotate(e.angle*180./Math.PI);
 
-    // To jest i tak do poprawienia.
+    // To jest i tak do poprawienia chyba.
 
   }
 
   public static void draw(GraphicsContext context,Model model)
   {
-    //System.out.println("qwertyuiop");
-    //context.setFill(new Color(1,0,1,1));
-    //context.fillRect(2,2,300,300);
     double width=800;
     double height=600;
     ViewOfWorld view=model.getWorldView();
@@ -54,6 +51,14 @@ public final class Renderer
         vae=(ViewAppearanceElement)c.newInstance();
         vae.set(e);
         Renderer.set(context,e);
+        if(className.equals("kvadrato.view.ae.ViewObstacleRectangle"))
+        {
+          //System.out.println("1234099043920932049032904392049320490329403");
+          //System.out.println(e.x);
+          //System.out.println(e.y);
+          //System.out.println(e.angle);
+          //System.out.println(e.scale);
+        }
         vae.draw(context);
       }
       catch(ClassNotFoundException exc)

@@ -297,11 +297,11 @@ public class GUIController implements Initializable
     {
       model.cookLevelStart();
       model.pushWorld();
-      System.out.println("Tutaj jest");
+      //System.out.println("Tutaj jest");
     }
     catch(GameException exc)
     {
-      System.out.println("ojhjuijkkjioi");
+      //System.out.println("ojhjuijkkjioi");
     }
   }
   /**
@@ -392,7 +392,7 @@ public class GUIController implements Initializable
   }
   public void bigSquareClicked()
   {
-    System.out.println("zxc");
+    //System.out.println("zxc");
     if(state==State.FIRST_SCREEN)
     {
       goToState(State.MENU);
@@ -413,7 +413,7 @@ public class GUIController implements Initializable
   }
   public void settingsSquareClicked()
   {
-    System.out.println("To na razie nic nie robi!");
+    //System.out.println("To na razie nic nie robi!");
   }
 
   //helpSquare
@@ -427,7 +427,7 @@ public class GUIController implements Initializable
   }
   public void helpSquareClicked()
   {
-    System.out.println("To na razie nic nie robi!");
+    //System.out.println("To na razie nic nie robi!");
   }
 
   //quitSquare
@@ -445,7 +445,7 @@ public class GUIController implements Initializable
   }
   public void keyPressed(KeyEvent ev)
   {
-    //System.out.println("Key pressed.");
+    ////System.out.println("Key pressed.");
     switch(ev.getCode())
     {
       case ESCAPE:
@@ -507,7 +507,7 @@ public class GUIController implements Initializable
   }
   public void keyReleased(KeyEvent ev)
   {
-    //System.out.println("Key released.");
+    ////System.out.println("Key released.");
     switch(ev.getCode())
     {
       case UP:
