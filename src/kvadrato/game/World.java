@@ -293,10 +293,13 @@ public final class World
    */
   void oneTick()
   {
+    System.out.println("p[ikoiopopikoiopiojoijofd]");
     fixAll();
     computeCollisions();
     doThingsAll();
+    System.out.println("ZXCCZXXCZCXZXCZXCZ");
     updateAll();
+    System.out.println("pierogi");
   }
   /**
    */
@@ -312,8 +315,10 @@ public final class World
   private void doThingsAll()
   {
     Entity ent;
+    System.out.println("DOTHINGSALL");
     for(int i=0;i<ents.size();++i)
     {
+      System.out.println("-- "+i+" --");
       ent=ents.get(i);
       ent.doThings();
     }
@@ -437,6 +442,7 @@ public final class World
     {
       eye=camera.getEye();
     }
+    eye=new Eye();
     trueDistance=distance/eye.scale;
     eyeCoords=new Vector2d(eye.x,eye.y);
     for(Entity x:ents)
@@ -458,14 +464,22 @@ public final class World
         // Na razie ignorujemy skalę.
         Transform tr=new Transform(e.x,e.y,e.angle);
         Transform ey=new Transform(eye.x,eye.y,eye.angle);
-        tr=tr.sub(ey);
+        //tr=tr.sub(ey);
         tr=tr.add(seenEntityPlace);
         e.x=tr.x;
         e.y=tr.y;
         e.angle=tr.angle;
         e.scale=e.scale;
+///////
+
+//e.x=seenEntityPlace.x;
+//e.y=seenEntityPlace.y;
+//e.angle=seenEntityPlace.angle;
+//e.scale=1.0;
+///////
+
         view.things.add(e);
-        //System.out.print("x: "+e.x+"\ny: "+e.y+"\nkąt: "+e.angle+'\n');
+        //System.out.print("x: "+e.x+"\ny: "+e.y+"\nkąt: "+e.angle+"\nskala: "+e.scale+'\n');
       }
     }
     return view;

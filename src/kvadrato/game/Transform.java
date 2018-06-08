@@ -33,7 +33,7 @@ public class Transform
     return new Transform
     (
       this.x+other.x*Math.cos(angle)-other.y*Math.sin(angle),
-      this.y+other.y*Math.sin(angle)+other.x*Math.cos(angle),
+      this.y+other.y*Math.cos(angle)+other.x*Math.sin(angle),
       this.angle+other.angle
     );
   }
@@ -51,7 +51,7 @@ public class Transform
     return new Transform
     (
       this.x-other.x*Math.cos(angle)+other.y*Math.sin(angle),
-      this.y-other.y*Math.sin(angle)-other.x*Math.cos(angle),
+      this.y-other.y*Math.cos(angle)-other.x*Math.sin(angle),
       this.angle-other.angle
     );
   }

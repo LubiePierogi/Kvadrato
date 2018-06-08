@@ -53,6 +53,7 @@ public class Entity
    */
   public final void doThings()
   {
+    System.out.println("vvvvvvvvvvvvvvvvvvvvv");
     components.forEach((k,v)->
     {
       v.doThings();

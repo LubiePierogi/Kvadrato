@@ -8,7 +8,7 @@ import kvadrato.game.Entity;
 
 public class Locomotor extends Component
 {
-  Function<Entity,Transform> fn;
+  private Function<Entity,Transform> fn;
 
 
   public void setFn(Function<Entity,Transform> func)
@@ -19,19 +19,28 @@ public class Locomotor extends Component
 
   public Transform getAcceleration()
   {
+    System.out.println("getAcceleration 1");
+    Transform q;
+    System.out.println("getAcceleration 2");
     if(fn!=null)
-      return fn.apply(this.getEntity());
-    return new Transform();
+      q=//return
+       fn.apply(this.getEntity());
+    else q=//return
+     new
+    Transform();
+    System.out.print("[][][] "+q.x+"\n[][][] "+q.y+'\n');
+    return q;
   }
 
   public void fix(){}
   public void doThings()
   {
+    System.out.println("ewropjpifjpojopwej");
     Entity e=getEntity();
     Physics q=(Physics)e.getComponent("Physics");
     if(q==null)
       return;
-    q.addVelocity(getAcceleration());
+    q.accelerate(getAcceleration());
   }
   public void update(){}
 }

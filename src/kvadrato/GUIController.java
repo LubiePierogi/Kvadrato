@@ -445,7 +445,7 @@ public class GUIController implements Initializable
   }
   public void keyPressed(KeyEvent ev)
   {
-    System.out.println("Key pressed.");
+    //System.out.println("Key pressed.");
     switch(ev.getCode())
     {
       case ESCAPE:
@@ -466,10 +466,34 @@ public class GUIController implements Initializable
           if(theTarget==quitSquare)
             quitSquareClicked();
         }
+        break;
+      case UP:
+        model.getControlThing().set("up","q");
+        break;
+      case RIGHT:
+        model.getControlThing().set("right","q");
+        break;
+      case DOWN:
+        model.getControlThing().set("down","q");
+        break;
+      case LEFT:
+        model.getControlThing().set("left","q");
+        break;
     }
   }
   public void keyReleased(KeyEvent ev)
   {
-    System.out.println("Key released.");
+    //System.out.println("Key released.");
+    switch(ev.getCode())
+    {
+      case UP:
+        model.getControlThing().set("up",null);
+      case RIGHT:
+        model.getControlThing().set("right",null);
+      case DOWN:
+        model.getControlThing().set("down",null);
+      case LEFT:
+        model.getControlThing().set("left",null);
+    }
   }
 }

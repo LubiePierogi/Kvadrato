@@ -14,6 +14,10 @@ public abstract class Component
   {
     return ent;
   }
+  protected final double getDelta()
+  {
+    return ent.world.getDeltaTime()/1000000000.;
+  }
 
 
   //getDeltaTime();

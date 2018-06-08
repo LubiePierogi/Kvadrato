@@ -18,9 +18,8 @@ public final class Renderer
   public static void set(GraphicsContext context,AppearanceElement e)
   {
     context.setTransform(1.,0.,0.,1.,0.,0.);
-    context.translate(e.x,e.y);
-    context.translate(400.,300.);
-    context.scale(e.x*200.,e.x*200.);
+    context.translate(400.+200.*e.x,300.+200.*e.y);
+    context.scale(e.scale*200.,e.scale*200.);
     context.rotate(e.angle*180./Math.PI);
     //context.translate(e.x,e.y);
     //context.scale(200.*e.scale,200.*e.scale);
@@ -37,6 +36,7 @@ public final class Renderer
     ViewOfWorld view=model.getWorldView();
     BackgroundColor bgColor=view.getBackground();
     ViewAppearanceElement vae;
+    context.setTransform(1.,0.,0.,1.,0.,0.);
     context.setFill(Backgrounds.bgToColor(bgColor));
     context.fillRect(0,0,width,height);
     List<AppearanceElement> list=view.getThings();

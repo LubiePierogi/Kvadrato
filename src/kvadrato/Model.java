@@ -8,6 +8,8 @@ import kvadrato.game.GameException;
 import kvadrato.game.ViewOfWorld;
 import kvadrato.game.Transform;
 import kvadrato.game.components.Physics;
+import kvadrato.game.components.Control;
+import kvadrato.game.ControlThing;
 
 public class Model
 {
@@ -25,6 +27,10 @@ public class Model
   private Entity playerControlPointer;
   private Entity viewPointer;
   /**
+   * Obiekt ze sterowaniem.
+   */
+  private ControlThing ct;
+  /**
   * Domyślny konstruktor.
   */
   public Model() throws GameException
@@ -37,6 +43,7 @@ public class Model
   public void init() throws GameException
   {
     world=new World();
+    ct=new ControlThing();
     world.init();
   }
   /**
@@ -45,7 +52,8 @@ public class Model
    */
   public void close()
   {
-    System.out.println("ZAMYKANIE MODELU!!!");
+    //System.out.println("ZAMYKANIE MODELU!!!");
+    ct=null;
     if(world==null)
       return;
     try
@@ -86,8 +94,10 @@ public class Model
       Entity player=wa.spawn("Square");
       playerControlPointer=player;
       viewPointer=player;
+      ((Control)player.getComponent("Control")).setThing(ct);
+      //Entity dwa=wa.spawn("Square");
+      ((Physics)player.getComponent("Physics")).addPlace(new Transform(0.15,0.2,3.14159*0.25));
       Entity dwa=wa.spawn("Square");
-      ((Physics)dwa.getComponent("Physics")).addPlace(new Transform(1.5,2,0));
     }
     catch(GameException exc)
     {
@@ -133,5 +143,9 @@ public class Model
     {
       wa.drop();
     }
+  }
+  public ControlThing getControlThing()
+  {
+    return ct;
   }
 }
