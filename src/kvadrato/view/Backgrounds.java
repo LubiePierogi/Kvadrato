@@ -37,4 +37,35 @@ public final class Backgrounds
         return null;
     }
   }
+  public static Color squareColor(BackgroundColor bg)
+  {
+    if(bg==null)
+    {
+      return new Color(.1,.2,.3,1.);
+    }
+    switch(bg)
+    {
+      case WHITE:
+        return new Color(.3,.3,.3,1.);
+      case BLUE:
+        return new Color(.4,.2,0.,1.);
+      case GREEN:
+        return new Color(.36,0.,.36,1.);
+      case YELLOW:
+        return new Color(.33,.18,0.,1.);
+      case CYAN:
+        return new Color(.0,.25,.0,1.);
+      case PURPLE:
+        return new Color(0.92,0.88,0.92,1.);
+      case RED:
+        return new Color(0.1,0.1,0.1,1.);
+      case BROWN:
+        return new Color(0.5,0.5,0.5,1.);
+      case ORANGE:
+        return new Color(0.93,0.93,0.04,1.);
+      default:
+        assert(false);
+        return null;
+    }
+  }
 }

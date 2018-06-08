@@ -6,6 +6,7 @@ import java.lang.Math;
 import kvadrato.game.appearance.SquareSquare;
 import kvadrato.game.appearance.AppearanceElement;
 import kvadrato.game.other.BackgroundColor;
+import kvadrato.view.Backgrounds;
 
 public class ViewSquareSquare extends ViewAppearanceElement
 {
@@ -21,28 +22,7 @@ public class ViewSquareSquare extends ViewAppearanceElement
   }
   public void draw(GraphicsContext context)
   {
-    if(bg==null)
-      bg=BackgroundColor.WHITE;
-    switch(bg)
-    {
-      case WHITE:
-        context.setFill(new Color(.3,.3,.3,1.));
-        break;
-      case BLUE:
-        context.setFill(new Color(.4,.2,0.,1.));
-        break;
-      case GREEN:
-        context.setFill(new Color(.36,0.,.36,1.));
-        break;
-      case YELLOW:
-        context.setFill(new Color(.33,.18,0.,1.));
-        break;
-      case CYAN:
-        context.setFill(new Color(.0,.25,.0,1.));
-        break;
-      default:
-        context.setFill(new Color(0.1,0.2,0.3,1.));
-    }
+    context.setFill(Backgrounds.squareColor(bg));
     context.fillRect(-.125,-.125,.25,.25);
   }
 }
