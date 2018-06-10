@@ -5,9 +5,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 
-import kvadrato.utils.Vec2d;
-import kvadrato.utils.Vec2dr;
-import kvadrato.utils.Vec2drs;
+import kvadrato.utils.GameException;
+import kvadrato.utils.vec2.Vec2d;
+import kvadrato.utils.vec2.Vec2dr;
+import kvadrato.utils.vec2.Vec2drs;
 import kvadrato.game.other.BgColor;
 import kvadrato.game.components.Physics;
 import kvadrato.game.components.Camera;
@@ -36,38 +37,29 @@ public class ViewOfWorld
    * @param ent Jednoskta, dla której ma być brany widok.
    * @param distance Największa odległość, z jakiej są brane rzeczy.
    */
-  public ViewOfWorld(World world,Entity ent,double distance)
+  ViewOfWorld(World world,Entity ent,double distance)
+    throws GameException
   {
     Objects.requireNonNull(world);
-    world.lock();
-    try
+    Vec2drs eye;
+    double trueDistance;
+    if(ent!=null)
     {
-      Vec2drs eye;
-      double trueDistance;
-      if(ent!=null)
-      {
-        if(ent.getWorld()!=world)
-          throw new GameException();
-        eye=getEntEye(ent);
-        bgColor=getEntBgColor(ent);
-      }
-      else
-        eye=new Vec2rs();
-
-      trueDistance=distance/eye.scale;
-      eyeCoords=new Vec2d(eye);
-
-      for(Entity x:world.ents)
-      {
-        addEnt(x,eye,trueDistance);
-      }
+      if(ent.getWorld()!=world)
+        throw new GameException();
+      eye=getEntEye(ent);
+      bgColor=getEntBgColor(ent);
     }
-    finally
+    else
+      eye=new Vec2drs();
+    trueDistance=distance/eye.scale;
+    things=new ArrayList<AppearanceElement>();
+    for(Entity x:world.ents)
     {
-      world.unlock();
+      addEnt(x,eye,trueDistance);
     }
   }
-  private static Ver2drs getEntEye(Entity ent)
+  private static Vec2drs getEntEye(Entity ent)
   {
     Camera camera=(Camera)ent.getComponent("Camera");
     if(camera==null)
@@ -78,16 +70,16 @@ public class ViewOfWorld
   {
     BgColorComponent b=(BgColorComponent)ent.getComponent("BgColorComponent");
     if(b==null)
-      return BgColor::WHITE;
+      return BgColor.WHITE;
     return b.getColor();
   }
-  private void addEnt(Entity ent,Vec2rs eye,double dist)
+  private void addEnt(Entity ent,Vec2drs eye,double dist)
   {
     Physics physics=(Physics)ent.getComponent("Physics");
     if(physics==null)
       return;
     Vec2dr place=physics.getPlace();
-    Vec2d diff=new Vec2d(eye).sub(Vec2d(place));
+    Vec2d diff=new Vec2d(eye).subD(new Vec2d(place));
     if(diff.dist()>dist)
       return;
     Appearance appearance=(Appearance)ent.getComponent("Appearance");
@@ -104,13 +96,13 @@ public class ViewOfWorld
   private void addAe(AppearanceElement ae,Vec2drs eye,Vec2dr place)
   {
     Vec2dr tr=new Vec2dr(ae.x,ae.y,ae.angle);
-    Vec2dr ey=new Vec2dr(eye.x,eye.y,0,0);
-    tr=tr.sub(ey);
-    te=tr.add(place);
+    Vec2dr ey=new Vec2dr(eye.x,eye.y,0);
+    tr=tr.subDR(ey);
+    tr=tr.addDR(place);
     ae.x=tr.x;
     ae.y=tr.y;
     ae.angle=tr.angle;
-    ar.scale=tr.angle;
+    ae.scale=tr.angle;
     things.add(ae);
   }
 }

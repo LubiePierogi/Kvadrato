@@ -12,7 +12,7 @@ public class BgColorComponent extends Component
 
   public BgColorComponent()
   {
-    color=BackgroundColor.WHITE;
+    color=BgColor.WHITE;
     colorNew=null;
   }
   public BgColor getColor()

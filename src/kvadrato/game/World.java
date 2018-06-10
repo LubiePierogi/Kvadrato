@@ -9,7 +9,7 @@ import kvadrato.utils.GameException;
 import kvadrato.game.Entity;
 import kvadrato.game.WorldAccess;
 import kvadrato.game.Component;
-import kvadrato.game.other.BackgroundColor;
+import kvadrato.game.other.BgColor;
 import kvadrato.game.components.Collider;
 import kvadrato.game.components.Camera;
 import kvadrato.game.components.Appearance;
@@ -35,7 +35,6 @@ public final class World
    * W tym są wszystkie jednostki na świecie.
    */
   ArrayList<Entity> ents;
-  //private Entity[] ents;
   /**
    * Ilość odświeżeń świata na sekundę przy szybkości ustawionej na jeden.
    */
@@ -66,11 +65,6 @@ public final class World
    * wywoływanej z zewnątrz.
    */
   private Lock worldLock;
-  //private Lock conditionLock;
-  /**
-   * Zmienna warunkowa taka fajna.
-   */
-  //private Condition condition;
   /**
    * Wątek, który robi wszystko na świecie.
    */
@@ -88,7 +82,6 @@ public final class World
     ender=false;
     worldLock=new ReentrantLock();
 
-    //condition=worldLock.newCondition();
     thread=null;
   }
   public void init() throws GameException

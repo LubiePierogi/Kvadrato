@@ -2,8 +2,8 @@ package kvadrato.utils.vec2;
 
 import java.lang.Math;
 
-import kvadrato.utils.Vec2;
-import kvadrato.utils.Vec2rs;
+import kvadrato.utils.vec2.Vec2d;
+import kvadrato.utils.vec2.Vec2drs;
 
 /**
  * Wektor z dwoma wymiarami i jeszcze z kątem.
@@ -33,7 +33,7 @@ public class Vec2dr// extends Vec2d
   }
   public Vec2dr(Vec2dr q)
   {
-    x=v.x;y=v.y;angle=a;
+    x=q.x;y=q.y;angle=0.;
   }
   public Vec2dr(Vec2drs q)
   {
@@ -60,9 +60,9 @@ public class Vec2dr// extends Vec2d
   {
     return new Vec2dr
     (
-      this.x+other.x*Math.cos(angle)-other.y*Math.sin(angle),
-      this.y+other.y*Math.cos(angle)+other.x*Math.sin(angle),
-      this.angle+other.angle
+      x+q.x*Math.cos(angle)-q.y*Math.sin(angle),
+      y+q.y*Math.cos(angle)+q.x*Math.sin(angle),
+      angle+q.angle
     );
   }
 

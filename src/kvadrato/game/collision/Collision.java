@@ -6,7 +6,7 @@ public final class Collision
 {
   public final Vec2d center;
   public final double volume;
-  private Collision(Vector2d center,double volume)
+  private Collision(Vec2d center,double volume)
   {
     this.center=center;
     this.volume=volume;

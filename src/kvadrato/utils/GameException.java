@@ -4,9 +4,9 @@ package kvadrato.utils;
  */
 public class GameException extends Exception
 {
-  public Exception(){}
-  public Exception(String msg){super(msg);}
-  public Exception(Throwable cause){super(cause);}
-  public Exception(String msg,Throwable cause){super(msg,cause);}
+  public GameException(){}
+  public GameException(String msg){super(msg);}
+  public GameException(Throwable cause){super(cause);}
+  public GameException(String msg,Throwable cause){super(msg,cause);}
   public String getMessage(){return super.getMessage();}
 }

@@ -31,10 +31,10 @@ public final class Renderer
     double width=800;
     double height=600;
     ViewOfWorld view=model.getWorldView();
-    BackgroundColor bgColor=view.getBackground();
+    BgColor bgColor=view.getBgColor();
     ViewAppearanceElement vae;
     context.setTransform(1.,0.,0.,1.,0.,0.);
-    context.setFill(Backgrounds.bgToColor(bgColor));
+    context.setFill(Backgrounds.bgToBackground(bgColor));
     context.fillRect(0,0,width,height);
     List<AppearanceElement> list=view.getThings();
     for(AppearanceElement e:list)

@@ -1,5 +1,7 @@
 package kvadrato.game;
 
+import kvadrato.utils.GameException;
+import kvadrato.game.World;
 
 /**
  * Klasa pośrednicząca w dostępie do świata. Uzyskanie jej obiektu ze świata
@@ -71,7 +73,7 @@ public class WorldAccess
   }
   public ViewOfWorld getView(Entity where,double distance)
   {
-    return world.getView(where,distance);
+    return new ViewOfWorld(world,where,distance);
   }
   public void doImmediatelyTicks(int x) throws GameException
   {

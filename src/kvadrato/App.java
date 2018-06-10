@@ -1,15 +1,18 @@
 package kvadrato;
+
 import java.io.IOException;
+
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-import javafx.scene.Parent;
+import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import kvadrato.game.GameException;
+
+import kvadrato.utils.GameException;
 
 //
 public class App extends Application
@@ -22,8 +25,6 @@ public class App extends Application
     {
       model=new Model();
       launch(args);
-      //System.out.println("jiopepoiuegoueyfoiuhyereouhwreoiuheweouhouehuoewrghu"+
-      //"iopguioierwyuo0i0ewru8reyuioerwgoiuewgoiuurweoiuuier");
     }
     catch(GameException exc)
     {
@@ -37,7 +38,12 @@ public class App extends Application
   @Override
   public void start(Stage mainStage) throws IOException
   {
-    model.init();
+    try
+    {
+      model.init();
+    }
+    catch(GameException exc)
+    {}
     win=mainStage;
     win.setTitle("Kvadrato");
     FXMLLoader loader=new FXMLLoader(getClass().getResource("view/gui.fxml"));

@@ -95,7 +95,7 @@ public class Model
       Entity player=wa.spawn("Square");
       playerControlPointer=player;
       viewPointer=player;
-      ((Control)player.getComponent("Control")).setProxy(ct);
+      ((Control)player.getComponent("Control")).setProxy(cp);
       //Entity dwa=wa.spawn("Square");
       ((Physics)player.getComponent("Physics")).addPlace
         (new Vec2dr(0.15,0.2,3.14159*0.25));
@@ -154,7 +154,15 @@ public class Model
   }
   public ViewOfWorld getWorldView()
   {
-    return ViewOfWorld();
+    wa=world.getAccess();
+    try
+    {
+      return wa.getView(viewPointer,15.0);
+    }
+    finally
+    {
+      wa.drop();
+    }
   }
   public ControlProxy getControlProxy()
   {

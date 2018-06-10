@@ -2,8 +2,8 @@ package kvadrato.utils.vec2;
 
 import java.lang.Math;
 
-import kvadrato.utils.Vec2dr;
-import kvadrato.utils.Vec2drs;
+import kvadrato.utils.vec2.Vec2dr;
+import kvadrato.utils.vec2.Vec2drs;
 
 /**
  * Wektor z dwoma wymiarami. Jest to klasa niezmiennicza czy jakoś tak.
@@ -44,7 +44,7 @@ public class Vec2d
   }
   public Vec2d mulD(double number)
   {
-    return new Vec2(this.x*number,this.y*number);
+    return new Vec2d(this.x*number,this.y*number);
   }
   public double dist()
   {

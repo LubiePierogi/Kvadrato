@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+import kvadrato.utils.GameException;
 import kvadrato.utils.vec2.Vec2dr;
 import kvadrato.game.Entity;
 import kvadrato.game.Prefab;
@@ -28,8 +29,8 @@ public class Square extends Prefab
   {
     ArrayList<AppearanceElement> list=new ArrayList<AppearanceElement>();
     SquareSquare sqsq=new SquareSquare();
-    sqsq.colorOfSquare=
-      ((SquareComponent)ent.getComponent("SquareComponent")).getColor();
+    sqsq.bgColor=
+      ((BgColorComponent)ent.getComponent("BgColorComponent")).getColor();
     sqsq.x=0.0;
     sqsq.y=0.0;
     sqsq.angle=0.0;
@@ -41,21 +42,21 @@ public class Square extends Prefab
   {
     Control ctl=(Control)ent.getComponent("Control");
     Vec2dr a=new Vec2dr();
-    boolean up=!ct.get("up").equals("");
-    boolean right=!ct.get("right").equals("");
-    boolean down=!ct.get("down").equals("");
-    boolean left=!ct.get("left").equals("");
+    boolean up=!ctl.get("up").equals("");
+    boolean right=!ctl.get("right").equals("");
+    boolean down=!ctl.get("down").equals("");
+    boolean left=!ctl.get("left").equals("");
     if(up&&!down)
-      a=a.add(new Transform(1,0,0));
+      a=a.addDR(new Vec2dr(1,0,0));
     if(!up&&down)
-      a=a.add(new Transform(-.25,0,0));
+      a=a.addDR(new Vec2dr(-.25,0,0));
     if(right&&!left)
-      a=a.add(new Transform(0,0,-1.8));
+      a=a.addDR(new Vec2dr(0,0,-1.8));
     if(!right&&left)
-      a=a.add(new Transform(0,0,1.8));
+      a=a.addDR(new Vec2dr(0,0,1.8));
 
     String cc=ctl.get("color");
-    SquareComponent sc=(SquareComponent)ent.getComponent("SquareComponent");
+    BgColorComponent sc=(BgColorComponent)ent.getComponent("BgColorComponent");
     switch(cc)
     {
       case "q":sc.setColor(BgColor.BLUE);break;
@@ -66,7 +67,6 @@ public class Square extends Prefab
       case "s":sc.setColor(BgColor.RED);break;
       case "d":sc.setColor(BgColor.BROWN);break;
       case "f":sc.setColor(BgColor.ORANGE);break;
-      }
     }
     return a;
   };
@@ -74,14 +74,14 @@ public class Square extends Prefab
   {
     Physics physics=(Physics)ent.getComponent("Physics");
     Vec2dr v=physics.getVelocity();
-    v=v.mul(-.75);
+    v=v.mulDR(-.75);
     return v;
   };
   public void makeEntity(Entity ent)
     throws GameException
   {
     ent.addComponent("Physics");
-    ent.addComponent("SquareComponent");
+    ent.addComponent("BgColorComponent");
     ent.addComponent("Camera");
     ent.addComponent("Collider");
     ent.addComponent("Appearance");
@@ -97,7 +97,6 @@ public class Square extends Prefab
     // Physics
     {
       Physics q=(Physics)ent.getComponent("Physics");
-      q.setType(Physics.Type.DYNAMIC);
       q.setMass(1.0);
       q.setFn(physicsFn);
     }

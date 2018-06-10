@@ -27,11 +27,11 @@ public class Vec2drs// extends Vec2dr
   public Vec2drs(Vec2d q)
   {x=q.x;y=q.y;angle=0.;scale=1.;}
   public Vec2drs(Vec2d q,double a,double s)
-  {x=q.x;y=q.y;angle=a;scale=s}
+  {x=q.x;y=q.y;angle=a;scale=s;}
   public Vec2drs(Vec2dr q)
   {x=q.x;y=q.y;angle=q.angle;scale=1.;}
   public Vec2drs(Vec2dr q,double s)
-  {x=q.x;y=q.y;angle=q.angle;scale=s}
+  {x=q.x;y=q.y;angle=q.angle;scale=s;}
   public Vec2drs(Vec2drs q)
-  {x=q.x;y=q.y;angle=q.scale;scale=q.scale}
+  {x=q.x;y=q.y;angle=q.scale;scale=q.scale;}
 }

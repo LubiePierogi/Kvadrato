@@ -23,12 +23,10 @@ public class Physics extends Component
   public Physics()
   {
     place=new Vec2dr();
-    velocity=new Vec2dr();
-    acceleration=new Vec2dr();
-
     placeNew=new Vec2dr();
+
+    velocity=new Vec2dr();
     velocityNew=new Vec2dr();
-    accelerationNew=new Vec2dr();
 
     mass=1.;
     massNew=1.;
@@ -68,7 +66,7 @@ public class Physics extends Component
   }
   public void accelerate(Vec2dr x)
   {
-    velocityNew=velocityNew.addDR(x.mul(getDelta()));
+    velocityNew=velocityNew.addDR(x.mulDR(getDelta()));
   }
 
   public void fix()

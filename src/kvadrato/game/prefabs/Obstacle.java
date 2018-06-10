@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+import kvadrato.utils.GameException;
 import kvadrato.utils.vec2.Vec2d;
 import kvadrato.game.Entity;
 import kvadrato.game.Prefab;
-import kvadrato.game.componentd.BgColorComponent;
+import kvadrato.game.components.BgColorComponent;
 import kvadrato.game.components.ObstacleComponent;
 import kvadrato.game.components.Appearance;
 import kvadrato.game.appearance.AppearanceElement;

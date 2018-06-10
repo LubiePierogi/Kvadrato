@@ -1,21 +1,23 @@
 package kvadrato.view.ae;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import java.lang.Math;
-import kvadrato.game.appearance.ObstacleRectangle;
+
+import javafx.scene.paint.Color;
+import javafx.scene.canvas.GraphicsContext;
+
+import kvadrato.utils.vec2.Vec2d;
+import kvadrato.game.other.BgColor;
 import kvadrato.game.appearance.AppearanceElement;
-import kvadrato.game.other.BackgroundColor;
-import kvadrato.game.Vector2d;
+import kvadrato.game.appearance.ObstacleRectangle;
 
 public class ViewObstacleRectangle extends ViewAppearanceElement
 {
-  private BackgroundColor bg;
+  private BgColor bg;
   private double width;
   private double height;
   public ViewObstacleRectangle()
   {
-    bg=BackgroundColor.WHITE;
+    bg=BgColor.WHITE;
     width=1.;
     height=1.;
   }
@@ -28,18 +30,14 @@ public class ViewObstacleRectangle extends ViewAppearanceElement
   }
   public void draw(GraphicsContext context)
   {
-    ////System.out.println("10 10 7");
     if(bg==null)
     {
-      bg=BackgroundColor.WHITE;
+      bg=BgColor.WHITE;
     }
     switch(bg)
     {
-      case WHITE:
-        context.setFill(new Color(.5,.5,.5,1.));
-        break;
-      default:
-        context.setFill(new Color(.2,.4,.6,1.));
+      case WHITE:context.setFill(new Color(.5,.5,.5,1.));break;
+      default:context.setFill(new Color(.2,.4,.6,1.));
     }
     context.fillRect(-.5*width,-.5*height,width,height);
   }

@@ -1,43 +1,27 @@
 package kvadrato;
-import java.io.IOException;
+
+import java.lang.Math;
+import java.lang.reflect.*;
+import java.util.ResourceBundle;
+import java.net.URL;
+
+import javafx.stage.Stage;
 import javafx.scene.*;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.beans.property.FloatProperty;
-import javafx.beans.property.SimpleFloatProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.shape.Rectangle;
-import javafx.animation.AnimationTimer;
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.lang.Math;
-import javafx.fxml.FXML;
 import javafx.scene.Group;
-import java.lang.reflect.*;
-import kvadrato.utils.GameException;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.canvas.Canvas;
+import javafx.animation.AnimationTimer;
+import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 
-/*
-import javafx.embed.swing.SwingNode;
-import javax.swing.SwingUtilities;
-import javax.swing.JButton;
-import com.jogamp.opengl.GLAutoDrawable;
-import com.jogamp.opengl.GLEventListener;
-import com.jogamp.opengl.GLProfile;
-import com.jogamp.opengl.GLCapabilities;
-import com.jogamp.opengl.awt.GLCanvas;
-import javax.swing.JComponent;
-import javax.swing.JRootPane;
-import java.awt.BorderLayout;
-*/
+import kvadrato.utils.GameException;
 
 public class GUIController implements Initializable
 {
@@ -91,12 +75,6 @@ public class GUIController implements Initializable
   public Group pauseRestart;
   public Group pauseResume;
   public Group pauseQuit;
-
-
-
-
-
-
 
 
 
@@ -155,19 +133,6 @@ public class GUIController implements Initializable
         lastAnimationUpdate=now;
       }
     };
-    /*oglCanvas=new SwingOpenGLCanvas();
-    SwingUtilities.invokeLater(new Runnable()
-    {
-      public void run()
-      {
-
-        JComponent jc=new JRootPane();
-        jc.add(oglCanvas.getGlCanvas(),BorderLayout.CENTER);
-        backgroundSwing.setContent(jc);
-
-      }
-    });*/
-    //theRoot.requestFocus();
   }
   /**
    * Następna inicjalizacja, ale taka później.
@@ -270,11 +235,6 @@ public class GUIController implements Initializable
           // quitSquare
           y=theTarget==quitSquare?180.0:150;
           makeInterpolation(quitSquare,y,time,"translateY");
-          /*
-          x=quitSquare.getTranslateY();
-          y=calculateInterpolation(x,y,time);
-          quitSquare.setTranslateY(y);
-          */
         }
         break;
       case STARTING_THE_GAME:
@@ -329,11 +289,9 @@ public class GUIController implements Initializable
     {
       model.cookLevelStart();
       model.pushWorld();
-      //System.out.println("Tutaj jest");
     }
     catch(GameException exc)
     {
-      //System.out.println("ojhjuijkkjioi");
     }
   }
   void pauseGame()
@@ -419,8 +377,6 @@ public class GUIController implements Initializable
     }
   }
 
-
-
   //////
   //
   //
@@ -442,7 +398,6 @@ public class GUIController implements Initializable
   }
   public void bigSquareClicked()
   {
-    //System.out.println("zxc");
     if(state==State.FIRST_SCREEN)
     {
       goToState(State.MENU);
@@ -463,7 +418,7 @@ public class GUIController implements Initializable
   }
   public void settingsSquareClicked()
   {
-    //System.out.println("To na razie nic nie robi!");
+    System.out.println("To na razie nic nie robi!");
   }
 
   //helpSquare
@@ -477,7 +432,7 @@ public class GUIController implements Initializable
   }
   public void helpSquareClicked()
   {
-    //System.out.println("To na razie nic nie robi!");
+    System.out.println("To na razie nic nie robi!");
   }
 
   //quitSquare
@@ -495,7 +450,6 @@ public class GUIController implements Initializable
   }
 
 
-
   public void pauseRestartEntered()
   {
     theTarget=pauseRestart;
@@ -506,9 +460,6 @@ public class GUIController implements Initializable
   public void pauseRestartClicked()
   {
   }
-
-
-
 
 
   public void pauseResumeEntered()
@@ -536,11 +487,8 @@ public class GUIController implements Initializable
 
 
 
-
-
   public void keyPressed(KeyEvent ev)
   {
-    ////System.out.println("Key pressed.");
     switch(ev.getCode())
     {
       case ESCAPE:
@@ -570,56 +518,59 @@ public class GUIController implements Initializable
         }
         break;
       case UP:
-        model.getControlThing().set("up","q");
+        model.getControlProxy().set("up","q");
         break;
       case RIGHT:
-        model.getControlThing().set("right","q");
+        model.getControlProxy().set("right","q");
         break;
       case DOWN:
-        model.getControlThing().set("down","q");
+        model.getControlProxy().set("down","q");
         break;
       case LEFT:
-        model.getControlThing().set("left","q");
+        model.getControlProxy().set("left","q");
         break;
       case Q:
-        model.getControlThing().set("color","q");
+        model.getControlProxy().set("color","q");
         break;
       case W:
-        model.getControlThing().set("color","w");
+        model.getControlProxy().set("color","w");
         break;
       case E:
-        model.getControlThing().set("color","e");
+        model.getControlProxy().set("color","e");
         break;
       case R:
-        model.getControlThing().set("color","r");
+        model.getControlProxy().set("color","r");
         break;
       case A:
-        model.getControlThing().set("color","a");
+        model.getControlProxy().set("color","a");
         break;
       case S:
-        model.getControlThing().set("color","s");
+        model.getControlProxy().set("color","s");
         break;
       case D:
-        model.getControlThing().set("color","d");
+        model.getControlProxy().set("color","d");
         break;
       case F:
-        model.getControlThing().set("color","f");
+        model.getControlProxy().set("color","f");
         break;
     }
   }
   public void keyReleased(KeyEvent ev)
   {
-    ////System.out.println("Key released.");
     switch(ev.getCode())
     {
       case UP:
-        model.getControlThing().set("up",null);
+        model.getControlProxy().set("up",null);
+        break;
       case RIGHT:
-        model.getControlThing().set("right",null);
+        model.getControlProxy().set("right",null);
+        break;
       case DOWN:
-        model.getControlThing().set("down",null);
+        model.getControlProxy().set("down",null);
+        break;
       case LEFT:
-        model.getControlThing().set("left",null);
+        model.getControlProxy().set("left",null);
+        break;
     }
   }
 }

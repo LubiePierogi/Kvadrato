@@ -21,10 +21,10 @@ public class Locomotor extends Component
   }
   public Vec2dr getAcceleration()
   {
-    Transform q;
+    Vec2dr q;
     if(fn!=null)
       q=fn.apply(this.getEntity());
-    else q=new Transform();
+    else q=new Vec2dr();
     return q;
   }
 

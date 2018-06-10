@@ -24,7 +24,7 @@ public class ObstacleComponent extends Component
   {
     return new Vec2d(width,height);
   }
-  public void setSize(Ved2d v)
+  public void setSize(Vec2d v)
   {
     widthNew=v.x;
     heightNew=v.y;

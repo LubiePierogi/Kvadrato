@@ -3,6 +3,9 @@ package kvadrato.game;
 import java.util.Map;
 import java.util.TreeMap;
 
+import kvadrato.utils.GameException;
+import kvadrato.game.Component;
+
 public class Entity
 {
   /**
@@ -93,18 +96,21 @@ public class Entity
     }
   }
   public final void addComponent(String name)
-    throws GameException//,IllegalAccessException
+    throws GameException
   {
+    Class c;
+    Component co;
     try
     {
-      Class c=Class.forName("kvadrato.game.components."+name);
+      c=Class.forName("kvadrato.game.components."+name);
     }
     catch(ClassNotFoundException exc){throw new GameException(exc);}
     try
     {
-      Component co=(Component)c.newInstance();
+      co=(Component)c.newInstance();
     }
     catch(InstantiationException exc){throw new GameException(exc);}
+    catch(IllegalAccessException exc){throw new GameException(exc);}
     co.ent=this;
     components.put(name,co);
   }

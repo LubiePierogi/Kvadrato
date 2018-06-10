@@ -1,7 +1,8 @@
 package kvadrato.view.ae;
 
-import kvadrato.game.appearance.AppearanceElement;
 import javafx.scene.canvas.GraphicsContext;
+
+import kvadrato.game.appearance.AppearanceElement;
 
 /**
  * Interfejs do klas, które określają, jak rysować różne elementy z pakietu

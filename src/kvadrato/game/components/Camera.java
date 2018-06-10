@@ -16,7 +16,7 @@ public class Camera extends Component
   {
     eyeFn=fn;
   }
-  public Vec2rs getEye()
+  public Vec2drs getEye()
   {
     Vec2dr place;
     double scale;
