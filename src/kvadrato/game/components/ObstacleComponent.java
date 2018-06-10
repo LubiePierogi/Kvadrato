@@ -1,59 +1,46 @@
 package kvadrato.game.components;
 
+import kvadrato.utils.vec2.Vec2d;
 import kvadrato.game.Component;
-import kvadrato.game.Vector2d;
-import kvadrato.game.other.BackgroundColor;
+import kvadrato.game.other.BgColor;
 
 
 public class ObstacleComponent extends Component
 {
-  private BackgroundColor color;
-  private BackgroundColor colorNew;
-
   private double width;
   private double height;
 
+  private double widthNew;
+  private double heightNew;
 
   public ObstacleComponent()
   {
-    color=BackgroundColor.WHITE;
-    colorNew=null;
     width=1.;
     height=1.;
+    widthNew=1.;
+    heightNew=1.;
   }
-
-  public BackgroundColor getColor()
+  public Vec2d getSize()
   {
-    return color;
+    return new Vec2d(width,height);
   }
-  public void setColor(BackgroundColor c)
+  public void setSize(Ved2d v)
   {
-    colorNew=c;
-  }
-
-  public Vector2d getSize()
-  {
-    return new Vector2d(width,height);
-  }
-
-  public void setSize(Vector2d v)
-  {
-    width=v.x;
-    height=v.y;
+    widthNew=v.x;
+    heightNew=v.y;
   }
 
   public void setSize(double w,double h)
   {
-    width=w;
-    height=h;
+    widthNew=w;
+    heightNew=h;
   }
 
   public void fix(){}
   public void doThings(){}
   public void update()
   {
-    if(colorNew!=null)
-      color=colorNew;
-    colorNew=null;
+    width=widthNew;
+    height=heightNew;
   }
 }

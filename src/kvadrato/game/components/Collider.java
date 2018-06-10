@@ -2,6 +2,7 @@ package kvadrato.game.components;
 
 import java.util.Map;
 import java.util.TreeMap;
+
 import kvadrato.game.Component;
 import kvadrato.game.Entity;
 import kvadrato.game.TriConsumer;

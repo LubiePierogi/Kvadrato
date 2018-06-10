@@ -1,9 +1,12 @@
 package kvadrato.utils;
-import java.io.IOException;
 /**
  * Wyjątek rzucany przez grę.
  */
-public class GameException extends IOException
+public class GameException extends Exception
 {
-  // Na razie nic tu nie ma. :(
+  public Exception(){}
+  public Exception(String msg){super(msg);}
+  public Exception(Throwable cause){super(cause);}
+  public Exception(String msg,Throwable cause){super(msg,cause);}
+  public String getMessage(){return super.getMessage();}
 }

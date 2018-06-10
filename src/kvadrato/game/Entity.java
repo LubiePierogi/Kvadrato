@@ -7,15 +7,26 @@ public class Entity
 {
   /**
    * Ta zmienna przechowuje, w którym świecie jest jednostka.
-   * Będzie tylko jedenświat, ale tak jest ładnie.
+   * Będzie tylko jeden świat, ale tak jest ładnie.
    */
   World world;
+  /**
+   * Ta zmienna przechowuje, czy następna funkcja update na świecie
+   * ma usunąć tę jednostkę.
+   */
   private boolean hasToBeRemoved;
+  /**
+   * Mapa przechowująca wszytkie komponenty, każdy jest przyporządkowany
+   * do swej nazwy.
+   */
   Map<String,Component> components;
+  /**
+   * Na razie bezużyteczna zmienna, ale przechowuje nazwę klasy jednostki.
+   */
   String prefabName;
   /**
-   * Konstuktor, który jest tylko po to, żeby ustawić zmienną hasToBeRemoved
-   * na false i żeby zrobić tablicę skłądników.
+   * Zwykły konstruktor. Nie jest publiczny, bo tylko świat ma móc
+   * zrobić jednostkę.
    */
   public Entity()
   {
@@ -29,6 +40,9 @@ public class Entity
   {
     hasToBeRemoved=true;
   }
+  /**
+   * Zwraca nazwę klasy.
+   */
   public String getName()
   {
     return prefabName;
@@ -79,10 +93,18 @@ public class Entity
     }
   }
   public final void addComponent(String name)
-    throws ClassNotFoundException,InstantiationException,IllegalAccessException
+    throws GameException//,IllegalAccessException
   {
-    Class c=Class.forName("kvadrato.game.components."+name);
-    Component co=(Component)c.newInstance();
+    try
+    {
+      Class c=Class.forName("kvadrato.game.components."+name);
+    }
+    catch(ClassNotFoundException exc){throw new GameException(exc);}
+    try
+    {
+      Component co=(Component)c.newInstance();
+    }
+    catch(InstantiationException exc){throw new GameException(exc);}
     co.ent=this;
     components.put(name,co);
   }

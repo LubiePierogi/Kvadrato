@@ -1,62 +1,42 @@
 package kvadrato.game.components;
 
-import kvadrato.game.Component;
-import kvadrato.game.Vector2d;
-import kvadrato.game.Transform;
-import kvadrato.game.Entity;
 import java.util.function.Function;
+
+import kvadrato.utils.vec2.Vec2d;
+import kvadrato.utils.vec2.Vec2dr;
+import kvadrato.game.Entity;
+import kvadrato.game.Component;
 
 public class Physics extends Component
 {
-  public enum Type
-  {
-    STATIC,
-    HALF,
-    DYNAMIC,
-  }
+  private Vec2dr place;
+  private Vec2dr placeNew;
 
-  private Type type;
-
-  private Transform place;
-  private Transform velocity;
-  private Transform acceleration;
-
-
-  private Transform placeNew;
-  private Transform velocityNew;
-  private Transform accelerationNew;
+  private Vec2dr velocity;
+  private Vec2dr velocityNew;
 
   private double mass;
+  private double massNew;
 
-  private Function<Entity,Transform>fn;
+  private Function<Entity,Vec2dr>fn;
 
   public Physics()
   {
-    type=Type.STATIC;
-    place=new Transform();
-    velocity=new Transform();
-    acceleration=new Transform();
+    place=new Vec2dr();
+    velocity=new Vec2dr();
+    acceleration=new Vec2dr();
 
-    placeNew=new Transform();
-    velocityNew=new Transform();
-    accelerationNew=new Transform();
+    placeNew=new Vec2dr();
+    velocityNew=new Vec2dr();
+    accelerationNew=new Vec2dr();
 
-    mass=1.0;
+    mass=1.;
+    massNew=1.;
   }
 
-  public void setFn(Function<Entity,Transform>func)
+  public void setFn(Function<Entity,Vec2dr>func)
   {
     fn=func;
-  }
-
-  public Type getType()
-  {
-    return type;
-  }
-
-  public void setType(Type t)
-  {
-    type=t;
   }
 
   public double getMass()
@@ -66,29 +46,29 @@ public class Physics extends Component
 
   public void setMass(double m)
   {
-    mass=m;
+    massNew=m;
   }
 
-  public Transform getPlace()
+  public Vec2dr getPlace()
   {
     return place;
   }
-  public Transform getVelocity()
+  public Vec2dr getVelocity()
   {
     return velocity;
   }
 
-  public void addPlace(Transform x)
+  public void addPlace(Vec2dr x)
   {
-    placeNew=placeNew.add(x);
+    placeNew=placeNew.addDR(x);
   }
-  public void addVelocity(Transform x)
+  public void addVelocity(Vec2dr x)
   {
-    velocityNew=velocityNew.add(x);
+    velocityNew=velocityNew.addDR(x);
   }
-  public void accelerate(Transform x)
+  public void accelerate(Vec2dr x)
   {
-    velocityNew=velocityNew.add(x.mul(getDelta()));
+    velocityNew=velocityNew.addDR(x.mul(getDelta()));
   }
 
   public void fix()
@@ -103,12 +83,8 @@ public class Physics extends Component
   }
   public void update()
   {
-    place=placeNew.add(velocity.mul(getDelta()));
-    // do zmiany na addVec
-    if(type!=Type.STATIC)
-    {
-      velocity=velocityNew;
-    }
-    //System.out.print("Miejsce:\n## "+place.x+"\n## "+place.y+"\nPrędkość:\n## "+velocity.x+"\n### "+velocity.y+'\n');
+    place=placeNew.addDR(velocity.mulDR(getDelta()));
+    velocity=velocityNew;
+    //System.out.print("Miejsce:\n## "+place.x+"\n## "+place.y+"\nPrędkość:\n## "+velocity.x+"\n## "+velocity.y+'\n');
   }
 }

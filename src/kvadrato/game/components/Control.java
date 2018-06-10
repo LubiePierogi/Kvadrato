@@ -1,7 +1,7 @@
 package kvadrato.game.components;
 
 import kvadrato.game.Component;
-import kvadrato.game.ControlBroker;
+import kvadrato.game.ControlProxy;
 
 public class Control extends Component
 {
@@ -10,13 +10,11 @@ public class Control extends Component
   {
     cp=t;
   }
-  public ControlThing getProxy()
-  {
-    return cp;
-  }
   public String get(String what)
   {
-    return cp.get(what);
+    if(cp!=null)
+      return cp.get(what);
+    return "";
   }
   public void fix(){}
   public void doThings(){}

@@ -1,15 +1,17 @@
 package kvadrato.game.prefabs;
 
-import kvadrato.game.Entity;
-import kvadrato.game.Prefab;
-import kvadrato.game.appearance.AppearanceElement;
-import kvadrato.game.appearance.ObstacleRectangle;
-import kvadrato.game.components.ObstacleComponent;
-import kvadrato.game.components.Appearance;
-import kvadrato.game.Vector2d;
-import java.util.function.Function;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.function.Function;
+
+import kvadrato.utils.vec2.Vec2d;
+import kvadrato.game.Entity;
+import kvadrato.game.Prefab;
+import kvadrato.game.componentd.BgColorComponent;
+import kvadrato.game.components.ObstacleComponent;
+import kvadrato.game.components.Appearance;
+import kvadrato.game.appearance.AppearanceElement;
+import kvadrato.game.appearance.ObstacleRectangle;
 
 /**
  * Klasa przeszkód, które trzeba omijać.
@@ -28,18 +30,19 @@ public class Obstacle extends Prefab
     rect.y=0.;
     rect.angle=0.;
     rect.scale=1.;
-    Vector2d v=oc.getSize();
+    Vec2d v=oc.getSize();
     rect.width=v.x;
     rect.height=v.y;
     list.add(rect);
     return list;
   };
   public void makeEntity(Entity ent)
-    throws ClassNotFoundException,InstantiationException,IllegalAccessException
+    throws GameException
   {
     ent.addComponent("Physics");
     ent.addComponent("Collider");
     ent.addComponent("Appearance");
+    ent.addComponent("BgColorComponent");
     ent.addComponent("ObstacleComponent");
 
     // Appearance
@@ -47,6 +50,5 @@ public class Obstacle extends Prefab
       Appearance q=(Appearance)ent.getComponent("Appearance");
       q.setFn(appearanceFn);
     }
-
   }
 }

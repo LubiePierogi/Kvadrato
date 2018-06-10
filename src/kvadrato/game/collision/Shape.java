@@ -1,16 +1,18 @@
 package kvadrato.game.collision;
-import kvadrato.game.Vector2d;
+
 import java.util.List;
 import java.util.Collections;
 
+import kvadrato.utils.vec2.Vec2d;
+
 public final class Shape
 {
-  final private List<Vector2d> vertices;
-  public Shape(List<Vector2d> verts)
+  final private List<Vec2d> vertices;
+  public Shape(List<Vec2d> verts)
   {
     vertices=Collections.unmodifiableList(verts);
   }
-  public List<Vector2d> getVertices()
+  public List<Vec2d> getVertices()
   {
     return vertices;
   }

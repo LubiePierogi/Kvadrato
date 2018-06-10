@@ -1,15 +1,16 @@
 package kvadrato;
 
+import java.lang.Math;
 import java.util.List;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+
 import kvadrato.game.ViewOfWorld;
+import kvadrato.game.other.BgColor;
 import kvadrato.game.appearance.AppearanceElement;
-import kvadrato.game.other.BackgroundColor;
 import kvadrato.view.Backgrounds;
 import kvadrato.view.ae.ViewAppearanceElement;
-import java.lang.Math;
-import java.lang.reflect.Constructor;
 
 public final class Renderer
 {
@@ -23,7 +24,6 @@ public final class Renderer
     context.rotate(e.angle*180./Math.PI);
 
     // To jest i tak do poprawienia chyba.
-
   }
 
   public static void draw(GraphicsContext context,Model model)
@@ -51,14 +51,6 @@ public final class Renderer
         vae=(ViewAppearanceElement)c.newInstance();
         vae.set(e);
         Renderer.set(context,e);
-        if(className.equals("kvadrato.view.ae.ViewObstacleRectangle"))
-        {
-          //System.out.println("1234099043920932049032904392049320490329403");
-          //System.out.println(e.x);
-          //System.out.println(e.y);
-          //System.out.println(e.angle);
-          //System.out.println(e.scale);
-        }
         vae.draw(context);
       }
       catch(ClassNotFoundException exc)

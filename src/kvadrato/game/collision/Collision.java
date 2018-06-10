@@ -1,8 +1,10 @@
 package kvadrato.game.collision;
-import kvadrato.game.Vector2d;
+
+import kvadrato.utils.vec2.Vec2d;
+
 public final class Collision
 {
-  public final Vector2d center;
+  public final Vec2d center;
   public final double volume;
   private Collision(Vector2d center,double volume)
   {

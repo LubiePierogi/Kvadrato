@@ -1,10 +1,11 @@
 package kvadrato.game.components;
 
 import java.util.function.Function;
-import kvadrato.game.components.Physics;
-import kvadrato.game.Component;
-import kvadrato.game.Transform;
+
+import kvadrato.utils.vec2.Vec2dr;
 import kvadrato.game.Entity;
+import kvadrato.game.Component;
+import kvadrato.game.components.Physics;
 
 public class Locomotor extends Component
 {
@@ -13,12 +14,12 @@ public class Locomotor extends Component
    *
    * @return przyspiesznie, może być null, to wtedy i tak jest zamieniane na 0.
    */
-  private Function<Entity,Vec2r> fn;
-  public void setFn(Function<Entity,Vec2r> func)
+  private Function<Entity,Vec2dr> fn;
+  public void setFn(Function<Entity,Vec2dr> func)
   {
     fn=func;
   }
-  public Vec2r getAcceleration()
+  public Vec2dr getAcceleration()
   {
     Transform q;
     if(fn!=null)
@@ -30,7 +31,6 @@ public class Locomotor extends Component
   public void fix(){}
   public void doThings()
   {
-    //System.out.println("ewropjpifjpojopwej");
     Entity e=getEntity();
     Physics q=(Physics)e.getComponent("Physics");
     if(q==null)

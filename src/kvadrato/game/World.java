@@ -1,22 +1,22 @@
 package kvadrato.game;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.Condition;
-import java.util.ArrayList;
-import java.util.List;
-import kvadrato.game.collision.*;
+import kvadrato.utils.GameException;
 import kvadrato.game.Entity;
-import java.util.Collections;
+import kvadrato.game.WorldAccess;
 import kvadrato.game.Component;
+import kvadrato.game.other.BackgroundColor;
 import kvadrato.game.components.Collider;
 import kvadrato.game.components.Camera;
-import kvadrato.game.WorldAccess;
-import kvadrato.game.other.BackgroundColor;
-import kvadrato.game.appearance.AppearanceElement;
 import kvadrato.game.components.Appearance;
 import kvadrato.game.components.Physics;
-import kvadrato.utils.GameException;
-import kvadrato.game.components.SquareComponent;
+import kvadrato.game.components.BgColorComponent;
+import kvadrato.game.appearance.AppearanceElement;
+import kvadrato.game.collision.*;
 /**
  * Chyba najbardziej ważna klasa w programie.
  * Jest w niej cały stan świata gry.
@@ -34,7 +34,7 @@ public final class World
   /**
    * W tym są wszystkie jednostki na świecie.
    */
-  private ArrayList<Entity> ents;
+  ArrayList<Entity> ents;
   //private Entity[] ents;
   /**
    * Ilość odświeżeń świata na sekundę przy szybkości ustawionej na jeden.
@@ -415,88 +415,6 @@ public final class World
         }
       }
     }
-  }
-  /**
-   * Ta funkcja daje obiekt klasy ViewOfWorld, gdzie są rzeczy potrzebne
-   * do narysowania świata, i graficzne opakowanie może to wykorzystać
-   * do narysowania św``iata.
-   * @param where Jednoskta, dla której ma być brany widok.
-   */
-  ViewOfWorld getView(Entity where,double distance)
-  {
-    ViewOfWorld view=new ViewOfWorld();
-    Eye eye;
-    Vector2d seenEntityCoords;
-    Vector2d eyeCoords;
-    Camera camera;
-    Physics physics;
-    Appearance appearance;
-    double trueDistance;
-    Transform seenEntityPlace;
-    Vector2d diff;
-    if(where==null||where.getWorld()!=this||(camera=(Camera)where.getComponent("Camera"))==null)
-    {
-      // Próba wyciągnięcia widoku z niczego albo z jednostki nie z tego świata.
-      eye=new Eye();
-    }
-    else
-    {
-      eye=camera.getEye();
-    }
-    //eye=new Eye();
-    trueDistance=distance/eye.scale;
-    eyeCoords=new Vector2d(eye.x,eye.y);
-    for(Entity x:ents)
-    {
-      physics=(Physics)x.getComponent("Physics");
-      appearance=(Appearance)x.getComponent("Appearance");
-      if(physics==null||appearance==null)
-        continue;
-      seenEntityPlace=physics.getPlace();
-      seenEntityCoords=new Vector2d(seenEntityPlace.x,seenEntityPlace.y);
-      diff=seenEntityCoords.sub(eyeCoords);
-      if(diff.dist()>trueDistance)
-        continue;
-      List<AppearanceElement>list=appearance.getElements();
-      if(list==null)
-        continue;
-      for(AppearanceElement e:list)
-      {
-        if(x.getName().equals("Obstacle"))
-        {
-          //System.out.println("%%%%%%%%%%%%%%%%%\n"+seenEntityPlace.x+'\n'+seenEntityPlace.y);
-
-        }
-        // Na razie ignorujemy skalę.
-        Transform tr=new Transform(e.x,e.y,e.angle);//e.angle);
-        Transform ey=new Transform(eye.x,eye.y,0.0);
-        tr=tr.sub(ey);
-        tr=tr.add(seenEntityPlace);
-        e.x=tr.x;
-        e.y=tr.y;
-        e.angle=tr.angle;
-        e.scale=e.scale;
-///////
-
-//e.x=seenEntityPlace.x;
-//e.y=seenEntityPlace.y;
-//e.angle=seenEntityPlace.angle;
-//e.scale=1.0;
-///////
-
-        view.things.add(e);
-        ////System.out.print("x: "+e.x+"\ny: "+e.y+"\nkąt: "+e.angle+"\nskala: "+e.scale+'\n');
-      }
-    }
-    if(where!=null)
-    {
-      SquareComponent sc=(SquareComponent)where.getComponent("SquareComponent");
-      if(sc!=null)
-      {
-        view.backgroundColor=sc.getColor();
-      }
-    }
-    return view;
   }
 
 }

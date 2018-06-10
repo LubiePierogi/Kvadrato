@@ -1,5 +1,5 @@
 package kvadrato.game.other;
-public enum BackgroundColor
+public enum BgColor
 {
   WHITE,
   BLUE,

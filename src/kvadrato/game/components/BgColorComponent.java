@@ -1,29 +1,28 @@
 package kvadrato.game.components;
 
+import java.util.Objects;
+
 import kvadrato.game.Component;
-import kvadrato.game.other.BackgroundColor;
+import kvadrato.game.other.BgColor;
 
-public class SquareComponent extends Component
+public class BgColorComponent extends Component
 {
+  private BgColor color;
+  private BgColor colorNew;
 
-  private BackgroundColor color;
-  private BackgroundColor colorNew;
-
-  public SquareComponent()
+  public BgColorComponent()
   {
     color=BackgroundColor.WHITE;
     colorNew=null;
   }
-  public BackgroundColor getColor()
+  public BgColor getColor()
   {
     return color;
   }
-  public void setColor(BackgroundColor c)
+  public void setColor(BgColor c)
   {
-    colorNew=c;
+    colorNew=Objects.requireNonNull(c);
   }
-
-
 
   public void fix(){}
   public void doThings(){}

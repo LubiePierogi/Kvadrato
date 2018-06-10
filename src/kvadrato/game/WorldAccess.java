@@ -27,12 +27,6 @@ public class WorldAccess
   }
 
 
-
-
-
-
-
-
   public void setTickrate(int tr)
    throws GameException
   {

@@ -1,16 +1,17 @@
 package kvadrato;
-import kvadrato.game.World;
-import kvadrato.game.WorldAccess;
-import kvadrato.game.Vector2d;
-import kvadrato.game.Entity;
-import kvadrato.game.prefabs.Square;
+
 import kvadrato.utils.GameException;
+import kvadrato.utils.vec2.Vec2d;
+import kvadrato.utils.vec2.Vec2dr;
+import kvadrato.game.World;
+import kvadrato.game.Entity;
+import kvadrato.game.WorldAccess;
 import kvadrato.game.ViewOfWorld;
-import kvadrato.game.Transform;
+import kvadrato.game.ControlProxy;
 import kvadrato.game.components.Physics;
 import kvadrato.game.components.Control;
-import kvadrato.game.ControlThing;
 import kvadrato.game.components.ObstacleComponent;
+import kvadrato.game.prefabs.Square;
 
 public class Model
 {
@@ -30,7 +31,7 @@ public class Model
   /**
    * Obiekt ze sterowaniem.
    */
-  private ControlThing ct;
+  private ControlProxy cp;
   /**
   * Domyślny konstruktor.
   */
@@ -44,7 +45,7 @@ public class Model
   public void init() throws GameException
   {
     world=new World();
-    ct=new ControlThing();
+    cp=new ControlProxy();
     world.init();
   }
   /**
@@ -53,8 +54,7 @@ public class Model
    */
   public void close()
   {
-    ////System.out.println("ZAMYKANIE MODELU!!!");
-    ct=null;
+    cp=null;
     if(world==null)
       return;
     try
@@ -73,7 +73,7 @@ public class Model
   }
   protected void finalize()
   {
-    //close();
+    close();
   }
   public void clearTheWorld()
   {
@@ -95,28 +95,33 @@ public class Model
       Entity player=wa.spawn("Square");
       playerControlPointer=player;
       viewPointer=player;
-      ((Control)player.getComponent("Control")).setThing(ct);
+      ((Control)player.getComponent("Control")).setProxy(ct);
       //Entity dwa=wa.spawn("Square");
-      ((Physics)player.getComponent("Physics")).addPlace(new Transform(0.15,0.2,3.14159*0.25));
+      ((Physics)player.getComponent("Physics")).addPlace
+        (new Vec2dr(0.15,0.2,3.14159*0.25));
       Entity two=wa.spawn("Square");
-      ((Physics)two.getComponent("Physics")).addPlace(new Transform(-1.,-1.,0.));
+      ((Physics)two.getComponent("Physics")).addPlace
+        (new Vec2dr(-1.,-1.,0.));
 
 
       Entity enemy=wa.spawn("Obstacle");
-      ((Physics)enemy.getComponent("Physics")).addPlace(new Transform(.5,-.5,0));
-      ((ObstacleComponent)enemy.getComponent("ObstacleComponent")).setSize(0.2,0.1);
+      ((Physics)enemy.getComponent("Physics")).addPlace
+        (new Vec2dr(.5,-.5,0));
+      ((ObstacleComponent)enemy.getComponent("ObstacleComponent")).setSize
+        (0.2,0.1);
 
       enemy=wa.spawn("Obstacle");
-      ((Physics)enemy.getComponent("Physics")).addPlace(new Transform(2.5,-3.5,0));
-
+      ((Physics)enemy.getComponent("Physics")).addPlace
+        (new Vec2dr(2.5,-3.5,0));
 
 
       enemy=wa.spawn("Obstacle");
-      ((Physics)enemy.getComponent("Physics")).addPlace(new Transform(-.8,0,0));
+      ((Physics)enemy.getComponent("Physics")).addPlace
+        (new Vec2dr(-.8,0,0));
     }
     catch(GameException exc)
     {
-      //System.out.println("trololololololololo");
+      System.out.println("trololololololololo");
     }
     finally
     {
@@ -149,18 +154,10 @@ public class Model
   }
   public ViewOfWorld getWorldView()
   {
-    wa=world.getAccess();
-    try
-    {
-      return wa.getView(viewPointer,15.0);
-    }
-    finally
-    {
-      wa.drop();
-    }
+    return ViewOfWorld();
   }
-  public ControlThing getControlThing()
+  public ControlProxy getControlProxy()
   {
-    return ct;
+    return cp;
   }
 }
