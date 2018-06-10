@@ -1,22 +1,23 @@
 package kvadrato.game.components;
 
 import kvadrato.game.Component;
-import kvadrato.game.ControlThing;
+import kvadrato.game.ControlBroker;
 
 public class Control extends Component
 {
-
-  private ControlThing thing;
-
-  public void setThing(ControlThing t)
+  private ControlProxy cp;
+  public void setProxy(ControlProxy t)
   {
-    thing=t;
+    cp=t;
   }
-  public ControlThing getThing()
+  public ControlThing getProxy()
   {
-    return thing;
+    return cp;
   }
-
+  public String get(String what)
+  {
+    return cp.get(what);
+  }
   public void fix(){}
   public void doThings(){}
   public void update(){}

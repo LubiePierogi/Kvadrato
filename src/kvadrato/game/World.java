@@ -15,7 +15,7 @@ import kvadrato.game.other.BackgroundColor;
 import kvadrato.game.appearance.AppearanceElement;
 import kvadrato.game.components.Appearance;
 import kvadrato.game.components.Physics;
-import kvadrato.game.GameException;
+import kvadrato.utils.GameException;
 import kvadrato.game.components.SquareComponent;
 /**
  * Chyba najbardziej ważna klasa w programie.

@@ -21,7 +21,7 @@ import java.lang.Math;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import java.lang.reflect.*;
-import kvadrato.game.GameException;
+import kvadrato.utils.GameException;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.canvas.Canvas;
 

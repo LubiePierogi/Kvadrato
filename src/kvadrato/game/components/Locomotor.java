@@ -8,25 +8,22 @@ import kvadrato.game.Entity;
 
 public class Locomotor extends Component
 {
-  private Function<Entity,Transform> fn;
-
-
-  public void setFn(Function<Entity,Transform> func)
+  /**
+   * Funkcja zwracająca przyspieszenie, które sam na sobie wywołuje jednostka.
+   *
+   * @return przyspiesznie, może być null, to wtedy i tak jest zamieniane na 0.
+   */
+  private Function<Entity,Vec2r> fn;
+  public void setFn(Function<Entity,Vec2r> func)
   {
     fn=func;
   }
-
-
-  public Transform getAcceleration()
+  public Vec2r getAcceleration()
   {
-    ////System.out.println("getAcceleration 1");
     Transform q;
-    ////System.out.println("getAcceleration 2");
     if(fn!=null)
       q=fn.apply(this.getEntity());
     else q=new Transform();
-    ////System.out.print("[][][] "+q.x+"\n[][][] "+q.y+'\n');
-    //q=((Physics)e.getComponent("Physics")).getPlace
     return q;
   }
 

@@ -1,26 +1,23 @@
 package kvadrato.game.components;
 
-import kvadrato.game.Eye;
-import kvadrato.game.Component;
-import kvadrato.game.Vector2d;
-import kvadrato.game.Transform;
-import kvadrato.game.components.Camera;
-import kvadrato.game.Entity;
 import java.util.function.Function;
+import kvadrato.utils.Vec2;
+import kvadrato.utils.Vec2r;
+import kvadrato.utils.Vec2rs;
+import kvadrato.game.Component;
+import kvadrato.game.Entity;
+import kvadrato.game.components.Camera;
 
 public class Camera extends Component
 {
-  private Function<Entity,Eye> eyeFn;
-
-
-  public void setFn(Function<Entity,Eye>fn)
+  private Function<Entity,Vec2rs> eyeFn;
+  public void setFn(Function<Entity,Vec2rs>fn)
   {
     eyeFn=fn;
   }
-
-  public Eye getEye()
+  public Vec2rs getEye()
   {
-    Transform place;
+    Vec2r place;
     double scale;
     if(eyeFn==null)
     {
@@ -31,14 +28,13 @@ public class Camera extends Component
       }
       else
       {
-        place=new Transform();
+        place=new Vec2r();
       }
       scale=1.0;
     }
     else return eyeFn.apply(this.getEntity());
-    return new Eye(place.x,place.y,place.angle,scale);
+    return new Vec2rs(place,scale);
   }
-
   public void fix(){}
   public void doThings(){}
   public void update(){}

@@ -10,29 +10,21 @@ import kvadrato.game.appearance.AppearanceElement;
 
 public class Appearance extends Component
 {
-
-  //List<AppearanceElement> elements;
-
   private Function<Entity,List<AppearanceElement>> fn;
-
   public Appearance()
   {
-    //elements=new ArrayList<AppearanceElement>();
     fn=null;
   }
-
   public void setFn(Function<Entity,List<AppearanceElement>> func)
   {
     fn=func;
   }
   public List<AppearanceElement> getElements()
   {
-    //return Collections.unmodifiableList(elements);
     if(fn!=null)
       return fn.apply(getEntity());
     return null;
   }
-
   public void fix(){}
   public void doThings(){}
   public void update(){}

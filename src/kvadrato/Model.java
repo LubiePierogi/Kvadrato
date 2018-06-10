@@ -4,7 +4,7 @@ import kvadrato.game.WorldAccess;
 import kvadrato.game.Vector2d;
 import kvadrato.game.Entity;
 import kvadrato.game.prefabs.Square;
-import kvadrato.game.GameException;
+import kvadrato.utils.GameException;
 import kvadrato.game.ViewOfWorld;
 import kvadrato.game.Transform;
 import kvadrato.game.components.Physics;

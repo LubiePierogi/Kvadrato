@@ -1,12 +1,12 @@
 package kvadrato.game.components;
 
-import kvadrato.game.Component;
-import kvadrato.game.collision.Shape;
-import kvadrato.game.collision.Collision;
-import kvadrato.game.Entity;
 import java.util.Map;
 import java.util.TreeMap;
+import kvadrato.game.Component;
+import kvadrato.game.Entity;
 import kvadrato.game.TriConsumer;
+import kvadrato.game.collision.Shape;
+import kvadrato.game.collision.Collision;
 
 /**
  * Komponent odpowiadający za możliwość zderzania obiektu z innymi rzeczami
@@ -33,16 +33,10 @@ public class Collider extends Component
    * z kolizją.
    */
   TriConsumer<Entity,Entity,Collision> fn;
-
   public Collider()
   {
     collisions=new TreeMap<Entity,Collision>();
   }
-
-
-
-
-
   /**
    * Zwraca aktualny kształt obiektu.
    */
@@ -57,7 +51,6 @@ public class Collider extends Component
   {
     return shape; // To później się zmieni.
   }
-
   /**
    * Ustawia kształt obiektu, który będzie aktualny w następnym kroku na
    * świecie.
@@ -66,7 +59,6 @@ public class Collider extends Component
   {
     shapeNew=sh;
   }
-
   /**
    * Dodaje kolizję do obsłużenia w następnym kroku.
    */
@@ -78,7 +70,6 @@ public class Collider extends Component
   {
     fn=func;
   }
-
   public void fix()
   {
     // Fix może być pusty, bo nigdy nie bęzie w liście jednostki, której nie ma

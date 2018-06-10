@@ -1,11 +1,11 @@
 package kvadrato.game.appearance;
 
-import kvadrato.game.other.BackgroundColor;
+import kvadrato.game.other.BgColor;
 
 public class ObstacleRectangle extends AppearanceElement
 {
 
-  public BackgroundColor color;
+  public BgColor color;
 
   public double width;
   public double height;

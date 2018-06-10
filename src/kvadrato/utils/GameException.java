@@ -1,4 +1,4 @@
-package kvadrato.game;
+package kvadrato.utils;
 import java.io.IOException;
 /**
  * Wyjątek rzucany przez grę.

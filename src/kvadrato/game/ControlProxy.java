@@ -4,16 +4,15 @@ import java.util.Objects;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class ControlThing
+public class ControlProxy
 {
   private Map<String,String> q;
-  public ControlThing()
+  public ControlProxy()
   {
     q=new TreeMap<String,String>();
   }
   public synchronized String get(String what)
   {
-    //System.out.println("Wywołano get w ControlThing dla "+what+"!");
     String x=q.get(what);
     if(x==null)
       return "";
