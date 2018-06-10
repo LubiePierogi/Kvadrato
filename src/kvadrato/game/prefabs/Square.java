@@ -1,11 +1,13 @@
 package kvadrato.game.prefabs;
 
+import java.lang.Math;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.function.Function;
 
 import kvadrato.utils.GameException;
 import kvadrato.utils.vec2.Vec2dr;
+import kvadrato.utils.vec2.Vec2drs;
 import kvadrato.game.Entity;
 import kvadrato.game.Prefab;
 import kvadrato.game.ControlProxy;
@@ -15,6 +17,7 @@ import kvadrato.game.components.Physics;
 import kvadrato.game.components.BgColorComponent;
 import kvadrato.game.components.Control;
 import kvadrato.game.components.Locomotor;
+import kvadrato.game.components.Camera;
 import kvadrato.game.appearance.SquareSquare;
 import kvadrato.game.appearance.AppearanceElement;
 
@@ -47,13 +50,17 @@ public class Square extends Prefab
     boolean down=!ctl.get("down").equals("");
     boolean left=!ctl.get("left").equals("");
     if(up&&!down)
-      a=a.addDR(new Vec2dr(1,0,0));
+      a=a.addDR(new Vec2dr(8,0,0));
     if(!up&&down)
-      a=a.addDR(new Vec2dr(-.25,0,0));
+      a=a.addDR(new Vec2dr(-2,0,0));
     if(right&&!left)
-      a=a.addDR(new Vec2dr(0,0,-1.8));
+      a=a.addDR(new Vec2dr(0,0,-12));
     if(!right&&left)
-      a=a.addDR(new Vec2dr(0,0,1.8));
+      a=a.addDR(new Vec2dr(0,0,12));
+
+    Physics ph=(Physics)ent.getComponent("Physics");
+
+    a=a.rotateD(ph.getPlace().angle);
 
     String cc=ctl.get("color");
     BgColorComponent sc=(BgColorComponent)ent.getComponent("BgColorComponent");
@@ -74,8 +81,16 @@ public class Square extends Prefab
   {
     Physics physics=(Physics)ent.getComponent("Physics");
     Vec2dr v=physics.getVelocity();
-    v=v.mulDR(-.75);
+    v=v.mulDR(-3.);
     return v;
+  };
+  private final static Function<Entity,Vec2drs>cameraFn=ent->
+  {
+    Physics physics=(Physics)ent.getComponent("Physics");
+    Vec2dr place=physics.getPlace();
+    Vec2dr velocity=physics.getVelocity();
+    double v=velocity.dist();
+    return new Vec2drs(place.x,place.y,place.angle-Math.PI/2.,1.);
   };
   public void makeEntity(Entity ent)
     throws GameException
@@ -102,7 +117,8 @@ public class Square extends Prefab
     }
     // Camera
     {
-      // W kamerze nic nie zmieniamy.
+      Camera q=(Camera)ent.getComponent("Camera");
+      q.setFn(cameraFn);
     }
     // Control
     {

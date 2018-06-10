@@ -33,5 +33,22 @@ public class Vec2drs// extends Vec2dr
   public Vec2drs(Vec2dr q,double s)
   {x=q.x;y=q.y;angle=q.angle;scale=s;}
   public Vec2drs(Vec2drs q)
-  {x=q.x;y=q.y;angle=q.scale;scale=q.scale;}
+  {x=q.x;y=q.y;angle=q.angle;scale=q.scale;}
+
+  public Vec2drs mulDRS(double number)
+  {
+    return new Vec2drs(x*number,y*number,angle*number,scale*number);
+  }
+
+  public Vec2drs transform(Vec2drs v)
+  {
+    return new Vec2drs
+    (
+      x+scale*(v.x*Math.cos(angle)-v.y*Math.sin(angle)),
+      y+scale*(v.y*Math.cos(angle)+v.x*Math.sin(angle)),
+      angle+v.angle,
+      scale*v.scale
+    );
+}
+
 }

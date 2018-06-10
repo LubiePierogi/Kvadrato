@@ -9,6 +9,7 @@ import kvadrato.utils.vec2.Vec2d;
 import kvadrato.game.other.BgColor;
 import kvadrato.game.appearance.AppearanceElement;
 import kvadrato.game.appearance.ObstacleRectangle;
+import kvadrato.view.Backgrounds;
 
 public class ViewObstacleRectangle extends ViewAppearanceElement
 {
@@ -27,6 +28,7 @@ public class ViewObstacleRectangle extends ViewAppearanceElement
     bg=ee.color;
     width=ee.width;
     height=ee.height;
+    bg=ee.bgColor;
   }
   public void draw(GraphicsContext context)
   {
@@ -34,11 +36,7 @@ public class ViewObstacleRectangle extends ViewAppearanceElement
     {
       bg=BgColor.WHITE;
     }
-    switch(bg)
-    {
-      case WHITE:context.setFill(new Color(.5,.5,.5,1.));break;
-      default:context.setFill(new Color(.2,.4,.6,1.));
-    }
+    context.setFill(Backgrounds.bgToObstacle(bg));
     context.fillRect(-.5*width,-.5*height,width,height);
   }
 }

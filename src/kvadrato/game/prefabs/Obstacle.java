@@ -27,6 +27,7 @@ public class Obstacle extends Prefab
     ObstacleRectangle rect=new ObstacleRectangle();
     ObstacleComponent oc=
       (ObstacleComponent)ent.getComponent("ObstacleComponent");
+    BgColorComponent bg=(BgColorComponent)ent.getComponent("BgColorComponent");
     rect.x=0.;
     rect.y=0.;
     rect.angle=0.;
@@ -34,6 +35,7 @@ public class Obstacle extends Prefab
     Vec2d v=oc.getSize();
     rect.width=v.x;
     rect.height=v.y;
+    rect.bgColor=bg.getColor();
     list.add(rect);
     return list;
   };

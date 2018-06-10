@@ -95,14 +95,16 @@ public class ViewOfWorld
   }
   private void addAe(AppearanceElement ae,Vec2drs eye,Vec2dr place)
   {
-    Vec2dr tr=new Vec2dr(ae.x,ae.y,ae.angle);
-    Vec2dr ey=new Vec2dr(eye.x,eye.y,0);
-    tr=tr.subDR(ey);
-    tr=tr.addDR(place);
-    ae.x=tr.x;
-    ae.y=tr.y;
-    ae.angle=tr.angle;
-    ae.scale=tr.angle;
+    Vec2drs q=computeTransform(ae.getVec(),eye,place);
+    ae.setVec(q);
     things.add(ae);
+  }
+  private static Vec2drs computeTransform(Vec2drs base,Vec2drs eye,Vec2dr place)
+  {
+    Vec2drs q=new Vec2drs(0.,0.,-eye.angle,eye.scale);
+    Vec2drs w=new Vec2drs(-eye.x,-eye.y,0.,1.);
+    Vec2drs e=new Vec2drs(place);
+    Vec2drs r=base;
+    return ((q.transform(w)).transform(e)).transform(r);
   }
 }

@@ -45,7 +45,7 @@ public class Vec2dr// extends Vec2d
   }
   public Vec2dr subDR(Vec2dr q)
   {
-    return new Vec2dr(x-q.x,y-q.y,angle+q.angle);
+    return new Vec2dr(x-q.x,y-q.y,angle-q.angle);
   }
   public Vec2dr mulD(double number)
   {
@@ -55,17 +55,6 @@ public class Vec2dr// extends Vec2d
   {
     return new Vec2dr(x*number,y*number,angle*number);
   }
-
-  public Vec2dr /*add*/ transform(Vec2dr q)
-  {
-    return new Vec2dr
-    (
-      x+q.x*Math.cos(angle)-q.y*Math.sin(angle),
-      y+q.y*Math.cos(angle)+q.x*Math.sin(angle),
-      angle+q.angle
-    );
-  }
-
 
   public double dist()
   {
@@ -78,6 +67,15 @@ public class Vec2dr// extends Vec2d
       x*Math.cos(a)-y*Math.sin(a),
       y*Math.cos(a)+x*Math.sin(a),
       angle+a
+    );
+  }
+  public Vec2dr rotateD(double a)
+  {
+    return new Vec2dr
+    (
+      x*Math.cos(a)-y*Math.sin(a),
+      y*Math.cos(a)+x*Math.sin(a),
+      angle
     );
   }
 }

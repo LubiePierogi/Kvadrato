@@ -27,7 +27,7 @@
     </target>
     <target name="jar" depends="compile" description="create jar">
       <jar destfile="Kvadrato.jar">
-        <fileset dir="build" includes="**/*.class"/>
+        <fileset dir="build" includes="**/*.class" excludes="**/*Test.class"/>
         <manifest>
           <attribute name="Main-Class" value="kvadrato.App"/>
           <attribute name="Class-Path" value="${libs.cp}"/>
@@ -37,5 +37,18 @@
     <target name="roll" depends="clean,compile,run"/>
     <target name="run" depends="compile">
       <java fork="true" classname="kvadrato.App" dir="build"/>
+    </target>
+    <target name="compileTest" depends="compile">
+      <javac
+        srcdir="src"
+        destdir="build"
+        includeantruntime="false"
+        includes="**/*Test.java"
+      >
+        <classpath refid="3classpath"/>
+      </javac>
+    </target>
+    <target name="test" depends="compileTest">
+      <java fork="true" classname="kvadrato.Test" dir="build"/>
     </target>
   </project>

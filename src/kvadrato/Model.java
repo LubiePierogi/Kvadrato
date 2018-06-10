@@ -8,9 +8,11 @@ import kvadrato.game.Entity;
 import kvadrato.game.WorldAccess;
 import kvadrato.game.ViewOfWorld;
 import kvadrato.game.ControlProxy;
+import kvadrato.game.other.BgColor;
 import kvadrato.game.components.Physics;
 import kvadrato.game.components.Control;
 import kvadrato.game.components.ObstacleComponent;
+import kvadrato.game.components.BgColorComponent;
 import kvadrato.game.prefabs.Square;
 
 public class Model
@@ -98,21 +100,23 @@ public class Model
       ((Control)player.getComponent("Control")).setProxy(cp);
       //Entity dwa=wa.spawn("Square");
       ((Physics)player.getComponent("Physics")).addPlace
-        (new Vec2dr(0.15,0.2,3.14159*0.25));
+        (new Vec2dr(0,0,0));
       Entity two=wa.spawn("Square");
       ((Physics)two.getComponent("Physics")).addPlace
-        (new Vec2dr(-1.,-1.,0.));
+        (new Vec2dr(-.5,-.5,0.));
 
 
       Entity enemy=wa.spawn("Obstacle");
       ((Physics)enemy.getComponent("Physics")).addPlace
-        (new Vec2dr(.5,-.5,0));
+        (new Vec2dr(.5,.5,0));
       ((ObstacleComponent)enemy.getComponent("ObstacleComponent")).setSize
         (0.2,0.1);
 
       enemy=wa.spawn("Obstacle");
       ((Physics)enemy.getComponent("Physics")).addPlace
-        (new Vec2dr(2.5,-3.5,0));
+        (new Vec2dr(.5,-.5,0));
+      ((BgColorComponent)enemy.getComponent("BgColorComponent")).setColor
+        (BgColor.RED);
 
 
       enemy=wa.spawn("Obstacle");
@@ -157,7 +161,7 @@ public class Model
     wa=world.getAccess();
     try
     {
-      return wa.getView(viewPointer,15.0);
+      return wa.getView(viewPointer,3.0);
     }
     catch(GameException exc)
     {
