@@ -31,6 +31,8 @@ public final class Renderer
     double width=800;
     double height=600;
     ViewOfWorld view=model.getWorldView();
+    if(view==null)
+      return;
     BgColor bgColor=view.getBgColor();
     ViewAppearanceElement vae;
     context.setTransform(1.,0.,0.,1.,0.,0.);

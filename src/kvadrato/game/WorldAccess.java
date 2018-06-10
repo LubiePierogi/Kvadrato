@@ -71,7 +71,7 @@ public class WorldAccess
   {
     return world.runs();
   }
-  public ViewOfWorld getView(Entity where,double distance)
+  public ViewOfWorld getView(Entity where,double distance) throws GameException
   {
     return new ViewOfWorld(world,where,distance);
   }

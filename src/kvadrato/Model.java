@@ -159,6 +159,10 @@ public class Model
     {
       return wa.getView(viewPointer,15.0);
     }
+    catch(GameException exc)
+    {
+      return null;
+    }
     finally
     {
       wa.drop();

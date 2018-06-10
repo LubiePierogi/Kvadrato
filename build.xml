@@ -14,22 +14,28 @@
     </target>
     <target name="compile" description="make class files">
       <mkdir dir="build"/>
-      <javac srcdir="src" destdir="build" includeantruntime="false">
+      <mkdir dir="libs"/>
+      <javac
+        srcdir="src"
+        destdir="build"
+        includeantruntime="false"
+        excludes="**/*Test.java"
+      >
         <classpath refid="3classpath"/>
       </javac>
+      <copy file="src/kvadrato/view/gui.fxml" todir="build/kvadrato/view"/>
     </target>
     <target name="jar" depends="compile" description="create jar">
       <jar destfile="Kvadrato.jar">
         <fileset dir="build" includes="**/*.class"/>
-        <fileset dir="src" includes="**/*.fxml"/>
         <manifest>
           <attribute name="Main-Class" value="kvadrato.App"/>
           <attribute name="Class-Path" value="${libs.cp}"/>
         </manifest>
       </jar>
     </target>
-    <target name="roll" depends="clean,jar,run"/>
-    <target name="run" depends="jar">
-      <java fork="true" jar="Kvadrato.jar"/>
+    <target name="roll" depends="clean,compile,run"/>
+    <target name="run" depends="compile">
+      <java fork="true" classname="kvadrato.App" dir="build"/>
     </target>
   </project>
