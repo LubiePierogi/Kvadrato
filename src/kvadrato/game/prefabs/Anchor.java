@@ -24,7 +24,7 @@ public class Anchor extends Prefab
   {
     ent.addComponent("Physics");
     ent.addComponent("Appearance");
-
+    ent.addComponent("Camera");
 
     // Appearance
     {

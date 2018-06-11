@@ -125,9 +125,14 @@ public class Square extends Prefab
   private final static Function<Entity,Vec2drs>cameraFn=ent->
   {
     Physics physics=(Physics)ent.getComponent("Physics");
+    Entity a=physics.getAnchor();
+    if(a!=null)
+    {
+      Camera ac=(Camera)a.getComponent("Camera");
+      if(ac!=null)
+        return ac.getEye();
+    }
     Vec2dr place=physics.getPlace();
-    Vec2dr velocity=physics.getVelocity();
-    double v=velocity.dist();
-    return new Vec2drs(place.x,place.y,place.angle-Math.PI/2.,1./9.);
+    return new Vec2drs(place.x,place.y,place.angle-Math.PI/2.,1./1.);
   };
 }

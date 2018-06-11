@@ -86,6 +86,10 @@ public class Physics extends Component
   {
     anchorNew=null;
   }
+  public Entity getAnchor()
+  {
+    return anchor;
+  }
 
   public void fix()
   {
