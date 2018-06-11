@@ -10,37 +10,34 @@ import kvadrato.game.appearance.AppearanceElement;
 
 public class Appearance extends Component
 {
-  private boolean ignoreDistance;
-  private boolean ignoreDistanceNew;
-  private Function<Entity,List<AppearanceElement>> fn;
+  private Function<Entity,Double> renderDistanceFn;
+  private Function<Entity,List<AppearanceElement>> listFn;
   public Appearance()
   {
-    fn=null;
-    ignoreDistance=false;
-    ignoreDistanceNew=false;
+    listFn=null;
+    renderDistanceFn=null;
   }
   public void setFn(Function<Entity,List<AppearanceElement>> func)
   {
-    fn=func;
+    listFn=func;
+  }
+  public void setRenderDistanceFn(Function<Entity,Double>func)
+  {
+    renderDistanceFn=func;
   }
   public List<AppearanceElement> getElements()
   {
-    if(fn!=null)
-      return fn.apply(getEntity());
+    if(listFn!=null)
+      return listFn.apply(getEntity());
     return null;
   }
-  public void setIgnoreDistance(boolean q)
+  public double getRenderDistance()
   {
-    ignoreDistanceNew=q;
-  }
-  public boolean getIgnoreDistance()
-  {
-    return ignoreDistance;
+    if(renderDistanceFn!=null)
+      return renderDistanceFn.apply(getEntity());
+    return 0.0;
   }
   public void fix(){}
   public void doThings(){}
-  public void update()
-  {
-    ignoreDistance=ignoreDistanceNew;
-  }
+  public void update(){}
 }

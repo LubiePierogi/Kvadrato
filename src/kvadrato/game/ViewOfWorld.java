@@ -85,12 +85,9 @@ public class ViewOfWorld
     if(physics==null)
       return;
     Vec2dr place=physics.getPlace();
-    if(!appearance.getIgnoreDistance())
-    {
-      Vec2d diff=new Vec2d(eye).subD(new Vec2d(place));
-      if(diff.dist()>dist)
-        return;
-    }
+    Vec2d diff=new Vec2d(eye).subD(new Vec2d(place));
+    if(diff.dist()>dist+appearance.getRenderDistance())
+      return;
     for(AppearanceElement x:list)
     {
       addAe(x,eye,place);

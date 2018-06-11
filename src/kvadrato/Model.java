@@ -133,6 +133,17 @@ public class Model
         (WallColor.INFINITE);
       ((WallComponent)wall.getComponent("WallComponent")).setSize
         (new Vec2d(5,1./3.));
+
+
+        wall=wa.spawn("Wall");
+        ((Physics)wall.getComponent("Physics")).addPlace
+          (new Vec2dr(3,0,0));
+        ((WallComponent)wall.getComponent("WallComponent")).setColor
+          (WallColor.MOVING);
+        ((WallComponent)wall.getComponent("WallComponent")).setSize
+          (new Vec2d(1./3.,4));
+
+
     }
     catch(GameException exc)
     {
