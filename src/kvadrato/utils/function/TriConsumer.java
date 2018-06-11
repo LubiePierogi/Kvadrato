@@ -1,4 +1,4 @@
-package kvadrato.game;
+package kvadrato.utils.function;
 
 import java.util.Objects;
 

@@ -75,19 +75,22 @@ public class ViewOfWorld
   }
   private void addEnt(Entity ent,Vec2drs eye,double dist)
   {
-    Physics physics=(Physics)ent.getComponent("Physics");
-    if(physics==null)
-      return;
-    Vec2dr place=physics.getPlace();
-    Vec2d diff=new Vec2d(eye).subD(new Vec2d(place));
-    if(diff.dist()>dist)
-      return;
     Appearance appearance=(Appearance)ent.getComponent("Appearance");
     if(appearance==null)
       return;
     List<AppearanceElement>list=appearance.getElements();
     if(list==null)
       return;
+    Physics physics=(Physics)ent.getComponent("Physics");
+    if(physics==null)
+      return;
+    Vec2dr place=physics.getPlace();
+    if(!appearance.getIgnoreDistance())
+    {
+      Vec2d diff=new Vec2d(eye).subD(new Vec2d(place));
+      if(diff.dist()>dist)
+        return;
+    }
     for(AppearanceElement x:list)
     {
       addAe(x,eye,place);

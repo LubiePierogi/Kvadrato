@@ -3,9 +3,9 @@ package kvadrato.game.components;
 import java.util.Map;
 import java.util.TreeMap;
 
+import kvadrato.utils.function.TriConsumer;
 import kvadrato.game.Component;
 import kvadrato.game.Entity;
-import kvadrato.game.TriConsumer;
 import kvadrato.game.collision.Shape;
 import kvadrato.game.collision.Collision;
 
