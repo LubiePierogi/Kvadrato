@@ -158,10 +158,7 @@ public class Model
 
         Entity daemon=wa.spawn("GameDaemon");
         ((GameDaemonComponent)daemon.getComponent("GameDaemonComponent")).
-          begin(player);
-
-//        Entity anchor=wa.spawn("Anchor");
-
+          begin(null);
     }
     catch(GameException exc)
     {

@@ -108,23 +108,27 @@ public class Physics extends Component
   {
     if(fn!=null)
       accelerate(fn.apply(getEntity()));
-  }
-  public void update()
-  {
-    place=placeNew.addDR(velocity.mulDR(getDelta()));
-    velocity=velocityNew;
+
+    placeNew=placeNew.addDR(velocity.mulDR(getDelta()));
+    velocityNew=velocityNew;
+
     if(anchor!=null)
     {
       Physics ph=((Physics)anchor.getComponent("Physics"));
       Vec2dr w=ph.getPlace();
       Vec2dr q=ph.getVelocity().mulDR(getDelta());
       Vec2d e=new Vec2d(w);
-      Vec2d diff=(new Vec2d(place)).subD(e);
+      Vec2d diff=(new Vec2d(placeNew)).subD(e);
       diff=diff.rotateD(q.angle);
-      place=new Vec2dr((e.addD(diff)),place.angle);
-      place=place.addDR(q);
-      velocity=velocity.rotateD(q.angle);
+      placeNew=new Vec2dr((e.addD(diff)),placeNew.angle);
+      placeNew=placeNew.addDR(q);
+      velocityNew=velocityNew.rotateD(q.angle);
     }
+  }
+  public void update()
+  {
+    place=placeNew;
+    velocity=velocityNew;
     anchor=anchorNew;
     //System.out.print("Miejsce:\n## "+place.x+"\n## "+place.y+"\nPrędkość:\n## "+velocity.x+"\n## "+velocity.y+'\n');
   }
