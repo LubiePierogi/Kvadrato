@@ -143,6 +143,7 @@ public class Model
         ((WallComponent)wall.getComponent("WallComponent")).setSize
           (new Vec2d(1./3.,4));
 
+        Entity daemon=wa.spawn("GameDaemon");
 
     }
     catch(GameException exc)
@@ -183,7 +184,7 @@ public class Model
     wa=world.getAccess();
     try
     {
-      return wa.getView(viewPointer,3.0);
+      return wa.getView(viewPointer,2.4);
     }
     catch(GameException exc)
     {

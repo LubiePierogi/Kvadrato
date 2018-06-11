@@ -28,7 +28,6 @@ public class ViewObstacleRectangle extends ViewAppearanceElement
     bg=ee.color;
     width=ee.width;
     height=ee.height;
-    bg=ee.bgColor;
   }
   public void draw(GraphicsContext context)
   {

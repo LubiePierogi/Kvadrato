@@ -35,7 +35,7 @@ public class Obstacle extends Prefab
     Vec2d v=oc.getSize();
     rect.width=v.x;
     rect.height=v.y;
-    rect.bgColor=bg.getColor();
+    rect.color=bg.getColor();
     list.add(rect);
     return list;
   };

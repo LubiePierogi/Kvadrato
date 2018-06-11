@@ -9,6 +9,6 @@ public class GameDaemon extends Prefab
   public void makeEntity(Entity ent)
     throws GameException
   {
-    throw new GameException();
+    ent.addComponent("GameDaemonComponent");
   }
 }
