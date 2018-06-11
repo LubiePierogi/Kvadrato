@@ -128,6 +128,6 @@ public class Square extends Prefab
     Vec2dr place=physics.getPlace();
     Vec2dr velocity=physics.getVelocity();
     double v=velocity.dist();
-    return new Vec2drs(place.x,place.y,place.angle-Math.PI/2.,1.);
+    return new Vec2drs(place.x,place.y,place.angle-Math.PI/2.,1./9.);
   };
 }
