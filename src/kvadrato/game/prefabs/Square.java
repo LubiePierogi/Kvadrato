@@ -41,6 +41,7 @@ public class Square extends Prefab
     {
       Appearance q=(Appearance)ent.getComponent("Appearance");
       q.setFn(appearanceFn);
+      q.setRenderDistanceFn(renderDistanceFn);
     }
 
     // Physics
@@ -58,7 +59,7 @@ public class Square extends Prefab
     {
       // Tu na razie też nic.
     }
-    // SquareComponent
+    // Locomotor
     {
       Locomotor q=(Locomotor)ent.getComponent("Locomotor");
       q.setFn(locomotorFn);
@@ -134,5 +135,9 @@ public class Square extends Prefab
     }
     Vec2dr place=physics.getPlace();
     return new Vec2drs(place.x,place.y,place.angle-Math.PI/2.,1./1.);
+  };
+  private final static Function<Entity,Double>renderDistanceFn=ent->
+  {
+    return .25*1.41;
   };
 }

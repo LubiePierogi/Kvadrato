@@ -36,7 +36,7 @@ public class Wall extends Prefab
     {
       Appearance q=(Appearance)ent.getComponent("Appearance");
       q.setFn(appearanceFn);
-      //q.setIgnoreDistance(true);
+      q.setRenderDistanceFn(renderDistanceFn);
     }
   }
   public final static Function<Entity,List<AppearanceElement>>appearanceFn=ent->
@@ -54,5 +54,9 @@ public class Wall extends Prefab
     ae.color=w.getColor();
     list.add(ae);
     return list;
+  };
+  private final static Function<Entity,Double>renderDistanceFn=ent->
+  {
+    return ((WallComponent)ent.getComponent("WallComponent")).getSize().dist();
   };
 }

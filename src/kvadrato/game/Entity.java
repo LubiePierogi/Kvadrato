@@ -70,7 +70,6 @@ public class Entity
    */
   public final void doThings()
   {
-    //System.out.println("vvvvvvvvvvvvvvvvvvvvv");
     try
     {
       components.forEach((k,v)->

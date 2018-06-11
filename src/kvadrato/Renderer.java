@@ -19,8 +19,8 @@ public final class Renderer
   public static void set(GraphicsContext context,AppearanceElement e)
   {
     context.setTransform(1.,0.,0.,1.,0.,0.);
-    context.translate(400.+200.*e.x,300.-200.*e.y);
-    context.scale(e.scale*200.,-e.scale*200.);
+    context.translate(400.+100.*e.x,300.-100.*e.y);
+    context.scale(e.scale*100.,-e.scale*100.);
     context.rotate(e.angle*180./Math.PI);
 
     // To jest i tak do poprawienia chyba.

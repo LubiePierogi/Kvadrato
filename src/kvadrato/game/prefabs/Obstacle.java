@@ -52,6 +52,13 @@ public class Obstacle extends Prefab
     {
       Appearance q=(Appearance)ent.getComponent("Appearance");
       q.setFn(appearanceFn);
+      q.setRenderDistanceFn(renderDistanceFn);
     }
   }
+  private final static Function<Entity,Double>renderDistanceFn=ent->
+  {
+    return
+      ((ObstacleComponent)ent.getComponent("ObstacleComponent"))
+      .getSize().dist();
+  };
 }

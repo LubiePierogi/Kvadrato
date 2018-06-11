@@ -105,7 +105,7 @@ public class Model
       ((Physics)player.getComponent("Physics")).addPlace
         (new Vec2dr(0,0,0));
       ((Physics)player.getComponent("Physics")).addVelocity
-        (new Vec2dr(0,0,-1.));
+        (new Vec2dr(0,0,0));
 
       Entity two=wa.spawn("Square");
       ((Physics)two.getComponent("Physics")).addPlace
@@ -158,7 +158,7 @@ public class Model
 
         Entity daemon=wa.spawn("GameDaemon");
         ((GameDaemonComponent)daemon.getComponent("GameDaemonComponent")).
-          begin(null);
+          begin(player,0);
     }
     catch(GameException exc)
     {
@@ -186,7 +186,7 @@ public class Model
     wa=world.getAccess();
     try
     {
-      wa.setSpeed(0.0);
+      wa.setSpeed(12.0);
     }
     finally
     {
@@ -198,7 +198,7 @@ public class Model
     wa=world.getAccess();
     try
     {
-      return wa.getView(viewPointer,2.4);
+      return wa.getView(viewPointer,5.);
     }
     catch(GameException exc)
     {

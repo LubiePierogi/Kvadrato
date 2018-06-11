@@ -246,15 +246,15 @@ public final class World
     }
     catch(ClassNotFoundException exc)
     {
-      throw new GameException();
+      throw new GameException(exc);
     }
     catch(InstantiationException exc)
     {
-      throw new GameException();
+      throw new GameException(exc);
     }
     catch(IllegalAccessException exc)
     {
-      throw new GameException();
+      throw new GameException(exc);
     }
   }
   /**
@@ -306,10 +306,8 @@ public final class World
   private void doThingsAll()
   {
     Entity ent;
-    //System.out.println("DOTHINGSALL");
     for(int i=0;i<ents.size();++i)
     {
-      //System.out.println("-- "+i+" --");
       ent=ents.get(i);
       ent.doThings();
     }
@@ -336,8 +334,8 @@ public final class World
       ent=ents.get(i);
       if(ent.isRemoved())
       {
+        ent.world=null;
         ents.remove(i);
-        --i;
         continue;
       }
       ent.update();
