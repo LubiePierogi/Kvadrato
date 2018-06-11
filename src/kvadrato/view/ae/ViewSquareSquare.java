@@ -8,7 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 import kvadrato.game.other.BgColor;
 import kvadrato.game.appearance.AppearanceElement;
 import kvadrato.game.appearance.SquareSquare;
-import kvadrato.view.Backgrounds;
+import kvadrato.view.Colors;
 
 public class ViewSquareSquare extends ViewAppearanceElement
 {
@@ -24,7 +24,7 @@ public class ViewSquareSquare extends ViewAppearanceElement
   }
   public void draw(GraphicsContext context)
   {
-    context.setFill(Backgrounds.bgToSquare(bg));
+    context.setFill(Colors.bgToSquare(bg));
     context.fillRect(-.125,-.125,.25,.25);
   }
 }

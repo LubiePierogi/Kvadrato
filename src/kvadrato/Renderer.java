@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 import kvadrato.game.ViewOfWorld;
 import kvadrato.game.other.BgColor;
 import kvadrato.game.appearance.AppearanceElement;
-import kvadrato.view.Backgrounds;
+import kvadrato.view.Colors;
 import kvadrato.view.ae.ViewAppearanceElement;
 
 public final class Renderer
@@ -36,7 +36,7 @@ public final class Renderer
     BgColor bgColor=view.getBgColor();
     ViewAppearanceElement vae;
     context.setTransform(1.,0.,0.,1.,0.,0.);
-    context.setFill(Backgrounds.bgToBackground(bgColor));
+    context.setFill(Colors.bgToBackground(bgColor));
     context.fillRect(0,0,width,height);
     List<AppearanceElement> list=view.getThings();
     for(AppearanceElement e:list)

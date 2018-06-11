@@ -1,5 +1,7 @@
 package kvadrato.game;
 
+import java.util.function.Consumer;
+
 import kvadrato.utils.GameException;
 import kvadrato.game.World;
 
@@ -78,5 +80,16 @@ public class WorldAccess
   public void doImmediatelyTicks(int x) throws GameException
   {
     world.doImmediatelyTicks(x);
+  }
+  /**
+   * Ta funkcja pozwala na zrobienie wielu rzeczy na świecie.
+   */
+  public void doWork(Consumer<World> func)
+  {
+    // Ale ona jest dopiero do zrobienia.
+
+    // Ogólnie to to jest taki pomysł na zrobienie takiej fajnej enkapsulacji
+    // na świecie, ale mimo to umożliwienia robienia na nim zmian, ale
+    // pod muteksem.
   }
 }

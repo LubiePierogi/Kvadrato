@@ -9,10 +9,12 @@ import kvadrato.game.WorldAccess;
 import kvadrato.game.ViewOfWorld;
 import kvadrato.game.ControlProxy;
 import kvadrato.game.other.BgColor;
+import kvadrato.game.other.WallColor;
 import kvadrato.game.components.Physics;
 import kvadrato.game.components.Control;
 import kvadrato.game.components.ObstacleComponent;
 import kvadrato.game.components.BgColorComponent;
+import kvadrato.game.components.WallComponent;
 import kvadrato.game.prefabs.Square;
 
 public class Model
@@ -122,6 +124,15 @@ public class Model
       enemy=wa.spawn("Obstacle");
       ((Physics)enemy.getComponent("Physics")).addPlace
         (new Vec2dr(-.8,0,0));
+
+
+      Entity wall=wa.spawn("Wall");
+      ((Physics)wall.getComponent("Physics")).addPlace
+        (new Vec2dr(0,1,0));
+      ((WallComponent)wall.getComponent("WallComponent")).setColor
+        (WallColor.INFINITE);
+      ((WallComponent)wall.getComponent("WallComponent")).setSize
+        (new Vec2d(5,1./3.));
     }
     catch(GameException exc)
     {

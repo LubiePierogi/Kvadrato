@@ -18,14 +18,52 @@ import kvadrato.game.components.BgColorComponent;
 import kvadrato.game.components.Control;
 import kvadrato.game.components.Locomotor;
 import kvadrato.game.components.Camera;
-import kvadrato.game.appearance.SquareSquare;
 import kvadrato.game.appearance.AppearanceElement;
+import kvadrato.game.appearance.SquareSquare;
 
 /**
  * Klasa kwadratu, którym steruje gracz.
  */
 public class Square extends Prefab
 {
+  public void makeEntity(Entity ent)
+    throws GameException
+  {
+    ent.addComponent("Physics");
+    ent.addComponent("BgColorComponent");
+    ent.addComponent("Camera");
+    ent.addComponent("Collider");
+    ent.addComponent("Appearance");
+    ent.addComponent("Locomotor");
+    ent.addComponent("Control");
+
+    // Appearance
+    {
+      Appearance q=(Appearance)ent.getComponent("Appearance");
+      q.setFn(appearanceFn);
+    }
+
+    // Physics
+    {
+      Physics q=(Physics)ent.getComponent("Physics");
+      q.setMass(1.0);
+      q.setFn(physicsFn);
+    }
+    // Camera
+    {
+      Camera q=(Camera)ent.getComponent("Camera");
+      q.setFn(cameraFn);
+    }
+    // Control
+    {
+      // Tu na razie też nic.
+    }
+    // SquareComponent
+    {
+      Locomotor q=(Locomotor)ent.getComponent("Locomotor");
+      q.setFn(locomotorFn);
+    }
+  }
   private final static Function<Entity,List<AppearanceElement>>
     appearanceFn
     =ent->
@@ -92,42 +130,4 @@ public class Square extends Prefab
     double v=velocity.dist();
     return new Vec2drs(place.x,place.y,place.angle-Math.PI/2.,1.);
   };
-  public void makeEntity(Entity ent)
-    throws GameException
-  {
-    ent.addComponent("Physics");
-    ent.addComponent("BgColorComponent");
-    ent.addComponent("Camera");
-    ent.addComponent("Collider");
-    ent.addComponent("Appearance");
-    ent.addComponent("Locomotor");
-    ent.addComponent("Control");
-
-    // Appearance
-    {
-      Appearance q=(Appearance)ent.getComponent("Appearance");
-      q.setFn(appearanceFn);
-    }
-
-    // Physics
-    {
-      Physics q=(Physics)ent.getComponent("Physics");
-      q.setMass(1.0);
-      q.setFn(physicsFn);
-    }
-    // Camera
-    {
-      Camera q=(Camera)ent.getComponent("Camera");
-      q.setFn(cameraFn);
-    }
-    // Control
-    {
-      // Tu na razie też nic.
-    }
-    // SquareComponent
-    {
-      Locomotor q=(Locomotor)ent.getComponent("Locomotor");
-      q.setFn(locomotorFn);
-    }
-  }
 }
