@@ -1,4 +1,7 @@
 package kvadrato.game;
+
+import kvadrato.utils.GameException;
+
 public abstract class Component
 {
   public abstract void fix();
@@ -13,5 +16,10 @@ public abstract class Component
   protected final double getDelta()
   {
     return ent.world.getDeltaTime()/1000000000.;
+  }
+  protected final Entity spawnEnt(String name)
+    throws GameException
+  {
+    return ent.world.spawn(name);
   }
 }

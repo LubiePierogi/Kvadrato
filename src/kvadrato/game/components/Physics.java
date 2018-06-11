@@ -4,8 +4,15 @@ import java.util.function.Function;
 
 import kvadrato.utils.vec2.Vec2d;
 import kvadrato.utils.vec2.Vec2dr;
+import kvadrato.game.World;
 import kvadrato.game.Entity;
 import kvadrato.game.Component;
+
+//////
+// Szczegóły tego anchor i tak dalej:
+//  Na razie to działa tylko z prędkością, teleporty nic nie robią, bo nie jest
+//  to potrzebne.
+//////
 
 public class Physics extends Component
 {
@@ -17,6 +24,9 @@ public class Physics extends Component
 
   private double mass;
   private double massNew;
+
+  private Entity anchor;
+  private Entity anchorNew;
 
   private Function<Entity,Vec2dr>fn;
 
@@ -68,21 +78,50 @@ public class Physics extends Component
   {
     velocityNew=velocityNew.addDR(x.mulDR(getDelta()));
   }
+  public void attach(Entity e)
+  {
+    anchorNew=e;
+  }
+  public void detach()
+  {
+    anchorNew=null;
+  }
 
   public void fix()
   {
     placeNew=place;
     velocityNew=velocity;
+    if(anchor!=null)
+    {
+      World w=getEntity().getWorld();
+      if(w!=anchor.getWorld())
+        anchor=null;
+      if(w!=anchorNew.getWorld())
+        anchorNew=null;
+    }
   }
   public void doThings()
   {
     if(fn!=null)
-    accelerate(fn.apply(getEntity()));
+      accelerate(fn.apply(getEntity()));
   }
   public void update()
   {
     place=placeNew.addDR(velocity.mulDR(getDelta()));
     velocity=velocityNew;
+    if(anchor!=null)
+    {
+      Physics ph=((Physics)anchor.getComponent("Physics"));
+      Vec2dr w=ph.getPlace();
+      Vec2dr q=ph.getVelocity().mulDR(getDelta());
+      Vec2d e=new Vec2d(w);
+      Vec2d diff=(new Vec2d(place)).subD(e);
+      diff=diff.rotateD(q.angle);
+      place=new Vec2dr((e.addD(diff)),place.angle);
+      place=place.addDR(q);
+      velocity=velocity.rotateD(q.angle);
+    }
+    anchor=anchorNew;
     //System.out.print("Miejsce:\n## "+place.x+"\n## "+place.y+"\nPrędkość:\n## "+velocity.x+"\n## "+velocity.y+'\n');
   }
 }

@@ -28,7 +28,7 @@ public class App extends Application
     }
     catch(GameException exc)
     {
-      //System.out.println("Nie udało się włączyć gry.");
+      System.out.println("Nie udało się włączyć gry.");
     }
     finally
     {
@@ -36,14 +36,9 @@ public class App extends Application
     }
   }
   @Override
-  public void start(Stage mainStage) throws IOException
+  public void start(Stage mainStage) throws IOException,GameException
   {
-    try
-    {
-      model.init();
-    }
-    catch(GameException exc)
-    {}
+    model.init();
     win=mainStage;
     win.setTitle("Kvadrato");
     FXMLLoader loader=new

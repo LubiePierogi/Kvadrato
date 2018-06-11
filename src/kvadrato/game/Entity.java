@@ -71,10 +71,19 @@ public class Entity
   public final void doThings()
   {
     //System.out.println("vvvvvvvvvvvvvvvvvvvvv");
-    components.forEach((k,v)->
+    try
     {
-      v.doThings();
-    });
+      components.forEach((k,v)->
+      {
+        v.doThings();
+      });
+    }
+    catch(Throwable exc)
+    {
+      System.out.println("Funkcja doThings przy pewnej jednostce "+
+        this.prefabName+" rzuciła wyjątek.");
+      exc.printStackTrace(System.out);
+    }
   }
   /**
    * Funkcja wpisująca nowy stan jednostki w miejsce aktualnego/starego.

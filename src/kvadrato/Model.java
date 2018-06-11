@@ -15,6 +15,7 @@ import kvadrato.game.components.Control;
 import kvadrato.game.components.ObstacleComponent;
 import kvadrato.game.components.BgColorComponent;
 import kvadrato.game.components.WallComponent;
+import kvadrato.game.components.GameDaemonComponent;
 import kvadrato.game.prefabs.Square;
 
 public class Model
@@ -103,6 +104,9 @@ public class Model
       //Entity dwa=wa.spawn("Square");
       ((Physics)player.getComponent("Physics")).addPlace
         (new Vec2dr(0,0,0));
+      ((Physics)player.getComponent("Physics")).addVelocity
+        (new Vec2dr(0,0,-1.));
+
       Entity two=wa.spawn("Square");
       ((Physics)two.getComponent("Physics")).addPlace
         (new Vec2dr(-.5,-.5,0.));
@@ -143,7 +147,20 @@ public class Model
         ((WallComponent)wall.getComponent("WallComponent")).setSize
           (new Vec2d(1./3.,4));
 
+        for(int i=0;i<10;++i)
+        {
+          Entity zx=wa.spawn("Obstacle");
+          ((Physics)zx.getComponent("Physics")).addPlace
+            (new Vec2dr(0.,0.+.12*i,.08*i));
+          ((ObstacleComponent)zx.getComponent("ObstacleComponent")).setSize
+            (0.3,0.1);
+        }
+
         Entity daemon=wa.spawn("GameDaemon");
+        ((GameDaemonComponent)daemon.getComponent("GameDaemonComponent")).
+          begin(player);
+
+//        Entity anchor=wa.spawn("Anchor");
 
     }
     catch(GameException exc)

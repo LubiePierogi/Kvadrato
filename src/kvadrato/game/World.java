@@ -287,13 +287,10 @@ public final class World
    */
   void oneTick()
   {
-    //System.out.println("p[ikoiopopikoiopiojoijofd]");
     fixAll();
     computeCollisions();
     doThingsAll();
-    //System.out.println("ZXCCZXXCZCXZXCZXCZ");
     updateAll();
-    //System.out.println("pierogi");
   }
   /**
    */
