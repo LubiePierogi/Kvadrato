@@ -46,7 +46,8 @@ public class App extends Application
     {}
     win=mainStage;
     win.setTitle("Kvadrato");
-    FXMLLoader loader=new FXMLLoader(getClass().getResource("view/gui.fxml"));
+    FXMLLoader loader=new
+      FXMLLoader(getClass().getResource("/content/gui.fxml"));
     Parent root=loader.load();
     GUIController controller=loader.<GUIController>getController();
     controller.setModel(model);

@@ -23,11 +23,15 @@
       >
         <classpath refid="3classpath"/>
       </javac>
-      <copy file="src/kvadrato/view/gui.fxml" todir="build/kvadrato/view"/>
+      <copy todir="build/content"
+      >
+        <fileset dir="src/content"/>
+      </copy>
     </target>
     <target name="jar" depends="compile" description="create jar">
       <jar destfile="Kvadrato.jar">
         <fileset dir="build" includes="**/*.class" excludes="**/*Test.class"/>
+        <fileset dir="build" includes="content/**/*"/>
         <manifest>
           <attribute name="Main-Class" value="kvadrato.App"/>
           <attribute name="Class-Path" value="${libs.cp}"/>
