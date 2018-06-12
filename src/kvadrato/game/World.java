@@ -9,6 +9,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import kvadrato.utils.GameException;
+import kvadrato.utils.vec2.Vec2d;
+import kvadrato.utils.vec2.Vec2dr;
+import kvadrato.utils.vec2.Vec2drs;
 import kvadrato.game.Entity;
 import kvadrato.game.WorldAccess;
 import kvadrato.game.Component;
@@ -91,6 +94,9 @@ public final class World
 
     thread=null;
     nextEntId=1;
+
+    ents=new ArrayList<Entity>();
+
   }
   public void init() throws GameException
   {
@@ -101,8 +107,6 @@ public final class World
     }
     try
     {
-      ents=new ArrayList<Entity>();
-
       // Ustawiamy ilość odświeżeń świata przez jedną sekundę.
       tickrate=DefaultTickrate;
 
@@ -338,7 +342,11 @@ public final class World
   void oneTick()
   {
     fixWorld();
-    computeCollisions();
+    try
+    {
+      computeCollisions();
+    }
+    catch(GameException exc){}
     doThingsWorld();
     updateWorld();
   }
@@ -421,38 +429,54 @@ public final class World
    * i wpisuje je do tych obiektów.
    */
   private void computeCollisions()
+    throws GameException
   {
-    int theEnd1=ents.size()-1;
-    int theEnd2=ents.size();
+    //System.err.println("WQQERE");
+    //if(ents==null)System.err.println("$#@$#@");
+    int theEnd1;
+    //System.err.print("Xzxc");
+    int theEnd2;
+    //System.err.print("zxc");
     Entity ent1;
     Entity ent2;
     Collider col1;
-    Collider col2;/*
-    Collision collision;
+    Collider col2;
+    BakedShape sh1;
+    BakedShape sh2;
+    Physics ph1;
+    Physics ph2;
+    CollisionOccurrence collision;
+    theEnd1=ents.size()-1;
+    theEnd2=ents.size();
     for(int i=0;i<theEnd1;++i)
     {
       ent1=ents.get(i);
       col1=(Collider)ent1.getComponent("Collider");
       if(col1==null)
         continue;
+      ph1=(Physics)ent1.getComponent("Physics");
       for(int j=i+1;j<theEnd2;++j)
       {
-        ent2=ents.get(i);
+        //System.out.print("qweqw");
+        ent2=ents.get(j);
         col2=(Collider)ent2.getComponent("Collider");
         if(col2==null)
           continue;
+        ph2=(Physics)ent2.getComponent("Physics");
         // Teraz wiemy, że mamy parę dwóch możliwych do zderzenia obiektów.
-        collision=Collision.compute
-        (
-          col1.getShape(),
-          col2.getShape()
-        );
+        ElementaryShape s1=col1.getShape();
+        ElementaryShape s2=col2.getShape();
+        if(s1==null||s2==null)
+          continue;
+        sh1=new BakedShape(s1,new Vec2drs(ph1.getPlace()));
+        sh2=new BakedShape(s2,new Vec2drs(ph2.getPlace()));
+        collision=CollisionComputer.computeFromBaked(sh1,sh2);
         if(collision!=null)
         {
           col1.addCollision(ent2,collision);
           col2.addCollision(ent1,collision);
         }
       }
-    }*/
+    }
   }
 }

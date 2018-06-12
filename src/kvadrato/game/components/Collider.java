@@ -2,6 +2,7 @@ package kvadrato.game.components;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.Function;
 
 import kvadrato.utils.function.TriConsumer;
 import kvadrato.game.Component;
@@ -16,60 +17,46 @@ import kvadrato.game.collision.CollisionOccurrence;
 public class Collider extends Component
 {
   /**
-   * Aktualny kształt.
-   */
-  //private Shape shape;
-  /**
-   * Kształt, który przyjmie obiekt w następnym kroku świata.
-   */
-  //private Shape shapeNew;
-  /**
    * Mapa z kolizjami, które trzeba odsłużyć w następnej funkcji doThings().
    * Jest ona czyszczona w funkcji update().
    */
-  Map<Entity,CollisionOccurrence> collisions;
+  private Map<Entity,CollisionOccurrence> collisions;
   /**
    * Funkcja, która jeśli istnieje, to jest wywoływana dla jdnostki. Pierwszy
    * argument to ta jednostka, drugi to tamta inna, a trzeci to obiekt
    * z kolizją.
    */
-  TriConsumer<Entity,Entity,CollisionOccurrence> fn;
+  private TriConsumer<Entity,Entity,CollisionOccurrence> onCollideFn;
+  private Function<Entity,ElementaryShape> shapeFn;
   public Collider()
   {
     collisions=new TreeMap<Entity,CollisionOccurrence>();
   }
+  public void setShapeFn(Function<Entity,ElementaryShape> func)
+  {
+    shapeFn=func;
+  }
   /**
    * Zwraca aktualny kształt obiektu.
+   * Jeśli dało null, to znaczy, że obiekt się z niczym nie zderza.
    */
-  //public Shape getShape()
-  //{
-  //  return shape;
-  //}
+  public ElementaryShape getShape()
+  {
+    if(shapeFn!=null)
+      return shapeFn.apply(getEntity());
+    return null;
+  }
   /**
-   * Zwraca kształt obiektu z uwzględnieniem przesunięcia i obrotu.
+   * Dodaje kolizję do obsłużenia w następnym kroku.
    */
-  //public Shape getTransformedShape()
-  //{
-  //  return shape; // To później się zmieni.
-  //}
-  /**
-   * Ustawia kształt obiektu, który będzie aktualny w następnym kroku na
-   * świecie.
-   */
-  //public void setShape(Shape sh)
-  //{
-  ///  shapeNew=sh;
-  //}
-  ///**
-   //* Dodaje kolizję do obsłużenia w następnym kroku.
-   //*/
   public void addCollision(Entity ent,CollisionOccurrence col)
   {
     collisions.put(ent,col);
   }
-  public void setFn(TriConsumer<Entity,Entity,CollisionOccurrence> func)
+  public void setOnCollideFn
+    (TriConsumer<Entity,Entity,CollisionOccurrence> func)
   {
-    fn=func;
+    onCollideFn=func;
   }
   public void fix()
   {
@@ -78,15 +65,11 @@ public class Collider extends Component
   }
   public void doThings()
   {
-    if(fn!=null)
-      collisions.forEach((k,v)->{fn.accept(this.getEntity(),k,v);});
+    if(onCollideFn!=null)
+      collisions.forEach((k,v)->{onCollideFn.accept(this.getEntity(),k,v);});
   }
   public void update()
   {
-    //if(shapeNew!=null)
-    //{
-    //  shape=shapeNew;
-    //}
-    //collisions.clear();
+    collisions.clear();
   }
 }

@@ -20,6 +20,7 @@ import kvadrato.game.components.Locomotor;
 import kvadrato.game.components.Camera;
 import kvadrato.game.appearance.AppearanceElement;
 import kvadrato.game.appearance.SquareSquare;
+import kvadrato.game.collision.ElementaryShape;
 
 /**
  * Klasa kwadratu, którym steruje gracz.
@@ -139,5 +140,9 @@ public class Square extends Prefab
   private final static Function<Entity,Double>renderDistanceFn=ent->
   {
     return .25*1.41;
+  };
+  private final static Function<Entity,ElementaryShape>shapeFn=ent->
+  {
+    return null;
   };
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import kvadrato.utils.GameException;
 import kvadrato.utils.vec2.Vec2d;
 import kvadrato.utils.vec2.Vec2dr;
 import kvadrato.utils.vec2.Vec2drs;
@@ -20,7 +21,14 @@ public final class BakedShape
   List<Vec2d> vertices;
 
   public BakedShape(ElementaryShape sh,Vec2drs v)
+    throws GameException
   {
+    try
+    {
+      Objects.requireNonNull(sh);
+      Objects.requireNonNull(v);
+    }
+    catch(NullPointerException exc){throw new GameException(exc);}
     up   =-1./0.;
     right=-1./0.;
     down = 1./0.;
