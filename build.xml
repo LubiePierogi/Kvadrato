@@ -1,9 +1,15 @@
 <?xml version="1.0"?>
   <project name="Kvadrato" default="compile">
+
+
+
     <path id="3classpath">
-      <fileset dir="libs">
+      <fileset dir="lib">
         <include name="**/*.jar"/>
       </fileset>
+    </path>
+    <path id="zxc">
+       <pathelement location="build"/>
     </path>
     <manifestclasspath property="libs.cp" jarfile="Kvadrato.jar">
       <classpath refid="3classpath"/>
@@ -14,7 +20,7 @@
     </target>
     <target name="compile" description="make class files">
       <mkdir dir="build"/>
-      <mkdir dir="libs"/>
+      <mkdir dir="lib"/>
       <javac
         srcdir="src"
         destdir="build"
@@ -34,7 +40,7 @@
         <fileset dir="build" includes="content/**/*"/>
         <manifest>
           <attribute name="Main-Class" value="kvadrato.App"/>
-          <attribute name="Class-Path" value="${libs.cp}"/>
+          <attribute name="Class-Path" value="${lib.cp}"/>
         </manifest>
       </jar>
     </target>
@@ -50,9 +56,20 @@
         includes="**/*Test.java"
       >
         <classpath refid="3classpath"/>
+        <classpath path="/usr/share/java/junit.jar"/>
+        <classpath path="/usr/share/java/hamcrest-core.jar"/>
       </javac>
     </target>
     <target name="test" depends="compileTest">
-      <java fork="true" classname="kvadrato.Test" dir="build"/>
+      <junit  printsummary="yes" haltonfailure="yes" fork="true" dir="build">
+        <classpath refid="zxc"/>
+        <classpath refid="3classpath"/>
+        <classpath path="/usr/share/java/junit.jar"/>
+        <classpath path="/usr/share/java/hamcrest-core.jar"/>
+        <formatter type="plain"/>
+        <test
+          name="kvadrato.OverallTest">
+        </test>
+      </junit>
     </target>
   </project>
