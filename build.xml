@@ -1,8 +1,5 @@
 <?xml version="1.0"?>
   <project name="Kvadrato" default="compile">
-
-
-
     <path id="3classpath">
       <fileset dir="lib">
         <include name="**/*.jar"/>
@@ -67,9 +64,10 @@
         <classpath path="/usr/share/java/junit.jar"/>
         <classpath path="/usr/share/java/hamcrest-core.jar"/>
         <formatter type="plain"/>
-        <test
-          name="kvadrato.OverallTest">
-        </test>
+        <batchtest todir="testResult">
+          <fileset dir="build" includes="**/*Test.class"/>
+          <!--name="kvadrato.OverallTest">-->
+        </batchtest>
       </junit>
     </target>
   </project>
