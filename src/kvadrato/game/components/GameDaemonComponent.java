@@ -133,7 +133,7 @@ public class GameDaemonComponent extends Component
     if(anchor!=null)
     {
       Physics ph=(Physics)anchor.getComponent("Physics");
-      goalVelocityNew=goalVelocity+getDelta()*(.5/60.+goalVelocity*1./120.);
+      goalVelocityNew=goalVelocity+getDelta()*(1./120.+goalVelocity*1./360.);
       Vec2dr diff=new Vec2dr(goalVelocity-(ph.getVelocity().x),0,0);
       ph.addVelocity(diff);
       distanceCoveredNew=ph.getPlace().x;
