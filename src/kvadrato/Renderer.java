@@ -6,6 +6,7 @@ import java.util.List;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+import kvadrato.utils.GameException;
 import kvadrato.game.ViewOfWorld;
 import kvadrato.game.other.BgColor;
 import kvadrato.game.appearance.AppearanceElement;
@@ -27,6 +28,7 @@ public final class Renderer
   }
 
   public static void draw(GraphicsContext context,Model model)
+    throws GameException
   {
     double width=800;
     double height=600;

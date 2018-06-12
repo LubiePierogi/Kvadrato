@@ -3,8 +3,11 @@ package kvadrato.game;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.function.Function;
+import java.util.function.Consumer;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
 import kvadrato.utils.GameException;
 import kvadrato.game.Entity;
 import kvadrato.game.WorldAccess;
@@ -75,6 +78,10 @@ public final class World
    */
   private boolean ender;
   /**
+   * zmienna przechowująca numer, który dostanie następna jednostka.
+   */
+  private int nextEntId;
+  /**
    * Najzwyklejszy i jedyny potrzebny konstruktor.
    */
   public World()
@@ -83,6 +90,7 @@ public final class World
     worldLock=new ReentrantLock();
 
     thread=null;
+    nextEntId=1;
   }
   public void init() throws GameException
   {
@@ -101,8 +109,10 @@ public final class World
       // Najpierw świat jest zatrzymany, więc ustawiamy jego szybkość na zero.
       speed=0.0;
 
+      // Ustawiamy, że następna jednostka będzie miała numer 1.
+      nextEntId=1;
+
       // Obliczenie czasu czekania na później.
-      //tickNanos=(int)(1000000000/tickrate);
       updateTickNanos();
 
       // Nie skaczemy od razu.
@@ -124,15 +134,7 @@ public final class World
   void unlock()
   {
     worldLock.unlock();
-  }/*
-  void await() throws InterruptedException
-  {
-    condition.await();
   }
-  long awaitNanos(long x) throws InterruptedException
-  {
-    return condition.awaitNanos(x);
-  }*/
   boolean decImmediatelyTicks()
   {
     if(immediatelyTicks>0)
@@ -142,9 +144,44 @@ public final class World
     }
     return false;
   }
-  public WorldAccess getAccess()
+  public int[] doWorkAndReturn(WorldWorkerWhichReturns func)
+    throws GameException
   {
-    return new WorldAccess(this);
+    worldLock.lock();
+    try
+    {
+      return func.call(new WorldAccess(this));
+    }
+    finally
+    {
+      worldLock.unlock();
+    }
+  }
+  public void doWork(WorldWorker func)
+    throws GameException
+  {
+    worldLock.lock();
+    try
+    {
+      func.call(new WorldAccess(this));
+    }
+    finally
+    {
+      worldLock.unlock();
+    }
+  }
+  public ViewOfWorld getView(int entId,double dist)
+    throws GameException
+  {
+    worldLock.lock();
+    try
+    {
+      return new ViewOfWorld(this,entId,dist);
+    }
+    finally
+    {
+      worldLock.unlock();
+    }
   }
   /**
    * Funkcja, która wylicza czas, jaki ma być czekany co krok i jaki czas mija
@@ -175,6 +212,7 @@ public final class World
       {
         throw new GameException();
       }
+      clear();
       thread.halt();
       thread.shutdown();
     }
@@ -231,6 +269,8 @@ public final class World
     Entity ent=new Entity();
     ents.add(ent);
     ent.world=this;
+    ent.id=nextEntId;
+    ++nextEntId;
     return ent;
   }
   Entity spawn(String name) throws GameException
@@ -258,6 +298,16 @@ public final class World
     }
   }
   /**
+   * Zwraca jednostkę o podanym id.
+   */
+  Entity getEntById(int q)
+  {
+    for(Entity x:ents)
+      if(x.getId()==q)
+        return x;
+    return null;
+  }
+  /**
    * Usuwa jednostkę ze świata, tylko ze świata.
    * @param ent należąca do danego świata jednostka
    */
@@ -274,23 +324,23 @@ public final class World
   /**
    * Ta funkcja usuwa wszystkie jednostki na świecie.
    */
-  void removeAllEntities()
+  void clear()
   {
     for(int i=0;i<ents.size();++i)
     {
       ents.get(i).remove();
     }
-    updateAll();
+    updateWorld();
   }
   /**
    * Ta funkcja robi jeden krok na świecie, nic skomplikowanego.
    */
   void oneTick()
   {
-    fixAll();
+    fixWorld();
     computeCollisions();
-    doThingsAll();
-    updateAll();
+    doThingsWorld();
+    updateWorld();
   }
   /**
    */
@@ -303,7 +353,7 @@ public final class World
   }
   /**
    */
-  private void doThingsAll()
+  private void doThingsWorld()
   {
     Entity ent;
     for(int i=0;i<ents.size();++i)
@@ -314,7 +364,7 @@ public final class World
   }
   /**
    */
-  private void fixAll()
+  private void fixWorld()
   {
     Entity ent;
     for(int i=0;i<ents.size();++i)
@@ -326,7 +376,7 @@ public final class World
   /**
    * Ta funkcja zamienia stan wszystkich jednostek na nowy.
    */
-  void updateAll()
+  void updateWorld()
   {
     Entity ent;
     for(int i=0;i<ents.size();++i)
@@ -404,5 +454,4 @@ public final class World
       }
     }
   }
-
 }

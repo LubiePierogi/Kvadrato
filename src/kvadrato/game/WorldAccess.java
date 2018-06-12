@@ -15,21 +15,8 @@ public class WorldAccess
   World world;
   WorldAccess(World w)
   {
-    w.lock();
     world=w;
   }
-  public void drop()
-  {
-    world.updateAll();
-    world.unlock();
-    world=null;
-  }
-  protected void finalize()
-  {
-    if(world!=null)
-      drop();
-  }
-
 
   public void setTickrate(int tr)
    throws GameException
@@ -45,21 +32,23 @@ public class WorldAccess
     throws GameException
   {
     return world.spawn(name);
-    // Chyba do zmiany.
   }
   public void removeEntity(Entity ent)
     throws GameException
   {
     world.removeEntity(ent);
-    // Chyba do zmiany.
   }
-  public void removeAllEntities()
+  public Entity getEntById(int q)
   {
-    world.removeAllEntities();
+    return world.getEntById(q);
   }
-  private void updateAll()
+  public void clear()
   {
-    world.updateAll();
+    world.clear();
+  }
+  public void updateWorld()
+  {
+    world.updateWorld();
   }
   public int getDeltaTime()
   {
@@ -73,23 +62,8 @@ public class WorldAccess
   {
     return world.runs();
   }
-  public ViewOfWorld getView(Entity where,double distance) throws GameException
-  {
-    return new ViewOfWorld(world,where,distance);
-  }
   public void doImmediatelyTicks(int x) throws GameException
   {
     world.doImmediatelyTicks(x);
-  }
-  /**
-   * Ta funkcja pozwala na zrobienie wielu rzeczy na świecie.
-   */
-  public void doWork(Consumer<World> func)
-  {
-    // Ale ona jest dopiero do zrobienia.
-
-    // Ogólnie to to jest taki pomysł na zrobienie takiej fajnej enkapsulacji
-    // na świecie, ale mimo to umożliwienia robienia na nim zmian, ale
-    // pod muteksem.
   }
 }

@@ -37,10 +37,11 @@ public class ViewOfWorld
    * @param ent Jednoskta, dla której ma być brany widok.
    * @param distance Największa odległość, z jakiej są brane rzeczy.
    */
-  ViewOfWorld(World world,Entity ent,double distance)
+  ViewOfWorld(World world,int entId,double distance)
     throws GameException
   {
     Objects.requireNonNull(world);
+    Entity ent=world.getEntById(entId);
     Vec2drs eye;
     double trueDistance;
     if(ent!=null)

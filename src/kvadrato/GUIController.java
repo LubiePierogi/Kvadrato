@@ -119,9 +119,16 @@ public class GUIController implements Initializable
         gameCanvas.setHeight(600.0);
 
 
-        Renderer.draw(gameCanvas.getGraphicsContext2D(),model);
-
-
+        try
+        {
+          Renderer.draw(gameCanvas.getGraphicsContext2D(),model);
+        }
+        catch(GameException exc)
+        {
+          System.out.println
+            ("Próbowano narysować świat, ale świat dał wyjątek");
+          exc.printStackTrace(System.out);
+        }
         if(lastAnimationUpdate<=0)
         {
           lastAnimationUpdate=now;

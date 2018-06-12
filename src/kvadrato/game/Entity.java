@@ -28,13 +28,18 @@ public class Entity
    */
   String prefabName;
   /**
+   * Identyfikator jednostki na świecie, nie powtarzają się.
+   */
+  int id;
+  /**
    * Zwykły konstruktor. Nie jest publiczny, bo tylko świat ma móc
    * zrobić jednostkę.
    */
-  public Entity()
+  Entity()
   {
     hasToBeRemoved=false;
     components=new TreeMap<String,Component>();
+    id=-1; // (-1) oznacza, że jeszcze nie jest ustawione.
   }
   /**
    * Funkcja ustawiająca, że jednostka ma być usunięta ze świata.
@@ -44,11 +49,18 @@ public class Entity
     hasToBeRemoved=true;
   }
   /**
-   * Zwraca nazwę klasy.
+   * Zwraca nazwę klasy jednostki.
    */
   public String getName()
   {
     return prefabName;
+  }
+  /**
+   *  Daje id jednostki.
+   */
+  public int getId()
+  {
+    return id;
   }
   /**
    * Ta funkcja zwraca, czy jednostka ma być usunięta

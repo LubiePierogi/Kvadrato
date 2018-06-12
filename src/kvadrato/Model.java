@@ -31,8 +31,7 @@ public class Model
   /**
   * Ta zmienna przechowuje, którym czymś na świecie jest gracz.
   */
-  private Entity playerControlPointer;
-  private Entity viewPointer;
+  private int viewEntId;
   /**
    * Obiekt ze sterowaniem.
    */
@@ -81,25 +80,16 @@ public class Model
     close();
   }
   public void clearTheWorld()
+    throws GameException
   {
-    wa=world.getAccess();
-    try
-    {
-      wa.removeAllEntities();
-    }
-    finally
-    {
-      wa.drop();
-    }
+    world.doWork(wa->wa.clear());
   }
   public void cookLevelStart()
+    throws GameException
   {
-    wa=world.getAccess();
-    try
+    viewEntId=world.doWorkAndReturn(wa->
     {
       Entity player=wa.spawn("Square");
-      playerControlPointer=player;
-      viewPointer=player;
       ((Control)player.getComponent("Control")).setProxy(cp);
       //Entity dwa=wa.spawn("Square");
       ((Physics)player.getComponent("Physics")).addPlace
@@ -139,75 +129,46 @@ public class Model
         (new Vec2d(5,1./3.));
 
 
-        wall=wa.spawn("Wall");
-        ((Physics)wall.getComponent("Physics")).addPlace
-          (new Vec2dr(3,0,0));
-        ((WallComponent)wall.getComponent("WallComponent")).setColor
-          (WallColor.MOVING);
-        ((WallComponent)wall.getComponent("WallComponent")).setSize
-          (new Vec2d(1./3.,4));
+      wall=wa.spawn("Wall");
+      ((Physics)wall.getComponent("Physics")).addPlace
+        (new Vec2dr(3,0,0));
+      ((WallComponent)wall.getComponent("WallComponent")).setColor
+        (WallColor.MOVING);
+      ((WallComponent)wall.getComponent("WallComponent")).setSize
+        (new Vec2d(1./3.,4));
 
-        for(int i=0;i<10;++i)
-        {
-          Entity zx=wa.spawn("Obstacle");
-          ((Physics)zx.getComponent("Physics")).addPlace
-            (new Vec2dr(0.,0.+.12*i,.08*i));
-          ((ObstacleComponent)zx.getComponent("ObstacleComponent")).setSize
-            (0.3,0.1);
-        }
+      for(int i=0;i<10;++i)
+      {
+        Entity zx=wa.spawn("Obstacle");
+        ((Physics)zx.getComponent("Physics")).addPlace
+          (new Vec2dr(0.,0.+.12*i,.08*i));
+        ((ObstacleComponent)zx.getComponent("ObstacleComponent")).setSize
+          (0.3,0.1);
+      }
 
-        Entity daemon=wa.spawn("GameDaemon");
-        ((GameDaemonComponent)daemon.getComponent("GameDaemonComponent")).
-          begin(player,0);
-    }
-    catch(GameException exc)
-    {
-      System.out.println("trololololololololo");
-    }
-    finally
-    {
-      wa.drop();
-    }
+      Entity daemon=wa.spawn("GameDaemon");
+      ((GameDaemonComponent)daemon.getComponent("GameDaemonComponent")).
+        begin(null,0);
+
+      wa.updateWorld();
+
+      return new int[]{player.getId()};
+    })[0];
   }
-  public void pushWorld() throws GameException
+  public void pushWorld()
+    throws GameException
   {
-    wa=world.getAccess();
-    try
-    {
-      wa.setSpeed(1.0);
-    }
-    finally
-    {
-      wa.drop();
-    }
+    world.doWork(wa->wa.setSpeed(1.0));
   }
-  public void haltWorld() throws GameException
+  public void haltWorld()
+    throws GameException
   {
-    wa=world.getAccess();
-    try
-    {
-      wa.setSpeed(12.0);
-    }
-    finally
-    {
-      wa.drop();
-    }
+    world.doWork(wa->wa.setSpeed(0.0));
   }
   public ViewOfWorld getWorldView()
+    throws GameException
   {
-    wa=world.getAccess();
-    try
-    {
-      return wa.getView(viewPointer,5.);
-    }
-    catch(GameException exc)
-    {
-      return null;
-    }
-    finally
-    {
-      wa.drop();
-    }
+    return world.getView(viewEntId,5.0);
   }
   public ControlProxy getControlProxy()
   {
