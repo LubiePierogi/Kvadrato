@@ -22,4 +22,11 @@ public abstract class Component
   {
     return ent.world.spawn(name);
   }
+
+  // Tymczaasowe
+  protected final Entity getFirstEntByPrefab(String q)
+    throws GameException
+  {
+    return ent.world.getFirstEntByPrefab(q);
+  }
 }

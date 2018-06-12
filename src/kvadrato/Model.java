@@ -168,7 +168,7 @@ public class Model
   public ViewOfWorld getWorldView()
     throws GameException
   {
-    return world.getView(viewEntId,5.0);
+    return world.getView(viewEntId,5000.0);
   }
   public ControlProxy getControlProxy()
   {

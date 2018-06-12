@@ -41,6 +41,9 @@ public class ViewOfWorld
     throws GameException
   {
     Objects.requireNonNull(world);
+
+    //System.out.println("Tworzenie widoku świata.");
+
     Entity ent=world.getEntById(entId);
     Vec2drs eye;
     double trueDistance;

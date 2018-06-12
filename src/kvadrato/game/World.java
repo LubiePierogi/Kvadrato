@@ -284,15 +284,8 @@ public final class World
       x.makeEntity(ent);
       return ent;
     }
-    catch(ClassNotFoundException exc)
-    {
-      throw new GameException(exc);
-    }
-    catch(InstantiationException exc)
-    {
-      throw new GameException(exc);
-    }
-    catch(IllegalAccessException exc)
+    catch(ClassNotFoundException|InstantiationException|
+      IllegalAccessException exc)
     {
       throw new GameException(exc);
     }
@@ -304,6 +297,13 @@ public final class World
   {
     for(Entity x:ents)
       if(x.getId()==q)
+        return x;
+    return null;
+  }
+  Entity getFirstEntByPrefab(String q)
+  {
+    for(Entity x:ents)
+      if(x.getName().equals(q))
         return x;
     return null;
   }
@@ -386,6 +386,7 @@ public final class World
       {
         ent.world=null;
         ents.remove(i);
+        --i;
         continue;
       }
       ent.update();

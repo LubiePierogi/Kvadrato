@@ -57,12 +57,16 @@ public final class Renderer
         Renderer.set(context,e);
         vae.draw(context);
       }
-      catch(ClassNotFoundException exc)
-      {}
-      catch(IllegalAccessException exc)
-      {}
-      catch(InstantiationException exc)
-      {}
+      catch
+      (
+        ClassNotFoundException |
+        IllegalAccessException |
+        InstantiationException
+        exc
+      )
+      {
+        throw new GameException(exc);
+      }
     }
   }
 }

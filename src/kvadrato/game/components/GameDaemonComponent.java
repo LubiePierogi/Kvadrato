@@ -137,26 +137,15 @@ public class GameDaemonComponent extends Component
       Vec2dr diff=new Vec2dr(goalVelocity-(ph.getVelocity().x),0,0);
       ph.addVelocity(diff);
       distanceCoveredNew=ph.getPlace().x;
-      //ph.accelerate(new Vec2dr(.5/60.,0.,0.));
-      //distanceCoveredNew+=ph.getVelocity().dist()*getDelta();
+
+      destroyOverpastObstacles();
 
       while(lastSpawn<(int)distanceCovered)
       {
-        System.out.println("Metr: "+lastSpawn);
+      //  System.out.println("Metr: "+lastSpawn);
         spawnObstacles(lastSpawn);
         ++lastSpawn;
       }
-      destroyOverpastObstacles();
-      //// Do skasowania.
-      if
-      (
-        false&&((Physics)anchor.getComponent("Physics")).
-          getPlace().dist()>200.
-      )
-      {
-        end();
-      }
-      ////
     }
   }
   public void update()
@@ -174,7 +163,7 @@ public class GameDaemonComponent extends Component
       if(rng.nextFloat()<1.f/2.f)
       {
         ++spawnedObstacles;
-        System.out.println("##: "+spawnedObstacles);
+    //    System.out.println("##: "+spawnedObstacles);
         int count=(int)(1.f+2.f*rng.nextFloat());
         while(count>0)
         {
@@ -192,7 +181,8 @@ public class GameDaemonComponent extends Component
           int whichColor=rng.nextInt(BgColor.values().length);
           bcc.setColor(BgColor.values()[whichColor]);
           Physics ph=(Physics)q.getComponent("Physics");
-          ph.addPlace(new Vec2dr
+          Vec2dr spawnPlace=
+          new Vec2dr
           (
               meter+
               7.+
@@ -202,7 +192,8 @@ public class GameDaemonComponent extends Component
               6.*rng.nextDouble()
             ,
               Math.PI*rng.nextDouble()
-          ));
+          );
+          ph.addPlace(spawnPlace);
           --count;
         }
       }
@@ -214,17 +205,24 @@ public class GameDaemonComponent extends Component
   }
   private void destroyOverpastObstacles()
   {
+    //if(0==0)return;
     for(int i=0;i<obstacles.size();++i)
     {
       Vec2dr anchorPlace=((Physics)anchor.getComponent("Physics")).getPlace();
       Vec2dr obstaclePlace=((Physics)obstacles.get(i)
         .getComponent("Physics")).getPlace();
+      //System.out.println("Anchor: "+anchor.getId()+' '+anchor.getName()+' '+
+    //    anchorPlace.x+' '+anchorPlace.y);
+    //  System.out.println("Obstacle: "+obstacles.get(i).getId()+' '+
+    //    obstacles.get(i).getName()+' '+obstaclePlace.x+' '+obstaclePlace.y);
       double dist=anchorPlace.subDR(obstaclePlace).dist();
-      if(dist>18.)
+  //    System.out.println("Różnica: "+dist);
+      if(dist>20.)
       {
-        System.out.println("Usuwanie");
+      //  System.out.println("Usuwanie");
         obstacles.get(i).remove();
         obstacles.remove(i);
+        --i;
         continue;
       }
     }
