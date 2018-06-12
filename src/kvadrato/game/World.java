@@ -427,7 +427,7 @@ public final class World
     Entity ent1;
     Entity ent2;
     Collider col1;
-    Collider col2;
+    Collider col2;/*
     Collision collision;
     for(int i=0;i<theEnd1;++i)
     {
@@ -444,8 +444,8 @@ public final class World
         // Teraz wiemy, że mamy parę dwóch możliwych do zderzenia obiektów.
         collision=Collision.compute
         (
-          col1.getTransformedShape(),
-          col2.getTransformedShape()
+          col1.getShape(),
+          col2.getShape()
         );
         if(collision!=null)
         {
@@ -453,6 +453,6 @@ public final class World
           col2.addCollision(ent1,collision);
         }
       }
-    }
+    }*/
   }
 }
