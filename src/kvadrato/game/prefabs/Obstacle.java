@@ -81,10 +81,12 @@ public class Obstacle extends Prefab
     {
       return new ElementaryShape(new Vec2d[]
       {
-        new Vec2d( size.x, size.y),
-        new Vec2d( size.x,-size.y),
-        new Vec2d(-size.x,-size.y),
-        new Vec2d(-size.x, size.y)
+          new Vec2d(0,-1),
+          new Vec2d(0,1)
+      //  new Vec2d( size.x, size.y),
+      //  new Vec2d( size.x,-size.y),
+      //  new Vec2d(-size.x,-size.y),
+      //  new Vec2d(-size.x, size.y)
       });
     }
     catch(GameException exc)

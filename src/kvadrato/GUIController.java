@@ -294,7 +294,7 @@ public class GUIController implements Initializable
   {
     try
     {
-      model.cookLevelStart();
+      model.cookTestLevel();
       model.pushWorld();
     }
     catch(GameException exc)

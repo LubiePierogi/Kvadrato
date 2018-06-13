@@ -59,6 +59,7 @@ public final class CollisionComputer
         if(lengthOfIntersection<0.0)
         {
           // Jest dziura między obiektami.
+          System.err.println("Znaleziono dziurę.");
           return null;
         }
         if(lengthOfIntersection<shortestIntersect)
@@ -70,9 +71,9 @@ public final class CollisionComputer
       if(whichToCheck==first) whichToCheck=second;
       else whichToCheck=null;
     }while(whichToCheck!=null);
-    //System.err.println("Skończono SAT.");
-    //System.err.println("Kąt: "+angleOfShortestIntersect);
-    //System.err.println("Najmniejsze: "+shortestIntersect);
+    System.err.println("Skończono SAT.");
+    System.err.println("Kąt: "+angleOfShortestIntersect);
+    System.err.println("Najmniejsze: "+shortestIntersect);
 
     return new CollisionOccurrence(new Vec2d(),shortestIntersect);
   }
@@ -88,11 +89,15 @@ public final class CollisionComputer
     q.greater=-1./0.;
     for(Vec2d x:sh.vertices)
     {
-      double w=x.rotateD(angle).y;
+      double w=castPointOnAngle(x,angle);
       if(w>q.greater)q.greater=w;
       if(w<q.smaller)q.smaller=w;
     }
     return q;
+  }
+  static double castPointOnAngle(Vec2d v,double a)
+  {
+    return v.y*Math.cos(a)+;
   }
   /**
    * @return 'długość' najmniejszego nakładania się, ujemna, jeśli się
@@ -100,6 +105,12 @@ public final class CollisionComputer
    */
   static double compareProjections(Projection q,Projection w)
   {
+    System.err.println("Porównanie rzutów:");
+    System.err.println(""+q.greater);
+    System.err.println(""+q.smaller);
+    System.err.println(""+w.greater);
+    System.err.println(""+w.smaller);
+
     if(q.greater<w.smaller) return -1.;
     if(w.greater<q.smaller) return -1.;
 

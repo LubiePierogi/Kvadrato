@@ -32,7 +32,7 @@ public final class World
   /**
    * Domyślna ilość odświeżeń świata w sekundzie przy szybkości 1.
    */
-  public final static int DefaultTickrate=60;
+  public final static int DefaultTickrate=24;
   /**
    * Najmniejszy możliwy do ustawienia tickrate.
    */

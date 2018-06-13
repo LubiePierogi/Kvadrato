@@ -89,6 +89,8 @@ public class Model
   {
     viewEntId=world.doWorkAndReturn(wa->
     {
+      wa.clear();
+
       Entity player=wa.spawn("Square");
       ((Control)player.getComponent("Control")).setProxy(cp);
       //Entity dwa=wa.spawn("Square");
@@ -156,6 +158,61 @@ public class Model
       Entity daemon=wa.spawn("GameDaemon");
       ((GameDaemonComponent)daemon.getComponent("GameDaemonComponent")).
         begin(null,0);
+
+      wa.updateWorld();
+
+      return new int[]{player.getId()};
+    })[0];
+  }
+  public void cookTestLevel()
+    throws GameException
+  {
+    viewEntId=world.doWorkAndReturn(wa->
+    {
+      wa.clear();
+
+      Entity player=wa.spawn("Square");
+      ((Control)player.getComponent("Control")).setProxy(cp);
+      //Entity dwa=wa.spawn("Square");
+      ((Physics)player.getComponent("Physics")).addPlace
+        (new Vec2dr(0,0,0));
+      ((Physics)player.getComponent("Physics")).addVelocity
+        (new Vec2dr(0,0,0));
+
+
+      Entity enemy=wa.spawn("Obstacle");
+      ((Physics)enemy.getComponent("Physics")).addPlace
+        (new Vec2dr(3.5,-3.5,0));
+      ((ObstacleComponent)enemy.getComponent("ObstacleComponent")).setSize
+        (0.2,0.1);
+
+      enemy=wa.spawn("Obstacle");
+      ((Physics)enemy.getComponent("Physics")).addPlace
+        (new Vec2dr(6.5,-6.5,0));
+      ((BgColorComponent)enemy.getComponent("BgColorComponent")).setColor
+        (BgColor.RED);
+
+
+      enemy=wa.spawn("Obstacle");
+      ((Physics)enemy.getComponent("Physics")).addPlace
+        (new Vec2dr(-9.8,0,0));
+
+
+      Entity wall=wa.spawn("Wall");
+      ((Physics)wall.getComponent("Physics")).addPlace
+        (new Vec2dr(0,1,0));
+      ((WallComponent)wall.getComponent("WallComponent")).setColor
+        (WallColor.INFINITE);
+      ((WallComponent)wall.getComponent("WallComponent")).setSize
+        (new Vec2d(5,1./3.));
+
+
+      Entity xz=wa.spawn("Obstacle");
+      ((Physics)xz.getComponent("Physics")).addPlace
+        (new Vec2dr(0.,4.5,Math.PI*.25));
+      ((ObstacleComponent)xz.getComponent("ObstacleComponent")).setSize
+        (5.,0.1);
+
 
       wa.updateWorld();
 

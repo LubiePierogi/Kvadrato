@@ -82,4 +82,41 @@ public class CollisionTest
     Assert.assertEquals("Mniejsze",-Math.sqrt(2.)/2.*3.-1.,p.smaller,.00001);
     Assert.assertEquals("Większe" ,Math.sqrt(2.)/2.*3.-1.,p.greater,.00001);
   }
+  @Test
+  public void compute1()
+    throws GameException
+  {
+    BakedShape shape1=new BakedShape
+    (
+      new ElementaryShape
+      (
+        new Vec2d[]
+        {
+          new Vec2d(1,0),
+          new Vec2d(0,1),
+          new Vec2d(-.5,0),
+          new Vec2d(0,-1),
+        }
+      ),
+      new Vec2drs(-1.,0.,Math.PI*.25,3.)
+    );
+    BakedShape shape2=new BakedShape
+    (
+      new ElementaryShape
+      (
+        new Vec2d[]
+        {
+          new Vec2d(30,0),
+          new Vec2d(-30,0),
+        }
+      ),
+      new Vec2drs(5,5,Math.PI*-.25,1.)
+    );
+    CollisionOccurrence co;
+    co=CollisionComputer.computeFromBaked(shape1,shape2);
+    if(co!=null)
+    {
+      Assert.assertEquals("Miało być zero albo null",0.0,co.volume,0.000001);
+    }
+  }
 }

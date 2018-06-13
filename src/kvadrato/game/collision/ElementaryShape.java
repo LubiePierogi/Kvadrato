@@ -19,7 +19,7 @@ public final class ElementaryShape
     {
       Objects.requireNonNull(v);
     }catch(NullPointerException exc){throw new GameException(exc);}
-    if(v.size()<3)
+    if(v.size()<2)
       throw new GameException();
     vertices=new ArrayList<Vec2d>(v);
   }
@@ -30,7 +30,7 @@ public final class ElementaryShape
     {
       Objects.requireNonNull(v);
     }catch(NullPointerException exc){throw new GameException(exc);}
-    if(v.length<3)
+    if(v.length<2)
       throw new GameException();
     vertices=new ArrayList<Vec2d>();
     for(int i=0;i<v.length;++i)
