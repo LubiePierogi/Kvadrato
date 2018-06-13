@@ -6,8 +6,10 @@ import java.util.function.Function;
 
 import kvadrato.utils.GameException;
 import kvadrato.utils.vec2.Vec2d;
+import kvadrato.utils.vec2.Vec2dr;
 import kvadrato.game.Entity;
 import kvadrato.game.Prefab;
+import kvadrato.game.components.Physics;
 import kvadrato.game.components.BgColorComponent;
 import kvadrato.game.components.ObstacleComponent;
 import kvadrato.game.components.Appearance;
@@ -41,6 +43,7 @@ public class Obstacle extends Prefab
     {
       Collider q=(Collider)ent.getComponent("Collider");
       q.setShapeFn(shapeFn);
+      q.setOnCollideFn(onCollideFn);
     }
   }
   private final static Appearance.ListFnType
@@ -91,5 +94,12 @@ public class Obstacle extends Prefab
     }
     return null;
   };
-
+  private final static Collider.OnCollideFnType onCollideFn=(e,o,c)->
+  {
+    Physics ph=(Physics)o.getComponent("Physics");
+    Vec2dr p=ph.getPlace();
+    Vec2dr v=ph.getVelocity();
+    ph.addPlace(v.mulDR(-4.5).mulDR(e.getDelta()));
+    ph.addVelocity(v.mulDR(-5.75).mulDR(e.getDelta()));
+  };
 }

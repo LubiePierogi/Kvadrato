@@ -146,6 +146,13 @@ public class Model
           (0.3,0.1);
       }
 
+      Entity xz=wa.spawn("Obstacle");
+      ((Physics)xz.getComponent("Physics")).addPlace
+        (new Vec2dr(0.,4.5,Math.PI*.25));
+      ((ObstacleComponent)xz.getComponent("ObstacleComponent")).setSize
+        (5.,0.1);
+
+
       Entity daemon=wa.spawn("GameDaemon");
       ((GameDaemonComponent)daemon.getComponent("GameDaemonComponent")).
         begin(null,0);

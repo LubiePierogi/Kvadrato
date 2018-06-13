@@ -149,7 +149,7 @@ public class Square extends Prefab
         return ac.getEye();
     }
     Vec2dr place=physics.getPlace();
-    return new Vec2drs(place.x,place.y,place.angle-Math.PI/2.,1./3.);
+    return new Vec2drs(place.x,place.y,place.angle-Math.PI/2.,1./1.2);
   };
   private final static Appearance.RenderDistanceFnType renderDistanceFn=ent->
   {
