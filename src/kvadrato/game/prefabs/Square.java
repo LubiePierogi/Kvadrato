@@ -17,9 +17,11 @@ import kvadrato.game.components.Appearance;
 import kvadrato.game.components.Physics;
 import kvadrato.game.components.BgColorComponent;
 import kvadrato.game.components.Control;
+import kvadrato.game.components.EventSender;
 import kvadrato.game.components.Locomotor;
 import kvadrato.game.components.Camera;
 import kvadrato.game.components.Collider;
+import kvadrato.game.components.Health;
 import kvadrato.game.appearance.AppearanceElement;
 import kvadrato.game.appearance.SquareSquare;
 import kvadrato.game.collision.ElementaryShape;
@@ -39,6 +41,10 @@ public class Square extends Prefab
   public void makeEntity(Entity ent)
     throws GameException
   {
+
+    ent.setTag("Square");
+    ent.setTag("Creature");
+
     ent.addComponent("Physics");
     ent.addComponent("BgColorComponent");
     ent.addComponent("Camera");
@@ -46,6 +52,8 @@ public class Square extends Prefab
     ent.addComponent("Appearance");
     ent.addComponent("Locomotor");
     ent.addComponent("Control");
+    ent.addComponent("EventSender");
+    ent.addComponent("Health");
 
     // Appearance
     {
@@ -78,6 +86,13 @@ public class Square extends Prefab
     {
       Collider q=(Collider)ent.getComponent("Collider");
       q.setShapeFn(shapeFn);
+    }
+    // Health
+    {
+      Health q=(Health)ent.getComponent("Health");
+      q.setMax(150.);
+      q.change(1000.);
+      q.setOnDeathFn(onDeathFn);
     }
   }
   private final static Appearance.ListFnType
@@ -167,5 +182,13 @@ public class Square extends Prefab
       "w ścianie!");
     }
     return null;
+  };
+  private final static Health.OnDeathFnType onDeathFn=ent->
+  {
+    ((EventSender)ent.getComponent("EventSender")).send("gameOver");
+  };
+  private final static Health.OnCosTamFnType onCosTamFn=ent->
+  {
+    ((Health)ent.getComponent("Health")).change(900.*ent.getDelta());
   };
 }

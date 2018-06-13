@@ -51,6 +51,7 @@
           fx:id="gameCanvas"
           width="800.0"
           height="600.0"
+          visible="false"
         />
         <StackPane fx:id="mainMenu">
           <children>

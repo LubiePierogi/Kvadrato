@@ -22,6 +22,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
 import kvadrato.utils.GameException;
+import kvadrato.game.EventProxy;
 
 public class GUIController implements Initializable
 {
@@ -36,6 +37,7 @@ public class GUIController implements Initializable
     SETTINGS,
     HELP,
     RESUME_GAME,
+    GAME_OVER,
   }
   State state;
   private Model model;
@@ -181,6 +183,9 @@ public class GUIController implements Initializable
     switch(state)
     {
       case FIRST_SCREEN:
+        System.err.println("123213213123213123213213213213213");
+        mainMenu.setVisible(true);
+        gameCanvas.setVisible(false);
         settingsSquare.setVisible(false);
         helpSquare.setVisible(false);
         quitSquare.setVisible(false);
@@ -191,6 +196,7 @@ public class GUIController implements Initializable
         quitSquare.setVisible(true);
         break;
       case STARTING_THE_GAME:
+        gameCanvas.setVisible(true);
         startNewGame();
         break;
       case THE_GAME:
@@ -203,6 +209,12 @@ public class GUIController implements Initializable
       case RESUME_GAME:
         pauseMenu.setVisible(false);
         resumeGame();
+        break;
+      case GAME_OVER:
+        pauseGame();
+        mainMenu.setOpacity(1.);
+        mainMenu.setScaleX(1.);
+        mainMenu.setScaleY(1.);
         break;
     }
     stateClock=0.0;
@@ -285,6 +297,17 @@ public class GUIController implements Initializable
         goToState(State.THE_GAME);
       }
         break;
+      case GAME_OVER:
+      {
+        try
+        {
+          model.clearTheWorld();
+        }
+        catch(GameException exc)
+        {}
+        goToState(State.FIRST_SCREEN);
+      }
+        break;
     }
   }
   /**
@@ -294,8 +317,9 @@ public class GUIController implements Initializable
   {
     try
     {
-      model.cookLevelStart();
+      model.cookTestLevel();
       model.pushWorld();
+      model.getEventProxy().setEventListener(eventListener);
     }
     catch(GameException exc)
     {
@@ -580,4 +604,13 @@ public class GUIController implements Initializable
         break;
     }
   }
+  public final EventProxy.EventListener eventListener=s->
+  {
+    switch(s)
+    {
+      case "gameOver":
+        goToState(State.GAME_OVER);
+      default:;
+    }
+  };
 }

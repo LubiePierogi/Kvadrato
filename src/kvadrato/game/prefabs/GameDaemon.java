@@ -9,6 +9,8 @@ public class GameDaemon extends Prefab
   public void makeEntity(Entity ent)
     throws GameException
   {
+    ent.setTag("Daemon");
+
     ent.addComponent("GameDaemonComponent");
   }
 }

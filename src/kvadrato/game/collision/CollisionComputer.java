@@ -62,7 +62,7 @@ public final class CollisionComputer
         if(Double.isNaN(lengthOfIntersection))
         {
           // Jest dziura między obiektami.
-          System.err.println("Znaleziono dziurę.");
+          //System.err.println("Znaleziono dziurę.");
           return null;
         }
         if(lengthOfIntersection<shortestIntersect)
@@ -75,8 +75,8 @@ public final class CollisionComputer
         present=second; // Zmiana sprawdzanych kierunkóœ na drugi kształt.
       else present=null;
     }while(present!=null);
-    System.err.println("Skończono SAT.");
-    System.err.println("Najmniejsze: "+shortestIntersect);
+    //System.err.println("Skończono SAT.");
+    //System.err.println("Najmniejsze: "+shortestIntersect);
     if(vectorOfShortestIntersect!=null)
     {
       double castLength=vectorOfShortestIntersect.dist();

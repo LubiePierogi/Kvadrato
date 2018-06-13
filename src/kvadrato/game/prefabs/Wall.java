@@ -25,6 +25,8 @@ public class Wall extends Prefab
   public void makeEntity(Entity ent)
     throws GameException
   {
+    ent.setTag("Wall");
+
     ent.addComponent("Physics");
     ent.addComponent("Appearance");
     ent.addComponent("Collider");
@@ -93,6 +95,7 @@ public class Wall extends Prefab
   };
   private final static Collider.OnCollideFnType onCollideFn=(e,o,c)->
   {
+    if(o.hasTag("Wall")||o.hasTag("Obstacle"))return;
     Physics ph=(Physics)o.getComponent("Physics");
     Vec2dr p=ph.getPlace();
     Vec2dr v=ph.getVelocity();

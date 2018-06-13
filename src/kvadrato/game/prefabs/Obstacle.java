@@ -14,9 +14,11 @@ import kvadrato.game.components.BgColorComponent;
 import kvadrato.game.components.ObstacleComponent;
 import kvadrato.game.components.Appearance;
 import kvadrato.game.components.Collider;
+import kvadrato.game.components.Health;
 import kvadrato.game.appearance.AppearanceElement;
 import kvadrato.game.appearance.ObstacleRectangle;
 import kvadrato.game.collision.ElementaryShape;
+import kvadrato.game.other.BgColor;
 
 /**
  * Klasa przeszkód, które trzeba omijać.
@@ -26,6 +28,9 @@ public class Obstacle extends Prefab
   public void makeEntity(Entity ent)
     throws GameException
   {
+    ent.setTag("Obstacle");
+
+
     ent.addComponent("Physics");
     ent.addComponent("Collider");
     ent.addComponent("Appearance");
@@ -98,10 +103,13 @@ public class Obstacle extends Prefab
   };
   private final static Collider.OnCollideFnType onCollideFn=(e,o,c)->
   {
-    Physics ph=(Physics)o.getComponent("Physics");
-    Vec2dr p=ph.getPlace();
-    Vec2dr v=ph.getVelocity();
-    ph.addPlace(v.mulDR(-4.5).mulDR(e.getDelta()));
-    ph.addVelocity(v.mulDR(-5.75).mulDR(e.getDelta()));
+    if(!o.hasTag("Square"))return;
+    if(!o.hasComponent("Health"))return;
+    BgColor ebg
+      =((BgColorComponent)e.getComponent("BgColorComponent")).getColor();
+    BgColor obg
+      =((BgColorComponent)o.getComponent("BgColorComponent")).getColor();
+    if(ebg!=obg)
+      ((Health)o.getComponent("Health")).change(-1800.*o.getDelta());
   };
 }

@@ -22,6 +22,8 @@ public class Anchor extends Prefab
   public void makeEntity(Entity ent)
     throws GameException
   {
+    ent.setTag("Anchor");
+
     ent.addComponent("Physics");
     ent.addComponent("Appearance");
     ent.addComponent("Camera");

@@ -1,5 +1,7 @@
 package kvadrato.game;
 
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -25,6 +27,7 @@ public class Entity implements Comparable
    * do swej nazwy.
    */
   Map<String,Component> components;
+  Set<String> tags;
   /**
    * Na razie bezużyteczna zmienna, ale przechowuje nazwę klasy jednostki.
    */
@@ -40,6 +43,7 @@ public class Entity implements Comparable
   Entity()
   {
     hasToBeRemoved=false;
+    tags=new TreeSet<String>();
     components=new TreeMap<String,Component>();
     id=-1; // (-1) oznacza, że jeszcze nie jest ustawione.
   }
@@ -150,6 +154,18 @@ public class Entity implements Comparable
   public final boolean hasComponent(String name)
   {
     return components.containsKey(name);
+  }
+  public final void setTag(String s)
+  {
+    tags.add(s);
+  }
+  public final boolean hasTag(String s)
+  {
+    return tags.contains(s);
+  }
+  public final void unsetTag(String s)
+  {
+    tags.remove(s);
   }
   /**
    * Funkcja zwracająca świat, na którym jest jednostka.

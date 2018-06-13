@@ -8,10 +8,12 @@ import kvadrato.game.Entity;
 import kvadrato.game.WorldAccess;
 import kvadrato.game.ViewOfWorld;
 import kvadrato.game.ControlProxy;
+import kvadrato.game.EventProxy;
 import kvadrato.game.other.BgColor;
 import kvadrato.game.other.WallColor;
 import kvadrato.game.components.Physics;
 import kvadrato.game.components.Control;
+import kvadrato.game.components.EventSender;
 import kvadrato.game.components.ObstacleComponent;
 import kvadrato.game.components.BgColorComponent;
 import kvadrato.game.components.WallComponent;
@@ -36,6 +38,7 @@ public class Model
    * Obiekt ze sterowaniem.
    */
   private ControlProxy cp;
+  private EventProxy ep;
   /**
   * Domyślny konstruktor.
   */
@@ -50,6 +53,7 @@ public class Model
   {
     world=new World();
     cp=new ControlProxy();
+    ep=new EventProxy();
     world.init();
   }
   /**
@@ -173,6 +177,7 @@ public class Model
 
       Entity player=wa.spawn("Square");
       ((Control)player.getComponent("Control")).setProxy(cp);
+      ((EventSender)player.getComponent("EventSender")).setProxy(ep);
       //Entity dwa=wa.spawn("Square");
       ((Physics)player.getComponent("Physics")).addPlace
         (new Vec2dr(0,0,0));
@@ -237,5 +242,9 @@ public class Model
   public ControlProxy getControlProxy()
   {
     return cp;
+  }
+  public EventProxy getEventProxy()
+  {
+    return ep;
   }
 }
