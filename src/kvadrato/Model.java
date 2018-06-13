@@ -97,71 +97,11 @@ public class Model
 
       Entity player=wa.spawn("Square");
       ((Control)player.getComponent("Control")).setProxy(cp);
-      //Entity dwa=wa.spawn("Square");
-      ((Physics)player.getComponent("Physics")).addPlace
-        (new Vec2dr(0,0,0));
-      ((Physics)player.getComponent("Physics")).addVelocity
-        (new Vec2dr(0,0,0));
-
-      Entity two=wa.spawn("Square");
-      ((Physics)two.getComponent("Physics")).addPlace
-        (new Vec2dr(-.5,-.5,0.));
-
-
-      Entity enemy=wa.spawn("Obstacle");
-      ((Physics)enemy.getComponent("Physics")).addPlace
-        (new Vec2dr(.5,.5,0));
-      ((ObstacleComponent)enemy.getComponent("ObstacleComponent")).setSize
-        (0.2,0.1);
-
-      enemy=wa.spawn("Obstacle");
-      ((Physics)enemy.getComponent("Physics")).addPlace
-        (new Vec2dr(.5,-.5,0));
-      ((BgColorComponent)enemy.getComponent("BgColorComponent")).setColor
-        (BgColor.RED);
-
-
-      enemy=wa.spawn("Obstacle");
-      ((Physics)enemy.getComponent("Physics")).addPlace
-        (new Vec2dr(-.8,0,0));
-
-
-      Entity wall=wa.spawn("Wall");
-      ((Physics)wall.getComponent("Physics")).addPlace
-        (new Vec2dr(0,1,0));
-      ((WallComponent)wall.getComponent("WallComponent")).setColor
-        (WallColor.INFINITE);
-      ((WallComponent)wall.getComponent("WallComponent")).setSize
-        (new Vec2d(5,1./3.));
-
-
-      wall=wa.spawn("Wall");
-      ((Physics)wall.getComponent("Physics")).addPlace
-        (new Vec2dr(3,0,0));
-      ((WallComponent)wall.getComponent("WallComponent")).setColor
-        (WallColor.MOVING);
-      ((WallComponent)wall.getComponent("WallComponent")).setSize
-        (new Vec2d(1./3.,4));
-
-      for(int i=0;i<10;++i)
-      {
-        Entity zx=wa.spawn("Obstacle");
-        ((Physics)zx.getComponent("Physics")).addPlace
-          (new Vec2dr(0.,0.+.12*i,.08*i));
-        ((ObstacleComponent)zx.getComponent("ObstacleComponent")).setSize
-          (0.3,0.1);
-      }
-
-      Entity xz=wa.spawn("Obstacle");
-      ((Physics)xz.getComponent("Physics")).addPlace
-        (new Vec2dr(0.,4.5,Math.PI*.25));
-      ((ObstacleComponent)xz.getComponent("ObstacleComponent")).setSize
-        (5.,0.1);
-
+      ((EventSender)player.getComponent("EventSender")).setProxy(ep);
 
       Entity daemon=wa.spawn("GameDaemon");
       ((GameDaemonComponent)daemon.getComponent("GameDaemonComponent")).
-        begin(null,0);
+        begin(player,0);
 
       wa.updateWorld();
 
