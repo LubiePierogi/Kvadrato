@@ -70,4 +70,8 @@ public class Vec2d
   {
     return new Vec2d(x,-y);
   }
+  public double getArgD()
+  {
+    return Math.atan2(y,x);
+  }
 }

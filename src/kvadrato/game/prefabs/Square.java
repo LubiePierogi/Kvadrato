@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.function.Function;
 
 import kvadrato.utils.GameException;
+import kvadrato.utils.vec2.Vec2d;
 import kvadrato.utils.vec2.Vec2dr;
 import kvadrato.utils.vec2.Vec2drs;
 import kvadrato.game.Entity;
@@ -18,6 +19,7 @@ import kvadrato.game.components.BgColorComponent;
 import kvadrato.game.components.Control;
 import kvadrato.game.components.Locomotor;
 import kvadrato.game.components.Camera;
+import kvadrato.game.components.Collider;
 import kvadrato.game.appearance.AppearanceElement;
 import kvadrato.game.appearance.SquareSquare;
 import kvadrato.game.collision.ElementaryShape;
@@ -27,6 +29,13 @@ import kvadrato.game.collision.ElementaryShape;
  */
 public class Square extends Prefab
 {
+  private final static Vec2d[]shape=new Vec2d[]
+  {
+    new Vec2d( .125, .125),
+    new Vec2d(-.125, .125),
+    new Vec2d(-.125,-.125),
+    new Vec2d( .125,-.125)
+  };
   public void makeEntity(Entity ent)
     throws GameException
   {
@@ -64,6 +73,11 @@ public class Square extends Prefab
     {
       Locomotor q=(Locomotor)ent.getComponent("Locomotor");
       q.setFn(locomotorFn);
+    }
+    // Collider
+    {
+      Collider q=(Collider)ent.getComponent("Collider");
+      q.setShapeFn(shapeFn);
     }
   }
   private final static Function<Entity,List<AppearanceElement>>
@@ -143,6 +157,15 @@ public class Square extends Prefab
   };
   private final static Function<Entity,ElementaryShape>shapeFn=ent->
   {
+    try
+    {
+      return new ElementaryShape(shape);
+    }
+    catch(GameException exc)
+    {
+      System.err.println("To tylko na razie!!!\nA oprócz tego, to jest błąd "+
+      "w ścianie!");
+    }
     return null;
   };
 }

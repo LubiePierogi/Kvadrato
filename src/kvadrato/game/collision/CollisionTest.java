@@ -31,11 +31,55 @@ public class CollisionTest
     ElementaryShape e=new ElementaryShape(list);
     BakedShape ee=new BakedShape(e,new Vec2drs(3,3,Math.PI*.5,2));
 
-    Assert.assertEquals("(0,0) -> x",3.,ee.vertices.get(0).x,.0001);
-    Assert.assertEquals("(0,0) -> y",3.,ee.vertices.get(0).y,.0001);
-    Assert.assertEquals("(1,0) -> x",3.,ee.vertices.get(1).x,.0001);
-    Assert.assertEquals("(1,0) -> y",5.,ee.vertices.get(1).y,.0001);
-    Assert.assertEquals("(1,1) -> x",1.,ee.vertices.get(2).x,.0001);
-    Assert.assertEquals("(1,1) -> y",5.,ee.vertices.get(2).y,.0001);
+    Assert.assertEquals("(0,0) -> x",3.,ee.vertices.get(0).x,.00001);
+    Assert.assertEquals("(0,0) -> y",3.,ee.vertices.get(0).y,.00001);
+    Assert.assertEquals("(1,0) -> x",3.,ee.vertices.get(1).x,.00001);
+    Assert.assertEquals("(1,0) -> y",5.,ee.vertices.get(1).y,.00001);
+    Assert.assertEquals("(1,1) -> x",1.,ee.vertices.get(2).x,.00001);
+    Assert.assertEquals("(1,1) -> y",5.,ee.vertices.get(2).y,.00001);
+  }
+  @Test
+  public void castShape1()
+    throws GameException
+  {
+    BakedShape shape=new BakedShape
+    (
+      new ElementaryShape
+      (
+        new Vec2d[]
+        {
+          new Vec2d(1,0),
+          new Vec2d(0,1),
+          new Vec2d(-.5,0),
+          new Vec2d(0,-1),
+        }
+      ),
+      new Vec2drs(0.,0.,0.,1.)
+    );
+    Projection p=CollisionComputer.castShapeOnAngle(shape,0);
+    Assert.assertEquals("Mniejsze",-1.,p.smaller,.00001);
+    Assert.assertEquals("Większe" , 1.,p.greater,.00001);
+  }
+  @Test
+  public void castShape2()
+    throws GameException
+  {
+    BakedShape shape=new BakedShape
+    (
+      new ElementaryShape
+      (
+        new Vec2d[]
+        {
+          new Vec2d(1,0),
+          new Vec2d(0,1),
+          new Vec2d(-.5,0),
+          new Vec2d(0,-1),
+        }
+      ),
+      new Vec2drs(-1.,0.,Math.PI*.25,3.)
+    );
+    Projection p=CollisionComputer.castShapeOnAngle(shape,Math.PI/2.);
+    Assert.assertEquals("Mniejsze",-Math.sqrt(2.)/2.*3.-1.,p.smaller,.00001);
+    Assert.assertEquals("Większe" ,Math.sqrt(2.)/2.*3.-1.,p.greater,.00001);
   }
 }

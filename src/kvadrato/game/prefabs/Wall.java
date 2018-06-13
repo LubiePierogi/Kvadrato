@@ -15,6 +15,7 @@ import kvadrato.game.components.WallComponent;
 import kvadrato.game.other.WallColor;
 import kvadrato.game.appearance.AppearanceElement;
 import kvadrato.game.appearance.WallAe;
+import kvadrato.game.collision.ElementaryShape;
 
 public class Wall extends Prefab
 {
@@ -38,6 +39,12 @@ public class Wall extends Prefab
       q.setFn(appearanceFn);
       q.setRenderDistanceFn(renderDistanceFn);
     }
+
+    // Collider
+    {
+      Collider q=(Collider)ent.getComponent("Collider");
+      q.setShapeFn(shapeFn);
+    }
   }
   public final static Function<Entity,List<AppearanceElement>>appearanceFn=ent->
   {
@@ -58,5 +65,26 @@ public class Wall extends Prefab
   private final static Function<Entity,Double>renderDistanceFn=ent->
   {
     return ((WallComponent)ent.getComponent("WallComponent")).getSize().dist();
+  };
+  private final static Function<Entity,ElementaryShape>shapeFn=ent->
+  {
+    WallComponent w=(WallComponent)ent.getComponent("WallComponent");
+    Vec2d size=w.getSize().mulD(.5);
+    try
+    {
+      return new ElementaryShape(new Vec2d[]
+      {
+        new Vec2d( size.x, size.y),
+        new Vec2d( size.x,-size.y),
+        new Vec2d(-size.x,-size.y),
+        new Vec2d(-size.x, size.y)
+      });
+    }
+    catch(GameException exc)
+    {
+      System.err.println("To tylko na razie!!!\nA oprócz tego, to jest błąd "+
+      "w ścianie!");
+    }
+    return null;
   };
 }

@@ -448,6 +448,7 @@ public final class World
     CollisionOccurrence collision;
     theEnd1=ents.size()-1;
     theEnd2=ents.size();
+    System.err.println("dfgdfg");
     for(int i=0;i<theEnd1;++i)
     {
       ent1=ents.get(i);
