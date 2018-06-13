@@ -32,7 +32,7 @@ public final class World
   /**
    * Domyślna ilość odświeżeń świata w sekundzie przy szybkości 1.
    */
-  public final static int DefaultTickrate=120;
+  public final static int DefaultTickrate=60;
   /**
    * Najmniejszy możliwy do ustawienia tickrate.
    */
@@ -448,7 +448,6 @@ public final class World
     CollisionOccurrence collision;
     theEnd1=ents.size()-1;
     theEnd2=ents.size();
-    System.err.println("dfgdfg");
     for(int i=0;i<theEnd1;++i)
     {
       ent1=ents.get(i);

@@ -14,16 +14,18 @@ public class Locomotor extends Component
    *
    * @return przyspiesznie, może być null, to wtedy i tak jest zamieniane na 0.
    */
-  private Function<Entity,Vec2dr> fn;
-  public void setFn(Function<Entity,Vec2dr> func)
+  private LocomotorFnType locomotorFn;
+  public static interface LocomotorFnType
+  {Vec2dr call(Entity e);}
+  public void setLocomotorFn(LocomotorFnType func)
   {
-    fn=func;
+    locomotorFn=func;
   }
   public Vec2dr getAcceleration()
   {
     Vec2dr q;
-    if(fn!=null)
-      q=fn.apply(this.getEntity());
+    if(locomotorFn!=null)
+      q=locomotorFn.call(this.getEntity());
     else q=new Vec2dr();
     return q;
   }

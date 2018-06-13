@@ -6,7 +6,9 @@ import java.util.TreeMap;
 import kvadrato.utils.GameException;
 import kvadrato.game.Component;
 
-public class Entity
+public class Entity implements Comparable
+// W dokumentacji pisali, żeby to napisać:
+// Note: this class has a natural ordering that is inconsistent with equals.
 {
   /**
    * Ta zmienna przechowuje, w którym świecie jest jednostka.
@@ -61,6 +63,12 @@ public class Entity
   public int getId()
   {
     return id;
+  }
+  public int compareTo(Object o)
+  {
+    if(id<((Entity)o).id)return -1;
+    if(id>((Entity)o).id)return 1;
+    return 0;
   }
   /**
    * Ta funkcja zwraca, czy jednostka ma być usunięta
@@ -149,5 +157,9 @@ public class Entity
   public World getWorld()
   {
     return world;
+  }
+  public double getDelta()
+  {
+    return world.getDeltaTime()/1000000000.;
   }
 }

@@ -10,13 +10,13 @@ public final class CollisionComputer
    */
   public static CollisionOccurrence computeFromBaked(BakedShape first,BakedShape second)
   {
-    System.err.println("ZXCzxc");
+    //System.err.println("ZXCzxc");
     if(checkBoundingBoxes(first,second))
     {
-      System.err.println("!@#@!");
+      //System.err.println("!@#@!");
       return computeSAT(first,second);
     }
-    System.err.println("DPLFDp");
+    //System.err.println("DPLFDp");
     return null;
   }
   ;
@@ -43,8 +43,10 @@ public final class CollisionComputer
 
     // Pierwszy wielokąt. i drugi wielokąt
     BakedShape whichToCheck=first;
+    //System.err.println("90900909");
     do
     {
+      //System.err.println("XZCCXZxczcxxczxczzcxzcxxczzcx");
       for(int i=0;i<first.vertices.size()-1;++i)
       {
         double angle=
@@ -54,6 +56,11 @@ public final class CollisionComputer
           castShapeOnAngle(first ,angle),
           castShapeOnAngle(second,angle)
         );
+        if(lengthOfIntersection<0.0)
+        {
+          // Jest dziura między obiektami.
+          return null;
+        }
         if(lengthOfIntersection<shortestIntersect)
         {
           shortestIntersect=lengthOfIntersection;
@@ -63,8 +70,11 @@ public final class CollisionComputer
       if(whichToCheck==first) whichToCheck=second;
       else whichToCheck=null;
     }while(whichToCheck!=null);
+    //System.err.println("Skończono SAT.");
+    //System.err.println("Kąt: "+angleOfShortestIntersect);
+    //System.err.println("Najmniejsze: "+shortestIntersect);
 
-    return new CollisionOccurrence(new Vec2d(),1.0);
+    return new CollisionOccurrence(new Vec2d(),shortestIntersect);
   }
 
   static double getLineSegmentAngle(Vec2d p1,Vec2d p2)

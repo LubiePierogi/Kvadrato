@@ -28,7 +28,10 @@ public class Physics extends Component
   private Entity anchor;
   private Entity anchorNew;
 
-  private Function<Entity,Vec2dr>fn;
+
+  private PhysicsFnType physicsFn;
+  public static interface PhysicsFnType
+  {Vec2dr call(Entity e);}
 
   public Physics()
   {
@@ -42,9 +45,9 @@ public class Physics extends Component
     massNew=1.;
   }
 
-  public void setFn(Function<Entity,Vec2dr>func)
+  public void setFn(PhysicsFnType func)
   {
-    fn=func;
+    physicsFn=func;
   }
 
   public double getMass()
@@ -106,8 +109,8 @@ public class Physics extends Component
   }
   public void doThings()
   {
-    if(fn!=null)
-      accelerate(fn.apply(getEntity()));
+    if(physicsFn!=null)
+      accelerate(physicsFn.call(getEntity()));
 
     placeNew=placeNew.addDR(velocity.mulDR(getDelta()));
     velocityNew=velocityNew;

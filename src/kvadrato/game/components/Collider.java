@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
 
+import kvadrato.utils.GameException;
 import kvadrato.utils.function.TriConsumer;
 import kvadrato.game.Component;
 import kvadrato.game.Entity;
@@ -26,13 +27,20 @@ public class Collider extends Component
    * argument to ta jednostka, drugi to tamta inna, a trzeci to obiekt
    * z kolizją.
    */
-  private TriConsumer<Entity,Entity,CollisionOccurrence> onCollideFn;
-  private Function<Entity,ElementaryShape> shapeFn;
+  private OnCollideFnType onCollideFn;
+  public static interface OnCollideFnType
+  {void call(Entity e,Entity o,CollisionOccurrence c);}
+  /**
+   * Funkcja zwracająca kształt obiektu.
+   */
+  private ShapeFnType shapeFn;
+  public static interface ShapeFnType
+  {ElementaryShape call(Entity e) throws GameException;}
   public Collider()
   {
     collisions=new TreeMap<Entity,CollisionOccurrence>();
   }
-  public void setShapeFn(Function<Entity,ElementaryShape> func)
+  public void setShapeFn(ShapeFnType func)
   {
     shapeFn=func;
   }
@@ -41,9 +49,10 @@ public class Collider extends Component
    * Jeśli dało null, to znaczy, że obiekt się z niczym nie zderza.
    */
   public ElementaryShape getShape()
+    throws GameException
   {
     if(shapeFn!=null)
-      return shapeFn.apply(getEntity());
+      return shapeFn.call(getEntity());
     return null;
   }
   /**
@@ -53,8 +62,7 @@ public class Collider extends Component
   {
     collisions.put(ent,col);
   }
-  public void setOnCollideFn
-    (TriConsumer<Entity,Entity,CollisionOccurrence> func)
+  public void setOnCollideFn(OnCollideFnType func)
   {
     onCollideFn=func;
   }
@@ -66,7 +74,10 @@ public class Collider extends Component
   public void doThings()
   {
     if(onCollideFn!=null)
-      collisions.forEach((k,v)->{onCollideFn.accept(this.getEntity(),k,v);});
+      for(Map.Entry<Entity,CollisionOccurrence> co:collisions.entrySet())
+      {
+        onCollideFn.call(this.getEntity(),co.getKey(),co.getValue());
+      }
   }
   public void update()
   {

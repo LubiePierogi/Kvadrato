@@ -50,7 +50,7 @@ public class Square extends Prefab
     // Appearance
     {
       Appearance q=(Appearance)ent.getComponent("Appearance");
-      q.setFn(appearanceFn);
+      q.setListFn(appearanceFn);
       q.setRenderDistanceFn(renderDistanceFn);
     }
 
@@ -63,7 +63,7 @@ public class Square extends Prefab
     // Camera
     {
       Camera q=(Camera)ent.getComponent("Camera");
-      q.setFn(cameraFn);
+      q.setEyeFn(eyeFn);
     }
     // Control
     {
@@ -72,7 +72,7 @@ public class Square extends Prefab
     // Locomotor
     {
       Locomotor q=(Locomotor)ent.getComponent("Locomotor");
-      q.setFn(locomotorFn);
+      q.setLocomotorFn(locomotorFn);
     }
     // Collider
     {
@@ -80,7 +80,7 @@ public class Square extends Prefab
       q.setShapeFn(shapeFn);
     }
   }
-  private final static Function<Entity,List<AppearanceElement>>
+  private final static Appearance.ListFnType
     appearanceFn
     =ent->
   {
@@ -95,7 +95,7 @@ public class Square extends Prefab
     list.add(sqsq);
     return list;
   };
-  private final static Function<Entity,Vec2dr>locomotorFn=ent->
+  private final static Locomotor.LocomotorFnType locomotorFn=ent->
   {
     Control ctl=(Control)ent.getComponent("Control");
     Vec2dr a=new Vec2dr();
@@ -131,14 +131,14 @@ public class Square extends Prefab
     }
     return a;
   };
-  private final static Function<Entity,Vec2dr>physicsFn=ent->
+  private final static Physics.PhysicsFnType physicsFn=ent->
   {
     Physics physics=(Physics)ent.getComponent("Physics");
     Vec2dr v=physics.getVelocity();
     v=v.mulDR(-3.);
     return v;
   };
-  private final static Function<Entity,Vec2drs>cameraFn=ent->
+  private final static Camera.EyeFnType eyeFn=ent->
   {
     Physics physics=(Physics)ent.getComponent("Physics");
     Entity a=physics.getAnchor();
@@ -151,11 +151,11 @@ public class Square extends Prefab
     Vec2dr place=physics.getPlace();
     return new Vec2drs(place.x,place.y,place.angle-Math.PI/2.,1./3.);
   };
-  private final static Function<Entity,Double>renderDistanceFn=ent->
+  private final static Appearance.RenderDistanceFnType renderDistanceFn=ent->
   {
     return .25*1.41;
   };
-  private final static Function<Entity,ElementaryShape>shapeFn=ent->
+  private final static Collider.ShapeFnType shapeFn=ent->
   {
     try
     {

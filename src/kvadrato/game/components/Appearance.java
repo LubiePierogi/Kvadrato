@@ -10,31 +10,37 @@ import kvadrato.game.appearance.AppearanceElement;
 
 public class Appearance extends Component
 {
-  private Function<Entity,Double> renderDistanceFn;
-  private Function<Entity,List<AppearanceElement>> listFn;
+  private RenderDistanceFnType renderDistanceFn;
+  public static interface RenderDistanceFnType
+  {double call(Entity e);}
+
+  private ListFnType listFn;
+  public static interface ListFnType
+  {List<AppearanceElement> call(Entity e);}
+
   public Appearance()
   {
     listFn=null;
     renderDistanceFn=null;
   }
-  public void setFn(Function<Entity,List<AppearanceElement>> func)
+  public void setListFn(ListFnType func)
   {
     listFn=func;
   }
-  public void setRenderDistanceFn(Function<Entity,Double>func)
+  public void setRenderDistanceFn(RenderDistanceFnType func)
   {
     renderDistanceFn=func;
   }
   public List<AppearanceElement> getElements()
   {
     if(listFn!=null)
-      return listFn.apply(getEntity());
+      return listFn.call(getEntity());
     return null;
   }
   public double getRenderDistance()
   {
     if(renderDistanceFn!=null)
-      return renderDistanceFn.apply(getEntity());
+      return renderDistanceFn.call(getEntity());
     return 0.0;
   }
   public void fix(){}

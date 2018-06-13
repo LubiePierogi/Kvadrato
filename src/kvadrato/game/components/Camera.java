@@ -11,10 +11,12 @@ import kvadrato.game.components.Camera;
 
 public class Camera extends Component
 {
-  private Function<Entity,Vec2drs> eyeFn;
-  public void setFn(Function<Entity,Vec2drs>fn)
+  private EyeFnType eyeFn;
+  public static interface EyeFnType
+  {Vec2drs call(Entity e);}
+  public void setEyeFn(EyeFnType func)
   {
-    eyeFn=fn;
+    eyeFn=func;
   }
   public Vec2drs getEye()
   {
@@ -33,7 +35,7 @@ public class Camera extends Component
       }
       scale=1.0;
     }
-    else return eyeFn.apply(this.getEntity());
+    else return eyeFn.call(this.getEntity());
     return new Vec2drs(place,scale);
   }
   public void fix(){}

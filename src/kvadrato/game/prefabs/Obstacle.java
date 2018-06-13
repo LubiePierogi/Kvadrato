@@ -33,7 +33,7 @@ public class Obstacle extends Prefab
     // Appearance
     {
       Appearance q=(Appearance)ent.getComponent("Appearance");
-      q.setFn(appearanceFn);
+      q.setListFn(appearanceFn);
       q.setRenderDistanceFn(renderDistanceFn);
     }
 
@@ -43,7 +43,7 @@ public class Obstacle extends Prefab
       q.setShapeFn(shapeFn);
     }
   }
-  private final static Function<Entity,List<AppearanceElement>>
+  private final static Appearance.ListFnType
     appearanceFn
     =ent->
   {
@@ -63,13 +63,13 @@ public class Obstacle extends Prefab
     list.add(rect);
     return list;
   };
-  private final static Function<Entity,Double>renderDistanceFn=ent->
+  private final static Appearance.RenderDistanceFnType renderDistanceFn=ent->
   {
     return
       ((ObstacleComponent)ent.getComponent("ObstacleComponent"))
       .getSize().dist();
   };
-  private final static Function<Entity,ElementaryShape>shapeFn=ent->
+  private final static Collider.ShapeFnType shapeFn=ent->
   {
     ObstacleComponent w=
       (ObstacleComponent)ent.getComponent("ObstacleComponent");
