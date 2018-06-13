@@ -34,6 +34,7 @@ public class GameDaemonComponent extends Component
   private List<Entity> walls;
   private List<Entity> obstacles;
 
+
   public GameDaemonComponent()
   {
     distanceCovered=0.0;
@@ -47,7 +48,7 @@ public class GameDaemonComponent extends Component
     rng=new Random(0l);
   }
 
-  public void begin(Entity p,int s)
+  public void begin(Entity p,long s)
     throws GameException
   {
     end();
@@ -106,6 +107,10 @@ public class GameDaemonComponent extends Component
       obstacles.remove(obstacles.size()-1);
     }
     anchor=null;
+  }
+  public int getScore()
+  {
+    return (int)Math.floor(distanceCovered*30.);
   }
 
   public void fix()

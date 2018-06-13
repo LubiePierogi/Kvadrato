@@ -126,8 +126,8 @@ public class Entity implements Comparable
     {
       co=(Component)c.newInstance();
     }
-    catch(InstantiationException exc){throw new GameException(exc);}
-    catch(IllegalAccessException exc){throw new GameException(exc);}
+    catch(InstantiationException|IllegalAccessException exc)
+      {throw new GameException(exc);}
     co.ent=this;
     components.put(name,co);
   }

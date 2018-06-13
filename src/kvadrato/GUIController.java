@@ -278,7 +278,7 @@ public class GUIController implements Initializable
         break;
       case THE_GAME:
       {
-
+        System.out.println(model.getScore());
       }
         break;
       case THE_GAME_PAUSE:

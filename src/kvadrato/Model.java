@@ -1,5 +1,7 @@
 package kvadrato;
 
+import java.util.Random;
+
 import kvadrato.utils.GameException;
 import kvadrato.utils.vec2.Vec2d;
 import kvadrato.utils.vec2.Vec2dr;
@@ -33,18 +35,22 @@ public class Model
   /**
   * Ta zmienna przechowuje, którym czymś na świecie jest gracz.
   */
-  private int viewEntId;
+  private int playerId;
+  private int daemonId;
   /**
    * Obiekt ze sterowaniem.
    */
   private ControlProxy cp;
   private EventProxy ep;
+
+  private Random rng;
+
   /**
   * Domyślny konstruktor.
   */
   public Model() throws GameException
   {
-    // Tutaj nic się nie dzieje.
+    rng=new Random();
   }
   /**
    * Model musi być zainicjalizowany.
@@ -101,13 +107,14 @@ public class Model
 
       Entity daemon=wa.spawn("GameDaemon");
       ((GameDaemonComponent)daemon.getComponent("GameDaemonComponent")).
-        begin(player,0);
+        begin(player,rng.nextLong());
 
       wa.updateWorld();
 
-      return new int[]{player.getId()};
+      return new int[]{player.getId(),daemon.getId()};
     });
-    viewEntId=((int[])o)[0];
+    playerId=((int[])o)[0];
+    daemonId=((int[])o)[1];
   }
   public void cookTestLevel()
     throws GameException
@@ -162,9 +169,22 @@ public class Model
 
       wa.updateWorld();
 
-      return new int[]{player.getId()};
+      return player.getId();
     });
-    viewEntId=((int[])o)[0];
+    playerId=(int)o;
+  }
+  public int getScore()
+    throws GameException
+  {
+    int score;
+    Object o=world.doWorkAndReturn(wa->
+    {
+      GameDaemonComponent gdc
+        =(GameDaemonComponent)wa.getEntById(daemonId)
+        .getComponent("GameDaemonComponent");
+      return gdc.getScore();
+    });
+    return (int)o;
   }
   public void pushWorld()
     throws GameException
@@ -179,7 +199,7 @@ public class Model
   public ViewOfWorld getWorldView()
     throws GameException
   {
-    return world.getView(viewEntId,5000.0);
+    return world.getView(playerId,5.0);
   }
   public ControlProxy getControlProxy()
   {
