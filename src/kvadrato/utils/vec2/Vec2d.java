@@ -74,4 +74,8 @@ public class Vec2d
   {
     return Math.atan2(y,x);
   }
+  public Vec2d spin90() // Obrót o 90 stopni bez sinusów.
+  {
+    return new Vec2d(-y,x);
+  }
 }

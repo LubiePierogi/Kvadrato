@@ -96,7 +96,9 @@ public class Wall extends Prefab
     Physics ph=(Physics)o.getComponent("Physics");
     Vec2dr p=ph.getPlace();
     Vec2dr v=ph.getVelocity();
-    ph.addPlace(v.mulDR(-2.5).mulDR(e.getDelta()));
-    ph.addVelocity(v.mulDR(-1.75).mulDR(e.getDelta()));
+    ph.addPlace(new Vec2dr(c.translation).mulD(1.));
+    ph.addVelocity(new Vec2dr(c.translation).mulD(1.));
+
+    //ph.addVelocity(v.mulDR(-1.75).mulDR(e.getDelta()));
   };
 }

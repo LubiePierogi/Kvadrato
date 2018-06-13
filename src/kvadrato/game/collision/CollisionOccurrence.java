@@ -12,12 +12,14 @@ import kvadrato.utils.vec2.Vec2dr;
  */
 public final class CollisionOccurrence
 {
-  public final Vec2d center;
-  public final double volume;
-  CollisionOccurrence(Vec2d center,double volume)
+  public final Vec2d translation;
+  CollisionOccurrence(Vec2d translation)
   {
-    this.center=center;
-    this.volume=volume;
+    this.translation=translation;
     // Na razie dajemy nic.
+  }
+  public CollisionOccurrence negate()
+  {
+    return new CollisionOccurrence(translation.negD());
   }
 }

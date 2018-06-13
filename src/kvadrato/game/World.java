@@ -32,7 +32,7 @@ public final class World
   /**
    * Domyślna ilość odświeżeń świata w sekundzie przy szybkości 1.
    */
-  public final static int DefaultTickrate=24;
+  public final static int DefaultTickrate=120;
   /**
    * Najmniejszy możliwy do ustawienia tickrate.
    */
@@ -473,7 +473,7 @@ public final class World
         collision=CollisionComputer.computeFromBaked(sh1,sh2);
         if(collision!=null)
         {
-          col1.addCollision(ent2,collision);
+          col1.addCollision(ent2,collision.negate());
           col2.addCollision(ent1,collision);
         }
       }
