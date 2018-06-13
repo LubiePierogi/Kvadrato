@@ -148,7 +148,7 @@ public final class World
     }
     return false;
   }
-  public int[] doWorkAndReturn(WorldWorkerWhichReturns func)
+  public Object doWorkAndReturn(WorldWorkerWhichReturns func)
     throws GameException
   {
     worldLock.lock();
@@ -345,9 +345,9 @@ public final class World
     try
     {
       computeCollisions();
+      doThingsWorld();
     }
     catch(GameException exc){}
-    doThingsWorld();
     updateWorld();
   }
   /**
@@ -362,6 +362,7 @@ public final class World
   /**
    */
   private void doThingsWorld()
+    throws GameException
   {
     Entity ent;
     for(int i=0;i<ents.size();++i)
@@ -431,46 +432,31 @@ public final class World
   private void computeCollisions()
     throws GameException
   {
-    //System.err.println("WQQERE");
-    //if(ents==null)System.err.println("$#@$#@");
-    int theEnd1;
-    //System.err.print("Xzxc");
-    int theEnd2;
-    //System.err.print("zxc");
-    Entity ent1;
-    Entity ent2;
-    Collider col1;
-    Collider col2;
-    BakedShape sh1;
-    BakedShape sh2;
-    Physics ph1;
-    Physics ph2;
-    CollisionOccurrence collision;
-    theEnd1=ents.size()-1;
-    theEnd2=ents.size();
+    int theEnd1=ents.size()-1;
+    int theEnd2=ents.size();
     for(int i=0;i<theEnd1;++i)
     {
-      ent1=ents.get(i);
-      col1=(Collider)ent1.getComponent("Collider");
+      Entity ent1=ents.get(i);
+      Collider col1=(Collider)ent1.getComponent("Collider");
       if(col1==null)
         continue;
-      ph1=(Physics)ent1.getComponent("Physics");
+      Physics ph1=(Physics)ent1.getComponent("Physics");
       for(int j=i+1;j<theEnd2;++j)
       {
-        //System.out.print("qweqw");
-        ent2=ents.get(j);
-        col2=(Collider)ent2.getComponent("Collider");
+        Entity ent2=ents.get(j);
+        Collider col2=(Collider)ent2.getComponent("Collider");
         if(col2==null)
           continue;
-        ph2=(Physics)ent2.getComponent("Physics");
+        Physics ph2=(Physics)ent2.getComponent("Physics");
         // Teraz wiemy, że mamy parę dwóch możliwych do zderzenia obiektów.
         ElementaryShape s1=col1.getShape();
         ElementaryShape s2=col2.getShape();
         if(s1==null||s2==null)
           continue;
-        sh1=new BakedShape(s1,new Vec2drs(ph1.getPlace()));
-        sh2=new BakedShape(s2,new Vec2drs(ph2.getPlace()));
-        collision=CollisionComputer.computeFromBaked(sh1,sh2);
+        BakedShape sh1=new BakedShape(s1,new Vec2drs(ph1.getPlace()));
+        BakedShape sh2=new BakedShape(s2,new Vec2drs(ph2.getPlace()));
+        CollisionOccurrence collision
+          =CollisionComputer.computeFromBaked(sh1,sh2);
         if(collision!=null)
         {
           col1.addCollision(ent2,collision.negate());

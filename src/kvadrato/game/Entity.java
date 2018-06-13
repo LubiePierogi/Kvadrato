@@ -83,29 +83,21 @@ public class Entity implements Comparable
   }
   public final void fix()
   {
-    components.forEach((k,v)->
+    for(Map.Entry<String,Component> x:components.entrySet())
     {
-      v.fix();
-    });
+      x.getValue().fix();
+    }
   }
   /**
    * Funkcja zmieniająca stan jednostki lub świata co każdy krok. Tworzy ona
    * nowy stan i zmienia tylko jego.
    */
   public final void doThings()
+    throws GameException
   {
-    try
+    for(Map.Entry<String,Component> x:components.entrySet())
     {
-      components.forEach((k,v)->
-      {
-        v.doThings();
-      });
-    }
-    catch(Throwable exc)
-    {
-      System.out.println("Funkcja doThings przy pewnej jednostce "+
-        this.prefabName+" rzuciła wyjątek.");
-      exc.printStackTrace(System.out);
+      x.getValue().doThings();
     }
   }
   /**
@@ -115,16 +107,9 @@ public class Entity implements Comparable
   // i ustawienie nowego stanu na null.
   public final void update()
   {
-    try
+    for(Map.Entry<String,Component> x:components.entrySet())
     {
-      components.forEach((k,v)->
-      {
-        v.update();
-      });
-    }
-    catch(Throwable exc)
-    {
-      exc.printStackTrace();
+      x.getValue().update();
     }
   }
   public final void addComponent(String name)

@@ -61,49 +61,35 @@ public class GameDaemonComponent extends Component
     ph.addVelocity(new Vec2dr(goalVelocity,0.,0.));
     player=p;
     if(p!=null&&p.hasComponent("Physics"))
-    {
       ((Physics)p.getComponent("Physics")).attach(anchor);
-    }
-    {
-      Entity w;
-      w=spawnEnt("Wall");
-      ((Physics)w.getComponent("Physics")).addPlace(new Vec2dr(-4.,0.,0.));
-      ((Physics)w.getComponent("Physics")).attach(anchor);
-      ((WallComponent)w.getComponent("WallComponent")).
-        setSize(new Vec2d(1./3.,5.4));
-      ((WallComponent)w.getComponent("WallComponent")).
-        setColor(WallColor.MOVING);
-      walls.add(w);
-
-      w=spawnEnt("Wall");
-      ((Physics)w.getComponent("Physics")).addPlace(new Vec2dr(4.,0.,0.));
-      ((Physics)w.getComponent("Physics")).attach(anchor);
-      ((WallComponent)w.getComponent("WallComponent")).
-        setSize(new Vec2d(1./3.,5.4));
-      ((WallComponent)w.getComponent("WallComponent")).
-        setColor(WallColor.MOVING);
-      walls.add(w);
-
-      w=spawnEnt("Wall");
-      ((Physics)w.getComponent("Physics")).addPlace(new Vec2dr(0.,2.7,0.));
-      ((Physics)w.getComponent("Physics")).attach(anchor);
-      ((WallComponent)w.getComponent("WallComponent")).
-        setSize(new Vec2d(8.,1./3.));
-      ((WallComponent)w.getComponent("WallComponent")).
-        setColor(WallColor.INFINITE);
-      walls.add(w);
-
-      w=spawnEnt("Wall");
-      ((Physics)w.getComponent("Physics")).addPlace(new Vec2dr(0.,-2.7,0.));
-      ((Physics)w.getComponent("Physics")).attach(anchor);
-      ((WallComponent)w.getComponent("WallComponent")).
-        setSize(new Vec2d(8.,1./3.));
-      ((WallComponent)w.getComponent("WallComponent")).
-        setColor(WallColor.INFINITE);
-      walls.add(w);
-    }
+    spawnWalls();
     distanceCovered=0.0;
     distanceCoveredNew=0.0;
+  }
+  private void spawnWalls()
+    throws GameException
+  {
+    Vec2dr[] places=new Vec2dr[]
+    {
+      new Vec2dr(-4., 0. ,0.),new Vec2dr( 4., 0. ,0.),
+      new Vec2dr( 0., 2.7,0.),new Vec2dr( 0.,-2.7,0.)
+    };
+    Vec2d[] sizes=new Vec2d[]
+    {
+      new Vec2d(1./3.,5.4  ),new Vec2d(1./3.,5.4  ),
+      new Vec2d(8.   ,1./3.),new Vec2d(8.   ,1./3.)
+    };
+    WallColor[] colors=new WallColor[]
+      {WallColor.MOVING,WallColor.MOVING,WallColor.INFINITE,WallColor.INFINITE};
+    for(int i=0;i<4;++i)
+    {
+      Entity w=spawnEnt("Wall");
+      ((Physics)w.getComponent("Physics")).addPlace(places[i]);
+      ((Physics)w.getComponent("Physics")).attach(anchor);
+      ((WallComponent)w.getComponent("WallComponent")).setSize(sizes[i]);
+      ((WallComponent)w.getComponent("WallComponent")).setColor(colors[i]);
+      walls.add(w);
+    }
   }
   public void end()
   {
@@ -124,11 +110,23 @@ public class GameDaemonComponent extends Component
 
   public void fix()
   {
-    //for
-
-    //Trzeba dopisać usuwanie pustych wskaźników na przeszkody, ściany i gracza.
+    if(player.getWorld()!=getWorld())
+      player=null;
+    for(int i=0;i<walls.size();++i)
+      if(walls.get(i).getWorld()!=getWorld())
+      {
+        walls.remove(i);
+        --i;
+      }
+    for(int i=0;i<obstacles.size();++i)
+      if(obstacles.get(i).getWorld()!=getWorld())
+      {
+        obstacles.remove(i);
+        --i;
+      }
   }
   public void doThings()
+    throws GameException
   {
     if(anchor!=null)
     {
@@ -142,7 +140,6 @@ public class GameDaemonComponent extends Component
 
       while(lastSpawn<(int)distanceCovered)
       {
-      //  System.out.println("Metr: "+lastSpawn);
         spawnObstacles(lastSpawn);
         ++lastSpawn;
       }
@@ -157,69 +154,55 @@ public class GameDaemonComponent extends Component
     }
   }
   private void spawnObstacles(int meter)
+    throws GameException
   {
-    try
+    if(rng.nextFloat()<1.f/2.f)
     {
-      if(rng.nextFloat()<1.f/2.f)
+      ++spawnedObstacles;
+      int count=(int)(1.f+2.f*rng.nextFloat());
+      while(count>0)
       {
-        ++spawnedObstacles;
-    //    System.out.println("##: "+spawnedObstacles);
-        int count=(int)(1.f+2.f*rng.nextFloat());
-        while(count>0)
-        {
-          Entity q=spawnEnt("Obstacle");
-          obstacles.add(q);
-          ObstacleComponent
-            oc=(ObstacleComponent)q.getComponent("ObstacleComponent");
-          oc.setSize
-          (
-            .1+.3*rng.nextDouble(),
-            .5+4.*rng.nextDouble()
-          );
-          BgColorComponent
-            bcc=(BgColorComponent)q.getComponent("BgColorComponent");
-          int whichColor=rng.nextInt(BgColor.values().length);
-          bcc.setColor(BgColor.values()[whichColor]);
-          Physics ph=(Physics)q.getComponent("Physics");
-          Vec2dr spawnPlace=
-          new Vec2dr
-          (
-              meter+
-              7.+
-              1.5*rng.nextDouble()
-            ,
-              -3.+
-              6.*rng.nextDouble()
-            ,
-              Math.PI*rng.nextDouble()
-          );
-          ph.addPlace(spawnPlace);
-          --count;
-        }
+        Entity q=spawnEnt("Obstacle");
+        obstacles.add(q);
+        ObstacleComponent
+          oc=(ObstacleComponent)q.getComponent("ObstacleComponent");
+        oc.setSize
+        (
+          .1+.3*rng.nextDouble(),
+          .5+4.*rng.nextDouble()
+        );
+        BgColorComponent
+          bcc=(BgColorComponent)q.getComponent("BgColorComponent");
+        int whichColor=rng.nextInt(BgColor.values().length);
+        bcc.setColor(BgColor.values()[whichColor]);
+        Physics ph=(Physics)q.getComponent("Physics");
+        Vec2dr spawnPlace=
+        new Vec2dr
+        (
+            meter+
+            7.+
+            1.5*rng.nextDouble()
+          ,
+            -3.+
+            6.*rng.nextDouble()
+          ,
+            Math.PI*rng.nextDouble()
+        );
+        ph.addPlace(spawnPlace);
+        --count;
       }
-    }
-    catch(GameException exc)
-    {
-      exc.printStackTrace(System.out);
     }
   }
   private void destroyOverpastObstacles()
   {
-    //if(0==0)return;
     for(int i=0;i<obstacles.size();++i)
     {
       Vec2dr anchorPlace=((Physics)anchor.getComponent("Physics")).getPlace();
       Vec2dr obstaclePlace=((Physics)obstacles.get(i)
         .getComponent("Physics")).getPlace();
-      //System.out.println("Anchor: "+anchor.getId()+' '+anchor.getName()+' '+
-    //    anchorPlace.x+' '+anchorPlace.y);
-    //  System.out.println("Obstacle: "+obstacles.get(i).getId()+' '+
-    //    obstacles.get(i).getName()+' '+obstaclePlace.x+' '+obstaclePlace.y);
       double dist=anchorPlace.subDR(obstaclePlace).dist();
-  //    System.out.println("Różnica: "+dist);
       if(dist>20.)
       {
-      //  System.out.println("Usuwanie");
         obstacles.get(i).remove();
         obstacles.remove(i);
         --i;

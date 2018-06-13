@@ -322,6 +322,7 @@ public class GUIController implements Initializable
     }
     catch(GameException exc)
     {
+      exc.printStackTrace(System.err);
     }
   }
   void pauseGame()
@@ -331,7 +332,9 @@ public class GUIController implements Initializable
       model.haltWorld();
     }
     catch(GameException exc)
-    {}
+    {
+      exc.printStackTrace(System.err);
+    }
   }
   void resumeGame()
   {
@@ -340,7 +343,9 @@ public class GUIController implements Initializable
       model.pushWorld();
     }
     catch(GameException exc)
-    {}
+    {
+      exc.printStackTrace(System.err);
+    }
   }
   /**
    * To jest funkcja używana przy przesuwaniu elementów w czasie.
@@ -600,6 +605,38 @@ public class GUIController implements Initializable
         break;
       case LEFT:
         model.getControlProxy().set("left",null);
+        break;
+      case Q:
+        if(model.getControlProxy().get("color").equals("q"))
+          model.getControlProxy().set("color","");
+        break;
+      case W:
+        if(model.getControlProxy().get("color").equals("w"))
+          model.getControlProxy().set("color","");
+        break;
+      case E:
+        if(model.getControlProxy().get("color").equals("e"))
+          model.getControlProxy().set("color","");
+        break;
+      case R:
+        if(model.getControlProxy().get("color").equals("r"))
+          model.getControlProxy().set("color","");
+        break;
+      case A:
+        if(model.getControlProxy().get("color").equals("a"))
+          model.getControlProxy().set("color","");
+        break;
+      case S:
+        if(model.getControlProxy().get("color").equals("s"))
+          model.getControlProxy().set("color","");
+        break;
+      case D:
+        if(model.getControlProxy().get("color").equals("d"))
+          model.getControlProxy().set("color","");
+        break;
+      case F:
+        if(model.getControlProxy().get("color").equals("f"))
+          model.getControlProxy().set("color","");
         break;
     }
   }

@@ -10,12 +10,13 @@ public class AppearanceElement
   public double y;
   public double angle;
   public double scale;
+  public int drawOrder;
 
-  public Vec2drs getVec()
+  public final Vec2drs getVec()
   {
     return new Vec2drs(x,y,angle,scale);
   }
-  public void setVec(Vec2drs v)
+  public final void setVec(Vec2drs v)
   {
     Objects.requireNonNull(v);
     x=v.x;y=v.y;angle=v.angle;scale=v.scale;

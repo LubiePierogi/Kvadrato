@@ -91,7 +91,7 @@ public class Model
   public void cookLevelStart()
     throws GameException
   {
-    viewEntId=world.doWorkAndReturn(wa->
+    Object o=world.doWorkAndReturn(wa->
     {
       wa.clear();
 
@@ -106,12 +106,13 @@ public class Model
       wa.updateWorld();
 
       return new int[]{player.getId()};
-    })[0];
+    });
+    viewEntId=((int[])o)[0];
   }
   public void cookTestLevel()
     throws GameException
   {
-    viewEntId=world.doWorkAndReturn(wa->
+    Object o=world.doWorkAndReturn(wa->
     {
       wa.clear();
 
@@ -162,7 +163,8 @@ public class Model
       wa.updateWorld();
 
       return new int[]{player.getId()};
-    })[0];
+    });
+    viewEntId=((int[])o)[0];
   }
   public void pushWorld()
     throws GameException

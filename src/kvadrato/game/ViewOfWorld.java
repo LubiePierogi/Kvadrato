@@ -42,8 +42,6 @@ public class ViewOfWorld
   {
     Objects.requireNonNull(world);
 
-    //System.out.println("Tworzenie widoku świata.");
-
     Entity ent=world.getEntById(entId);
     Vec2drs eye;
     double trueDistance;
@@ -59,9 +57,8 @@ public class ViewOfWorld
     trueDistance=distance/eye.scale;
     things=new ArrayList<AppearanceElement>();
     for(Entity x:world.ents)
-    {
       addEnt(x,eye,trueDistance);
-    }
+    things.sort((x,y)->{return x.drawOrder-y.drawOrder;});
   }
   private static Vec2drs getEntEye(Entity ent)
   {

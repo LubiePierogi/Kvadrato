@@ -65,6 +65,7 @@ public class Wall extends Prefab
     ae.width=size.x;
     ae.height=size.y;
     ae.color=w.getColor();
+    ae.drawOrder=100;
     list.add(ae);
     return list;
   };
@@ -76,32 +77,18 @@ public class Wall extends Prefab
   {
     WallComponent w=(WallComponent)ent.getComponent("WallComponent");
     Vec2d size=w.getSize().mulD(.5);
-    try
+    return new ElementaryShape(new Vec2d[]
     {
-      return new ElementaryShape(new Vec2d[]
-      {
-        new Vec2d( size.x, size.y),
-        new Vec2d( size.x,-size.y),
-        new Vec2d(-size.x,-size.y),
-        new Vec2d(-size.x, size.y)
-      });
-    }
-    catch(GameException exc)
-    {
-      System.err.println("To tylko na razie!!!\nA oprócz tego, to jest błąd "+
-      "w ścianie!");
-    }
-    return null;
+      new Vec2d( size.x, size.y),
+      new Vec2d( size.x,-size.y),
+      new Vec2d(-size.x,-size.y),
+      new Vec2d(-size.x, size.y)
+    });
   };
   private final static Collider.OnCollideFnType onCollideFn=(e,o,c)->
   {
     if(o.hasTag("Wall")||o.hasTag("Obstacle"))return;
     Physics ph=(Physics)o.getComponent("Physics");
-    Vec2dr p=ph.getPlace();
-    Vec2dr v=ph.getVelocity();
-    ph.addPlace(new Vec2dr(c.translation).mulD(1.));
-    ph.addVelocity(new Vec2dr(c.translation).mulD(1.));
-
-    //ph.addVelocity(v.mulDR(-1.75).mulDR(e.getDelta()));
+    ph.accelerate(new Vec2dr(c.translation).mulD(800.));
   };
 }

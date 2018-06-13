@@ -61,7 +61,6 @@ public class Square extends Prefab
       q.setListFn(appearanceFn);
       q.setRenderDistanceFn(renderDistanceFn);
     }
-
     // Physics
     {
       Physics q=(Physics)ent.getComponent("Physics");
@@ -72,10 +71,6 @@ public class Square extends Prefab
     {
       Camera q=(Camera)ent.getComponent("Camera");
       q.setEyeFn(eyeFn);
-    }
-    // Control
-    {
-      // Tu na razie też nic.
     }
     // Locomotor
     {
@@ -107,6 +102,7 @@ public class Square extends Prefab
     sqsq.y=0.0;
     sqsq.angle=0.0;
     sqsq.scale=1.0;
+    sqsq.drawOrder=50;
     list.add(sqsq);
     return list;
   };

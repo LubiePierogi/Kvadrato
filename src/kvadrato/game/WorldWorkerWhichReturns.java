@@ -4,5 +4,5 @@ import kvadrato.utils.GameException;
 
 public interface WorldWorkerWhichReturns
 {
-  int[] call(WorldAccess wa) throws GameException;
+  Object call(WorldAccess wa) throws GameException;
 }

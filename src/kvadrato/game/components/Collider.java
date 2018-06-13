@@ -75,9 +75,7 @@ public class Collider extends Component
   {
     if(onCollideFn!=null)
       for(Map.Entry<Entity,CollisionOccurrence> co:collisions.entrySet())
-      {
         onCollideFn.call(this.getEntity(),co.getKey(),co.getValue());
-      }
   }
   public void update()
   {

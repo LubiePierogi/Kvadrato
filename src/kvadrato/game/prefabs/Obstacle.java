@@ -68,6 +68,7 @@ public class Obstacle extends Prefab
     rect.width=v.x;
     rect.height=v.y;
     rect.color=bg.getColor();
+    rect.drawOrder=25;
     list.add(rect);
     return list;
   };
@@ -86,8 +87,6 @@ public class Obstacle extends Prefab
     {
       return new ElementaryShape(new Vec2d[]
       {
-      //    new Vec2d(0,-1),
-      //    new Vec2d(0,1)
         new Vec2d( size.x, size.y),
         new Vec2d( size.x,-size.y),
         new Vec2d(-size.x,-size.y),

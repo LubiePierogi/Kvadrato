@@ -10,13 +10,8 @@ public final class CollisionComputer
    */
   public static CollisionOccurrence computeFromBaked(BakedShape first,BakedShape second)
   {
-    //System.err.println("ZXCzxc");
     if(checkBoundingBoxes(first,second))
-    {
-      //System.err.println("!@#@!");
       return computeSAT(first,second);
-    }
-    //System.err.println("DPLFDp");
     return null;
   }
   ;
@@ -36,62 +31,42 @@ public final class CollisionComputer
     // Jest takie ograniczenie, że to wykrycie działa dobrze tylko
     // przy wypukłych kształtach, ale nie mamy inncyh w grze.
 
-
     // No więc sprawdźmy każdy odcinek, jaki mamy.
 
     double shortestIntersect=1./0.;
     Vec2d vectorOfShortestIntersect=null;
-
     // Pierwszy wielokąt. i drugi wielokąt
     BakedShape present=first;
-    //System.err.println("90900909");
     do
     {
-      //System.err.println("XZCCXZxczcxxczxczzcxzcxxczzcx");
       int quantity=present.vertices.size();
       for(int i=0;i<quantity-1;++i)
       {
         Vec2d castingVector=
           present.vertices.get((i+1)%quantity).subD
-          (present.vertices.get(i)).spin90();
+          (present.vertices.get(i)).spin90().norm();
         double lengthOfIntersection=compareProjections
         (
           castShape(first ,castingVector),
           castShape(second,castingVector)
         );
         if(Double.isNaN(lengthOfIntersection))
-        {
           // Jest dziura między obiektami.
-          //System.err.println("Znaleziono dziurę.");
           return null;
-        }
-        if(lengthOfIntersection<shortestIntersect)
+        if(Math.abs(lengthOfIntersection)<Math.abs(shortestIntersect))
         {
           shortestIntersect=lengthOfIntersection;
           vectorOfShortestIntersect=castingVector;
         }
       }
-      if(present==first)
-        present=second; // Zmiana sprawdzanych kierunkóœ na drugi kształt.
-      else present=null;
+      if(present==first)present=second;else present=null;
     }while(present!=null);
-    //System.err.println("Skończono SAT.");
-    //System.err.println("Najmniejsze: "+shortestIntersect);
     if(vectorOfShortestIntersect!=null)
-    {
-      double castLength=vectorOfShortestIntersect.dist();
-      return new CollisionOccurrence(new Vec2d(
-          vectorOfShortestIntersect.y/castLength*shortestIntersect,
-          -vectorOfShortestIntersect.x/castLength*shortestIntersect
-      ));
-    }
+      return new CollisionOccurrence
+        (vectorOfShortestIntersect.mulD(shortestIntersect));
     return null;
   }
 
-  //static double getLineSegmentAngle(Vec2d p1,Vec2d p2)
-  //{
-  //  return p2.subD(p1).getArgD();
-  //}
   static Projection castShape(BakedShape sh,Vec2d vec)
   {
     Projection q=new Projection();
@@ -111,12 +86,6 @@ public final class CollisionComputer
    */
   static double compareProjections(Projection q,Projection w)
   {
-    //System.err.println("Porównanie rzutów:");
-    //System.err.println(""+q.greater);
-    //System.err.println(""+q.smaller);
-    //System.err.println(""+w.greater);
-    //System.err.println(""+w.smaller);
-
     if(q.greater<w.smaller) return 0./0.; // NaN
     if(w.greater<q.smaller) return 0./0.;
 
@@ -127,8 +96,8 @@ public final class CollisionComputer
         return w.greater-w.smaller;
     else
       if(q.smaller>w.smaller)
-        return -q.greater+q.smaller;
+        return q.smaller+q.greater;
       else
-        return -q.greater+w.smaller;
+        return w.smaller-q.greater;
   }
 }

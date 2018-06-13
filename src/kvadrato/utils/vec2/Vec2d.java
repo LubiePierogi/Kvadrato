@@ -78,4 +78,9 @@ public class Vec2d
   {
     return new Vec2d(-y,x);
   }
+  public Vec2d norm()
+  {
+    double q=dist();
+    return new Vec2d(x/q,y/q);
+  }
 }

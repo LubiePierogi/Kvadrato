@@ -24,7 +24,6 @@ public final class Renderer
     context.scale(e.scale*100.,-e.scale*100.);
     context.rotate(e.angle*180./Math.PI);
 
-    // To jest i tak do poprawienia chyba.
   }
 
   public static void draw(GraphicsContext context,Model model)
@@ -48,7 +47,6 @@ public final class Renderer
       // kvadrato.view.ae.
       // 25
       className="kvadrato.view.ae.View"+className.substring(25);
-      //System.out.println(className);
       try
       {
         Class c=Class.forName(className);
@@ -59,9 +57,7 @@ public final class Renderer
       }
       catch
       (
-        ClassNotFoundException |
-        IllegalAccessException |
-        InstantiationException
+        ClassNotFoundException | IllegalAccessException | InstantiationException
         exc
       )
       {

@@ -27,8 +27,6 @@ public class Health extends Component
     maxNew=100.;
     onDeathFn=null;
   }
-
-
   public boolean isAlive()
   {
     return current>0.0;
@@ -41,8 +39,6 @@ public class Health extends Component
   {
     onCosTamFn=func;
   }
-
-
   public void change(double q)
   {
     currentNew+=q;

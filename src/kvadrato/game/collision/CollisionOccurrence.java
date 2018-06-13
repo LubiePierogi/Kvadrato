@@ -16,7 +16,6 @@ public final class CollisionOccurrence
   CollisionOccurrence(Vec2d translation)
   {
     this.translation=translation;
-    // Na razie dajemy nic.
   }
   public CollisionOccurrence negate()
   {

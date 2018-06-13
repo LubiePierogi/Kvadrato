@@ -31,7 +31,6 @@ public class Anchor extends Prefab
     // Appearance
     {
       Appearance q=(Appearance)ent.getComponent("Appearance");
-      q.setListFn(appearanceFn);
     }
 
     // Physics
@@ -40,17 +39,4 @@ public class Anchor extends Prefab
       q.setMass(1.0);
     }
   }
-  private final static Appearance.ListFnType
-    appearanceFn
-    =ent->
-  {
-    ArrayList<AppearanceElement> list=new ArrayList<AppearanceElement>();
-    AnchorAe ae=new AnchorAe();
-    ae.x=0.0;
-    ae.y=0.0;
-    ae.angle=0.0;
-    ae.scale=1.0;
-    list.add(ae);
-    return list;
-  };
 }
