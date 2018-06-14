@@ -22,7 +22,7 @@ public class RectangleButton extends Rectangle
       true,
       CycleMethod.NO_CYCLE,
       new Stop(0.,Color.rgb( 71,252,  0)),
-      new Stop(0.,Color.rgb(208,248,  5))
+      new Stop(1.,Color.rgb(208,248,  5))
     );
   public RectangleButton()
   {

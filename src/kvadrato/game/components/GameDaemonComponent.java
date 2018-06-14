@@ -78,7 +78,7 @@ public class GameDaemonComponent extends Component
     Vec2d[] sizes=new Vec2d[]
     {
       new Vec2d(1./3.,5.4  ),new Vec2d(1./3.,5.4  ),
-      new Vec2d(8.   ,1./3.),new Vec2d(8.   ,1./3.)
+      new Vec2d(16.  ,1./3.),new Vec2d(16.  ,1./3.)
     };
     WallColor[] colors=new WallColor[]
       {WallColor.MOVING,WallColor.MOVING,WallColor.INFINITE,WallColor.INFINITE};

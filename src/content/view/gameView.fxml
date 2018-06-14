@@ -6,7 +6,8 @@
 <?import kvadrato.gui.GameView?>
 <?import kvadrato.gui.gameview.Hud?>
 
-<StackPane
+<fx:root
+  type="GameView"
   xmlns="http://javafx.com/javafx/8.0.162-ea"
   xmlns:fx="http://javafx.com/fxml/1"
 >
@@ -19,4 +20,4 @@
     />
     <Hud fx:id="hud"/>
   </children>
-</StackPane>
+</fx:root>

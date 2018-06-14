@@ -42,37 +42,30 @@ public class MainController implements Initializable
     RESUME_GAME,
     GAME_OVER,
   }
-  State state;
+  private State state;
   private Model model;
   private Stage window;
-  long lastAnimationUpdate=0;
-  double stateClock;
+  private long lastAnimationUpdate;
+  private double stateClock;
 
-  @FXML
-  private StackPane theRoot;
+  private Object target;
 
-  @FXML
-  private StackPane almostRoot;
+  @FXML private StackPane theRoot;
 
-  //@FXML private Menu menu;
+  @FXML private StackPane almostRoot;
 
-  //@FXML private GameView gameView;
+  @FXML private Menu menu;
 
-//  private Canvas gameCanvas;
-
-
-
-
+  @FXML private GameView gameView;
 
   private AnimationTimer animationTimer;
 
-  /**
-   * Ta zmienna wskazuje, co jest teraz zaznaczone, czy tam na czym jest myszka.
-   */
-  private Object theTarget;
 
   public MainController()
-  {}
+  {
+    target=null;
+    lastAnimationUpdate=0;
+  }
   public void setModel(Model model)
   {
     this.model=model;
@@ -86,47 +79,29 @@ public class MainController implements Initializable
    */
   public void initialize(URL location,ResourceBundle resources)
   {
-    System.err.println("WQEEWWQEQWEQWE");
-    goToState(State.FIRST_SCREEN);
     animationTimer=new AnimationTimer()
     {
       public void handle(long now)
       {
         long diffNanos;
         double diff;
-        double w=theRoot.getWidth();
-        double h=theRoot.getHeight();
-        almostRoot.setScaleY(h/600.0);
-        almostRoot.setScaleX(h/600.0);
-        //almostRoot.setPrefWidth(800.0*w/h);
-        //almostRoot.setPrefHeight(600.0);
-
-        //gameCanvas.setWidth(800.0);
-        //gameCanvas.setHeight(600.0);
-
-
-        /*try
-        {
-          Renderer.draw(gameCanvas.getGraphicsContext2D(),model);
-        }
-        catch(GameException exc)
-        {
-          System.out.println
-            ("Próbowano narysować świat, ale świat dał wyjątek");
-          exc.printStackTrace(System.out);
-        }*/
         if(lastAnimationUpdate<=0)
-        {
           lastAnimationUpdate=now;
-        }
         diffNanos=now-lastAnimationUpdate;
         diff=(double)(diffNanos)/1000000000.0;
-        //doStateWork(diff);
-        //lastAnimationUpdate=now;
-      //  gameView.animate(diff);
-    //    menu.animate(diff);
+        lastAnimationUpdate=now;
+        gameView.animate(diff);
+        menu.animate(diff);
       }
     };
+    menu.setOnQuitRequest(()->closeRequest());
+    menu.setOnStartGameRequest(()->startNewGame());
+    menu.setOnResumeGameRequest(()->resumeGame());
+    menu.setOnThrowGameRequest(()->throwGame());
+    gameView.setDrawProc(c->drawGame(c));
+    gameView.setScoreGetter(()->getScore());
+    gameView.setOnPauseRequest(()->pauseGame());
+    gameView.setOnControlRequest((k,v)->gameControl(k,v));
   }
   /**
    * Następna inicjalizacja, ale taka później.
@@ -136,6 +111,13 @@ public class MainController implements Initializable
     window.setOnCloseRequest(e->{e.consume();closeRequest();});
     theRoot.getScene().setOnKeyPressed(e->keyPressed(e));
     theRoot.getScene().setOnKeyReleased(e->keyReleased(e));
+    ChangeListener<Number> stageSizeListener=(observable,o,n)->
+    {
+      resize(window.getWidth(),window.getHeight());
+    };
+    window.widthProperty().addListener(stageSizeListener);
+    window.heightProperty().addListener(stageSizeListener);
+    begin();
     animationTimer.start();
   }
   /**
@@ -159,57 +141,16 @@ public class MainController implements Initializable
     closeProgram();
   }
   /**
-   * Funkcja do ustawiania stanu, w którym jest menu.
-   */
-  // Jest ważna.
-  void goToState(State state)
-  {
-    this.state=state;
-    switch(state)
-    {
-      case FIRST_SCREEN:
-        //mainMenu.setOpacity(1.);
-        //mainMenu.setScaleX(1.);
-        //mainMenu.setScaleY(1.);
-        //menu.setVisible(true);
-        //gameView.setVisible(false);
-        break;
-      case MENU:
-        break;
-      case STARTING_THE_GAME:
-        //gameView.setVisible(true);
-        startNewGame();
-        break;
-      case THE_GAME:
-        break;
-      case THE_GAME_PAUSE:
-        //menu.setVisible(true);
-        pauseGame();
-        break;
-      case RESUME_GAME:
-        resumeGame();
-        goToState(State.THE_GAME);
-        break;
-      case GAME_OVER:
-        pauseGame();
-        goToState(State.FIRST_SCREEN);
-        break;
-    }
-    stateClock=0.0;
-  }
-  /**
-   * To jest funkcja, która robi rzeczy odpowiednie dla każdego stanu w menu.
-   */
-  void doStateWork(double time)
-  {
-    stateClock+=time;
-    double x,y;
-  }
-  /**
    * Ta funkcja wywołuje zaczęcie nowej gry w modelu.
    */
   void startNewGame()
   {
+    target=gameView;
+    menu.setVisible(false);
+    gameView.setVisible(true);
+    gameView.goToPlaying();
+    model.clearHiScore();
+    model.getControlProxy().clear();
     try
     {
       model.cookLevelStart();
@@ -223,6 +164,10 @@ public class MainController implements Initializable
   }
   void pauseGame()
   {
+    target=menu;
+    menu.setVisible(true);
+    gameView.setVisible(true);
+    menu.goToPauseMenu();
     try
     {
       model.haltWorld();
@@ -232,8 +177,23 @@ public class MainController implements Initializable
       exc.printStackTrace(System.err);
     }
   }
-  void resumeGame()
+  private int getScore()
   {
+    try
+    {
+      return model.getScore();
+    }
+    catch(GameException exc)
+    {
+      exc.printStackTrace(System.err);
+    }
+    return -1;
+  }
+  private void resumeGame()
+  {
+    target=gameView;
+    menu.setVisible(false);
+    gameView.setVisible(true);
     try
     {
       model.pushWorld();
@@ -243,247 +203,86 @@ public class MainController implements Initializable
       exc.printStackTrace(System.err);
     }
   }
-
-
-  //////
-  //
-  //
-  //     Tutaj są funkcje wywoływane przez klikanie na różne rzeczy
-  //     i najeżdżanie i tak dalej.
-  //
-  //
-  //////
-
-  // bigSquare
-  public void bigSquareEntered()
+  private void throwGame()
   {
-    //theTarget=bigSquare;
-  }
-  public void bigSquareExited()
-  {
-    if(state==State.FIRST_SCREEN)
-    theTarget=null;
-  }
-  public void bigSquareClicked()
-  {
-    if(state==State.FIRST_SCREEN)
+    target=menu;
+    menu.setVisible(true);
+    gameView.setVisible(false);
+    menu.goToMainMenu();
+    try
     {
-      goToState(State.MENU);
+      model.haltWorld();
+      model.clearTheWorld();
     }
-    else if(state==State.MENU)
+    catch(GameException exc)
     {
-      goToState(State.STARTING_THE_GAME);
+      exc.printStackTrace(System.err);
     }
   }
-
-  //settingsSquare
-  public void settingsSquareEntered()
+  private void makeGameOver()
   {
-    //theTarget=settingsSquare;
+    target=menu;
+    menu.setVisible(true);
+    gameView.setVisible(false);
+    menu.goToGameOverMenu();
+    model.getHiScore();
+    try
+    {
+      model.haltWorld();
+      model.clearTheWorld();
+    }
+    catch(GameException exc)
+    {
+      exc.printStackTrace(System.err);
+    }
   }
-  public void settingsSquareExited()
-  {
-  }
-  public void settingsSquareClicked()
-  {
-    System.out.println("To na razie nic nie robi!");
-  }
-
-  //helpSquare
-  public void helpSquareEntered()
-  {
-    //theTarget=helpSquare;
-  }
-  public void helpSquareExited()
-  {
-    return;
-  }
-  public void helpSquareClicked()
-  {
-    System.out.println("To na razie nic nie robi!");
-  }
-
-  //quitSquare
-  public void quitSquareEntered()
-  {
-    //theTarget=quitSquare;
-  }
-  public void quitSquareExited()
-  {
-    return;
-  }
-  public void quitSquareClicked()
-  {
-    closeRequest();
-  }
-
-
-  public void pauseRestartEntered()
-  {
-    //theTarget=pauseRestart;
-  }
-  public void pauseRestartExited()
-  {
-  }
-  public void pauseRestartClicked()
-  {
-  }
-
-
-  public void pauseResumeEntered()
-  {
-    //theTarget=pauseResume;
-  }
-  public void pauseResumeExited()
-  {
-  }
-  public void pauseResumeClicked()
-  {
-  }
-
-
-  public void pauseQuitEntered()
-  {
-    //theTarget=pauseQuit;
-  }
-  public void pauseQuitExited()
-  {
-  }
-  public void pauseQuitClicked()
-  {
-  }
-
-
 
   public void keyPressed(KeyEvent ev)
   {
-    switch(ev.getCode())
-    {
-      case ESCAPE:
-        if(state==State.FIRST_SCREEN)
-        {
-          goToState(State.MENU);
-        }
-        else if(state==State.MENU)
-        {
-      //    theTarget=quitSquare;
-        }
-        else if(state==State.THE_GAME||state==State.STARTING_THE_GAME)
-        {
-          goToState(State.THE_GAME_PAUSE);
-        }
-        else if(state==State.THE_GAME_PAUSE)
-        {
-          goToState(State.RESUME_GAME);
-        }
-        break;
-      case ENTER:
-        if(state==State.FIRST_SCREEN||
-           state==State.MENU)
-        {
-        //  if(theTarget==quitSquare)
-        //      quitSquareClicked();
-        }
-        break;
-      case UP:
-        model.getControlProxy().set("up","q");
-        break;
-      case RIGHT:
-        model.getControlProxy().set("right","q");
-        break;
-      case DOWN:
-        model.getControlProxy().set("down","q");
-        break;
-      case LEFT:
-        model.getControlProxy().set("left","q");
-        break;
-      case Q:
-        model.getControlProxy().set("color","q");
-        break;
-      case W:
-        model.getControlProxy().set("color","w");
-        break;
-      case E:
-        model.getControlProxy().set("color","e");
-        break;
-      case R:
-        model.getControlProxy().set("color","r");
-        break;
-      case A:
-        model.getControlProxy().set("color","a");
-        break;
-      case S:
-        model.getControlProxy().set("color","s");
-        break;
-      case D:
-        model.getControlProxy().set("color","d");
-        break;
-      case F:
-        model.getControlProxy().set("color","f");
-        break;
-    }
+    if(gameView==target)
+      gameView.keyPressed(ev);
+    else if(menu==target)
+      menu.keyPressed(ev);
   }
   public void keyReleased(KeyEvent ev)
   {
-    switch(ev.getCode())
-    {
-      case UP:
-        model.getControlProxy().set("up",null);
-        break;
-      case RIGHT:
-        model.getControlProxy().set("right",null);
-        break;
-      case DOWN:
-        model.getControlProxy().set("down",null);
-        break;
-      case LEFT:
-        model.getControlProxy().set("left",null);
-        break;
-      case Q:
-        if(model.getControlProxy().get("color").equals("q"))
-          model.getControlProxy().set("color","");
-        break;
-      case W:
-        if(model.getControlProxy().get("color").equals("w"))
-          model.getControlProxy().set("color","");
-        break;
-      case E:
-        if(model.getControlProxy().get("color").equals("e"))
-          model.getControlProxy().set("color","");
-        break;
-      case R:
-        if(model.getControlProxy().get("color").equals("r"))
-          model.getControlProxy().set("color","");
-        break;
-      case A:
-        if(model.getControlProxy().get("color").equals("a"))
-          model.getControlProxy().set("color","");
-        break;
-      case S:
-        if(model.getControlProxy().get("color").equals("s"))
-          model.getControlProxy().set("color","");
-        break;
-      case D:
-        if(model.getControlProxy().get("color").equals("d"))
-          model.getControlProxy().set("color","");
-        break;
-      case F:
-        if(model.getControlProxy().get("color").equals("f"))
-          model.getControlProxy().set("color","");
-        break;
-    }
+    if(gameView==target)
+      gameView.keyReleased(ev);
+    else if(menu==target)
+      menu.keyReleased(ev);
+  }
+  public void begin()
+  {
+    target=menu;
+    gameView.setVisible(false);
+    menu.setVisible(true);
+    menu.goToMainMenu();
   }
   public final EventProxy.EventListener eventListener=s->
   {
     switch(s)
     {
       case "gameOver":
-        goToState(State.GAME_OVER);
+        makeGameOver();
       default:;
     }
   };
-  private final ChangeListener<Number> stageSizeListener=(observable,o,n)->
+  private void resize(double w,double h)
   {
-
-  };
+    almostRoot.setScaleY(h/600.0);
+    almostRoot.setScaleX(h/600.0);
+    almostRoot.setPrefWidth(800.0*w/h);
+    almostRoot.setPrefHeight(600.0);
+    menu.resize(w,h);
+    gameView.resize(w,h);
+  }
+  private void drawGame(Canvas c)
+    throws GameException
+  {
+    Renderer.draw(c.getGraphicsContext2D(),model,c.getWidth(),c.getHeight());
+  }
+  private void gameControl(String k,String v)
+  {
+    model.getControlProxy().set(k,v);
+  }
 }

@@ -9,6 +9,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
 
 <?import kvadrato.gui.GameView?>
 <?import kvadrato.gui.Menu?>
@@ -23,13 +24,13 @@
   xmlns:fx="http://javafx.com/fxml/1"
 >
   <children>
+    <GameView fx:id="gameView"/>
     <StackPane
       fx:id="almostRoot"
       prefWidth="800.0"
       prefHeight="600.0"
     >
       <children>
-        <GameView fx:id="gameView"/>
         <Menu fx:id="menu"/>
       </children>
     </StackPane>

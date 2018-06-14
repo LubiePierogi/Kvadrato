@@ -17,28 +17,27 @@ public final class Renderer
 {
   private Renderer(){}
 
-  public static void set(GraphicsContext context,AppearanceElement e)
+  public static void set(GraphicsContext context,AppearanceElement e,
+    double w,double h)
   {
     context.setTransform(1.,0.,0.,1.,0.,0.);
-    context.translate(400.+100.*e.x,300.-100.*e.y);
-    context.scale(e.scale*100.,-e.scale*100.);
+    context.translate(w/2.+h/6.*e.x,h/2.-h/6.*e.y);
+    context.scale(e.scale*h/6.,-e.scale*h/6.);
     context.rotate(e.angle*180./Math.PI);
 
   }
 
-  public static void draw(GraphicsContext context,Model model)
+  public static void draw(GraphicsContext context,Model model,double w,double h)
     throws GameException
   {
-    double width=800;
-    double height=600;
-    ViewOfWorld view=model.getWorldView();
+    ViewOfWorld view=model.getWorldView(10.);
     if(view==null)
       return;
     BgColor bgColor=view.getBgColor();
     ViewAppearanceElement vae;
     context.setTransform(1.,0.,0.,1.,0.,0.);
     context.setFill(Colors.bgToBackground(bgColor));
-    context.fillRect(0,0,width,height);
+    context.fillRect(0,0,w,h);
     List<AppearanceElement> list=view.getThings();
     for(AppearanceElement e:list)
     {
@@ -52,7 +51,7 @@ public final class Renderer
         Class c=Class.forName(className);
         vae=(ViewAppearanceElement)c.newInstance();
         vae.set(e);
-        Renderer.set(context,e);
+        Renderer.set(context,e,w,h);
         vae.draw(context);
       }
       catch

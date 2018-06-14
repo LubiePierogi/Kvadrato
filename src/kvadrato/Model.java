@@ -45,12 +45,12 @@ public class Model
 
   private Random rng;
 
-  /**
-  * Domyślny konstruktor.
-  */
+  int hiScore;
+
   public Model() throws GameException
   {
     rng=new Random();
+    hiScore=0;
   }
   /**
    * Model musi być zainicjalizowany.
@@ -179,12 +179,22 @@ public class Model
     int score;
     Object o=world.doWorkAndReturn(wa->
     {
+      Entity ent=wa.getEntById(daemonId);
+      if(ent==null)return -1;
       GameDaemonComponent gdc
-        =(GameDaemonComponent)wa.getEntById(daemonId)
-        .getComponent("GameDaemonComponent");
+        =(GameDaemonComponent)ent.getComponent("GameDaemonComponent");
       return gdc.getScore();
     });
+    if((int)o>hiScore)hiScore=(int)o;
     return (int)o;
+  }
+  public int getHiScore()
+  {
+    return hiScore;
+  }
+  public void clearHiScore()
+  {
+    hiScore=0;
   }
   public void pushWorld()
     throws GameException
@@ -196,10 +206,10 @@ public class Model
   {
     world.doWork(wa->wa.setSpeed(0.0));
   }
-  public ViewOfWorld getWorldView()
+  public ViewOfWorld getWorldView(double dist)
     throws GameException
   {
-    return world.getView(playerId,5.0);
+    return world.getView(playerId,dist);
   }
   public ControlProxy getControlProxy()
   {

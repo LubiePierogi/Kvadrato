@@ -8,18 +8,19 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.Group?>
 
-<?import kvadrato.gui.menu.PauseMenu?>
+<?import kvadrato.gui.menu.GameOverMenu?>
 <?import kvadrato.gui.RectangleButton?>
 
 <fx:root
-  type="PauseMenu"
+  type="GameOverMenu"
   xmlns="http://javafx.com/javafx/8.0.162-ea"
   xmlns:fx="http://javafx.com/fxml/1"
 >
   <children>
     <Group
       fx:id="restartSquare"
-      translateX="-200.0"
+      translateX="-100.0"
+      translateY="75.0"
       onMouseClicked="#restartClick"
       onMouseEntered="#restartEnter"
       onMouseMoved=  "#restartEnter"
@@ -30,19 +31,9 @@
       />
     </Group>
     <Group
-      fx:id="resumeSquare"
-      onMouseClicked="#resumeClick"
-      onMouseEntered="#resumeEnter"
-      onMouseMoved=  "#resumeEnter"
-    >
-      <RectangleButton
-        width="180.0"
-        height="180.0"
-      />
-    </Group>
-    <Group
       fx:id="backSquare"
-      translateX="200.0"
+      translateX="100.0"
+      translateY="75.0"
       onMouseClicked="#backClick"
       onMouseEntered="#backEnter"
       onMouseMoved=  "#backEnter"

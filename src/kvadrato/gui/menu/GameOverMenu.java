@@ -12,34 +12,38 @@ import kvadrato.gui.GuiElement;
 import kvadrato.gui.GuiProcedure;
 import kvadrato.gui.Procs;
 
-public class HelpScreen extends StackPane implements GuiElement
+public class GameOverMenu extends StackPane implements GuiElement
 {
-  @FXML Group backSquare;
+  @FXML private Group restartSquare;
+  @FXML private Group backSquare;
 
-  private Object target;
+  Object target;
 
-  public HelpScreen()
+  public GameOverMenu()
     throws IOException
   {
     FXMLLoader fxmlLoader=
       new FXMLLoader(getClass().getResource
-      ("/content/view/menu/helpScreen.fxml"));
+      ("/content/view/menu/gameOverMenu.fxml"));
     fxmlLoader.setRoot(this);
     fxmlLoader.setController(this);
     fxmlLoader.load();
   }
   public void animate(double diff)
   {
-    if(!isVisible())return;
+    Procs.changeWithInterpolation
+      (restartSquare,restartSquare==target?1.0625:1.0,diff,"scaleX","scaleY");
     Procs.changeWithInterpolation
       (backSquare,backSquare==target?1.0625:1.0,diff,"scaleX","scaleY");
   }
 
   public void begin()
   {
-    target=backSquare;
+    target=restartSquare;
+    Procs.changeImmediately(restartSquare,1.0,"scaleX","scaleY");
     Procs.changeImmediately(backSquare,1.0,"scaleX","scaleY");
   }
+
   public void keyPressed(KeyEvent ev)
   {
     switch(ev.getCode())
@@ -47,17 +51,36 @@ public class HelpScreen extends StackPane implements GuiElement
       case ESCAPE:
         requestBack();
         break;
-      case ENTER:
       case SPACE:
-        if(target==backSquare)requestBack();
+      case ENTER:
+        if(target==restartSquare)restartClick();
+        else if(target==backSquare)backClick();
+        break;
+      case RIGHT:
+        target=backSquare;
+        break;
+      case LEFT:
+        target=restartSquare;
         break;
     }
   }
   public void keyReleased(KeyEvent ev){}
 
-  @FXML private void backClick(){requestBack();}
+
+
+  @FXML void restartClick(){requestRestart();}
+  @FXML void restartEnter(){target=restartSquare;}
+
+  @FXML void backClick(){requestBack();}
+  @FXML void backEnter(){target=backSquare;}
 
   private void requestBack(){if(onBackRequest!=null)onBackRequest.call();}
-  private GuiProcedure onBackRequest;
   public void setOnBackRequest(GuiProcedure q){onBackRequest=q;}
+  private GuiProcedure onBackRequest;
+
+  private void requestRestart()
+    {if(onRestartRequest!=null)onRestartRequest.call();}
+  public void setOnRestartRequest(GuiProcedure q){onRestartRequest=q;}
+  private GuiProcedure onRestartRequest;
+
 }

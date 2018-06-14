@@ -7,13 +7,30 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.Group?>
+<?import javafx.scene.text.TextFlow?>
 
 <?import kvadrato.gui.menu.HelpScreen?>
+<?import kvadrato.gui.RectangleButton?>
 
-<StackPane
+<fx:root
+  type="HelpScreen"
   xmlns="http://javafx.com/javafx/8.0.162-ea"
   xmlns:fx="http://javafx.com/fxml/1"
 >
   <children>
+    <HBox>
+      <Group
+        fx:id="backSquare"
+        translateX="0.0"
+        onMouseClicked="#backClick"
+      >
+        <RectangleButton
+          width="180.0"
+          height="180.0"
+        />
+      </Group>
+      <TextFlow>
+      </TextFlow>
+    </HBox>
   </children>
-</StackPane>
+</fx:root>
