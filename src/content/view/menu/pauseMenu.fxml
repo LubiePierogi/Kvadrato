@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.Group?>
+
+
+<StackPane
+  xmlns="http://javafx.com/javafx/8.0.162-ea"
+  xmlns:fx="http://javafx.com/fxml/1"
+>
+  <children>
+  </children>
+</StackPane>

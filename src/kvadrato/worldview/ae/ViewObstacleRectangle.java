@@ -9,7 +9,7 @@ import kvadrato.utils.vec2.Vec2d;
 import kvadrato.game.other.BgColor;
 import kvadrato.game.appearance.AppearanceElement;
 import kvadrato.game.appearance.ObstacleRectangle;
-import kvadrato.view.Colors;
+import kvadrato.worldview.Colors;
 
 public class ViewObstacleRectangle extends ViewAppearanceElement
 {

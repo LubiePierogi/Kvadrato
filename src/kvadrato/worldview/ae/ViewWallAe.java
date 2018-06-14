@@ -8,7 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 import kvadrato.game.other.WallColor;
 import kvadrato.game.appearance.AppearanceElement;
 import kvadrato.game.appearance.WallAe;
-import kvadrato.view.Colors;
+import kvadrato.worldview.Colors;
 
 public class ViewWallAe extends ViewAppearanceElement
 {

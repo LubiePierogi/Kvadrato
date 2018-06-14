@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.layout.StackPane?>
+
+<?import kvadrato.gui.RectangleButton?>
+<?import kvadrato.gui.menu.MainMenu?>
+
+<StackPane
+  xmlns="http://javafx.com/javafx/8.0.162-ea"
+  xmlns:fx="http://javafx.com/fxml/1"
+>
+  <children>
+    <Group
+      fx:id="settingsSquare"
+      translateX="-120.0"
+      visible="false"
+    >
+      <RectangleButton
+        width="120.0"
+        height="180.0"
+      />
+    </Group>
+    <Group
+      fx:id="helpSquare"
+      visible="false"
+    >
+      <RectangleButton
+        width="120.0"
+        height="180.0"
+      />
+    </Group>
+    <Group
+      fx:id="quitSquare"
+      translateX="120.0"
+      visible="false"
+    >
+      <RectangleButton
+        width="120.0"
+        height="180.0"
+      />
+    </Group>
+    <Group
+      fx:id="bigSquare"
+    >
+      <RectangleButton
+        width="360.0"
+        height="360.0"
+      />
+    </Group>
+  </children>
+</StackPane>

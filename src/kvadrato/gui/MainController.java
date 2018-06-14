@@ -19,6 +19,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 import kvadrato.Model;
 import kvadrato.Renderer;
@@ -46,28 +48,31 @@ public class MainController implements Initializable
   long lastAnimationUpdate=0;
   double stateClock;
 
-  public StackPane theRoot;
+  @FXML
+  private StackPane theRoot;
 
-  public StackPane almostRoot;
+  @FXML
+  private StackPane almostRoot;
 
-  public MenuBox mainMenu;
+  //@FXML private Menu menu;
 
-  public Canvas gameCanvas;
+  //@FXML private GameView gameView;
+
+//  private Canvas gameCanvas;
 
 
 
 
 
-  AnimationTimer animationTimer;
+  private AnimationTimer animationTimer;
 
   /**
    * Ta zmienna wskazuje, co jest teraz zaznaczone, czy tam na czym jest myszka.
    */
-  public Object theTarget;
+  private Object theTarget;
 
   public MainController()
-  {
-  }
+  {}
   public void setModel(Model model)
   {
     this.model=model;
@@ -96,11 +101,11 @@ public class MainController implements Initializable
         //almostRoot.setPrefWidth(800.0*w/h);
         //almostRoot.setPrefHeight(600.0);
 
-        gameCanvas.setWidth(800.0);
-        gameCanvas.setHeight(600.0);
+        //gameCanvas.setWidth(800.0);
+        //gameCanvas.setHeight(600.0);
 
 
-        try
+        /*try
         {
           Renderer.draw(gameCanvas.getGraphicsContext2D(),model);
         }
@@ -109,16 +114,17 @@ public class MainController implements Initializable
           System.out.println
             ("Próbowano narysować świat, ale świat dał wyjątek");
           exc.printStackTrace(System.out);
-        }
+        }*/
         if(lastAnimationUpdate<=0)
         {
           lastAnimationUpdate=now;
-          return;
         }
         diffNanos=now-lastAnimationUpdate;
         diff=(double)(diffNanos)/1000000000.0;
-        doStateWork(diff);
-        lastAnimationUpdate=now;
+        //doStateWork(diff);
+        //lastAnimationUpdate=now;
+      //  gameView.animate(diff);
+    //    menu.animate(diff);
       }
     };
   }
@@ -165,19 +171,19 @@ public class MainController implements Initializable
         //mainMenu.setOpacity(1.);
         //mainMenu.setScaleX(1.);
         //mainMenu.setScaleY(1.);
-        //mainMenu.setVisible(true);
-        gameCanvas.setVisible(false);
+        //menu.setVisible(true);
+        //gameView.setVisible(false);
         break;
       case MENU:
         break;
       case STARTING_THE_GAME:
-        gameCanvas.setVisible(true);
+        //gameView.setVisible(true);
         startNewGame();
         break;
       case THE_GAME:
         break;
       case THE_GAME_PAUSE:
-        mainMenu.setVisible(false);
+        //menu.setVisible(true);
         pauseGame();
         break;
       case RESUME_GAME:
@@ -475,5 +481,9 @@ public class MainController implements Initializable
         goToState(State.GAME_OVER);
       default:;
     }
+  };
+  private final ChangeListener<Number> stageSizeListener=(observable,o,n)->
+  {
+
   };
 }

@@ -1,4 +1,4 @@
-package kvadrato.gui;
+package kvadrato.gui.menu;
 
 import java.io.IOException;
 
@@ -6,21 +6,22 @@ import javafx.scene.layout.StackPane;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
-import kvadrato.Model;
+import kvadrato.gui.GuiElement;
 
-public class MenuBox extends StackPane implements Controller
+public class PauseMenu extends StackPane implements GuiElement
 {
   @FXML
   private int x;
 
-  public MenuBox()
+  public PauseMenu()
     throws IOException
   {
     FXMLLoader fxmlLoader=
-      new FXMLLoader(getClass().getResource("/content/menu.fxml"));
-    //fxmlLoader.setRoot(this);
+      new FXMLLoader(getClass().getResource
+      ("/content/view/menu/pauseMenu.fxml"));
     fxmlLoader.setController(this);
     fxmlLoader.load();
   }
-
+  public void animate(double diff)
+  {}
 }
