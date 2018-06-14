@@ -5,7 +5,6 @@ import java.util.TreeMap;
 import java.util.function.Function;
 
 import kvadrato.utils.GameException;
-import kvadrato.utils.function.TriConsumer;
 import kvadrato.game.Component;
 import kvadrato.game.Entity;
 import kvadrato.game.collision.ElementaryShape;

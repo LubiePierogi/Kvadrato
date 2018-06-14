@@ -18,6 +18,8 @@
 <?import javafx.scene.canvas.Canvas?>
 <!--<?import javafx.embed.swing.SwingNode?>-->
 
+<?import kvadrato.gui.MenuBox?>
+
 <StackPane
   fx:id="theRoot"
   minWidth="320.0"
@@ -26,7 +28,6 @@
   prefHeight="600.0"
   xmlns="http://javafx.com/javafx/8.0.162-ea"
   xmlns:fx="http://javafx.com/fxml/1"
-  fx:controller="kvadrato.GUIController"
 >
   <fx:define>
     <RadialGradient fx:id="squareGradient" centerX="0.7921348314606742" centerY="0.5" focusAngle="-51.34" focusDistance="1.0" radius="1.0">
@@ -35,12 +36,8 @@
         <Stop color="#d0f805" offset="1.0" />
       </stops>
     </RadialGradient>
-    <Rectangle fx:id="bigSquareSizeMultiplier" width="1.0"/>
   </fx:define>
   <children>
-    <!--<StackPane fx:id="background">
-      <SwingNode fx:id="backgroundSwing"/>
-    </StackPane>-->
     <StackPane
       fx:id="almostRoot"
       prefWidth="800.0"
@@ -53,129 +50,7 @@
           height="600.0"
           visible="false"
         />
-        <StackPane fx:id="mainMenu">
-          <children>
-            <Group
-              fx:id="settingsSquare"
-              translateX="-120.0"
-              visible="false"
-              onMouseEntered="#settingsSquareEntered"
-              onMouseExited="#settingsSquareExited"
-              onMouseClicked="#settingsSquareClicked"
-            >
-              <Rectangle
-                fill="$squareGradient"
-                width="120.0"
-                height="180.0"
-                stroke="#00000050"
-                strokeType="INSIDE"
-                strokeWidth="24.0"
-              />
-            </Group>
-            <Group
-              fx:id="helpSquare"
-              visible="false"
-              onMouseEntered="#helpSquareEntered"
-              onMouseExited="#helpSquareExited"
-              onMouseClicked="#helpSquareClicked"
-            >
-              <Rectangle
-                fill="$squareGradient"
-                width="120.0"
-                height="180.0"
-                stroke="#00000050"
-                strokeType="INSIDE"
-                strokeWidth="24.0"
-              />
-            </Group>
-            <Group
-              fx:id="quitSquare"
-              translateX="120.0"
-              visible="false"
-              onMouseEntered="#quitSquareEntered"
-              onMouseExited="#quitSquareExited"
-              onMouseClicked="#quitSquareClicked"
-            >
-              <Rectangle
-                fill="$squareGradient"
-                width="120.0"
-                height="180.0"
-                stroke="#00000050"
-                strokeType="INSIDE"
-                strokeWidth="24.0"
-              />
-            </Group>
-              <Group
-                fx:id="bigSquare"
-                onMouseEntered="#bigSquareEntered"
-                onMouseExited="#bigSquareExited"
-                onMouseClicked="#bigSquareClicked"
-              >
-                <Rectangle
-                  fill="$squareGradient"
-                  width="360.0"
-                  height="360.0"
-                  stroke="#00000050"
-                  strokeType="INSIDE"
-                  strokeWidth="24.0"
-                />
-              </Group>
-          </children>
-        </StackPane>
-        <StackPane
-          fx:id="pauseMenu"
-          visible="false"
-        >
-          <children>
-                <Group
-                  fx:id="pauseRestart"
-                  translateX="-200.0"
-                  onMouseEntered="#pauseRestartEntered"
-                  onMouseExited="#pauseRestartExited"
-                  onMouseClicked="#pauseRestartClicked"
-                >
-                  <Rectangle
-                    fill="$squareGradient"
-                    width="160.0"
-                    height="160.0"
-                    stroke="#00000050"
-                    strokeType="INSIDE"
-                    strokeWidth="24.0"
-                  />
-                </Group>
-                <Group
-                  fx:id="pauseResume"
-                  onMouseEntered="#pauseResumeEntered"
-                  onMouseExited="#pauseResumeExited"
-                  onMouseClicked="#pauseResumeClicked"
-                >
-                  <Rectangle
-                    fill="$squareGradient"
-                    width="160.0"
-                    height="160.0"
-                    stroke="#00000050"
-                    strokeType="INSIDE"
-                    strokeWidth="24.0"
-                  />
-                </Group>
-                <Group
-                  fx:id="pauseQuit"
-                  translateX="200.0"
-                  onMouseEntered="#pauseQuitEntered"
-                  onMouseExited="#pauseQuitExited"
-                  onMouseClicked="#pauseQuitClicked"
-                >
-                  <Rectangle
-                    fill="$squareGradient"
-                    width="160.0"
-                    height="160.0"
-                    stroke="#00000050"
-                    strokeType="INSIDE"
-                    strokeWidth="24.0"
-                  />
-                </Group>
-          </children>
-        </StackPane>
+        <MenuBox fx:id="menuBox"/>
       </children>
     </StackPane>
   </children>

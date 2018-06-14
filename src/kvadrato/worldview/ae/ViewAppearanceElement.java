@@ -1,4 +1,4 @@
-package kvadrato.view.ae;
+package kvadrato.worldview.ae;
 
 import javafx.scene.canvas.GraphicsContext;
 

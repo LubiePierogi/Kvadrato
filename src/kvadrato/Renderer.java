@@ -10,8 +10,8 @@ import kvadrato.utils.GameException;
 import kvadrato.game.ViewOfWorld;
 import kvadrato.game.other.BgColor;
 import kvadrato.game.appearance.AppearanceElement;
-import kvadrato.view.Colors;
-import kvadrato.view.ae.ViewAppearanceElement;
+import kvadrato.worldview.Colors;
+import kvadrato.worldview.ae.ViewAppearanceElement;
 
 public final class Renderer
 {
@@ -44,9 +44,9 @@ public final class Renderer
     {
       String className=e.getClass().getName();
       // kvadrato.game.appearance.
-      // kvadrato.view.ae.
+      // kvadrato.worldview.ae.
       // 25
-      className="kvadrato.view.ae.View"+className.substring(25);
+      className="kvadrato.worldview.ae.View"+className.substring(25);
       try
       {
         Class c=Class.forName(className);

@@ -7,7 +7,6 @@ import java.util.function.Function;
 import kvadrato.utils.GameException;
 import kvadrato.utils.vec2.Vec2d;
 import kvadrato.utils.vec2.Vec2dr;
-import kvadrato.utils.function.TriConsumer;
 import kvadrato.game.Entity;
 import kvadrato.game.Prefab;
 import kvadrato.game.components.Physics;

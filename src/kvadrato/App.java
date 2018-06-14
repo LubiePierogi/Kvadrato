@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 
 import kvadrato.utils.GameException;
+import kvadrato.gui.MainController;
 
 //
 public class App extends Application
@@ -41,10 +42,11 @@ public class App extends Application
     model.init();
     win=mainStage;
     win.setTitle("Kvadrato");
+    MainController controller=new MainController();
     FXMLLoader loader=new
       FXMLLoader(getClass().getResource("/content/gui.fxml"));
+    loader.setController(controller);
     Parent root=loader.load();
-    GUIController controller=loader.<GUIController>getController();
     controller.setModel(model);
     controller.setWindow(win);
     win.setScene(new Scene(root));

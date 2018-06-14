@@ -1,6 +1,5 @@
-package kvadrato;
+package kvadrato.gui;
 
-import java.lang.Math;
 import java.lang.reflect.*;
 import java.util.ResourceBundle;
 import java.net.URL;
@@ -21,10 +20,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
+import kvadrato.Model;
+import kvadrato.Renderer;
 import kvadrato.utils.GameException;
 import kvadrato.game.EventProxy;
 
-public class GUIController implements Initializable
+public class MainController implements Initializable
 {
   enum State
   {
@@ -49,34 +50,11 @@ public class GUIController implements Initializable
 
   public StackPane almostRoot;
 
-  public StackPane mainMenu;
-
-/*
-  public SwingNode backgroundSwing;
-
-  public SwingOpenGLCanvas oglCanvas;
-*/
-
-  public Group bigSquare;
-  //public double bigSquareTranslateTarget;
-  //public double bigSquareScaleTarget;
-
-  public Group settingsSquare;
-  //public double settingsSquareTranslateTarget;
-
-  public Group helpSquare;
-  //public double helpSquareTranslateTarget;
-
-  public Group quitSquare;
-  //public double quitSquareTranslateTarget;
+  public MenuBox mainMenu;
 
   public Canvas gameCanvas;
 
 
-  public StackPane pauseMenu;
-  public Group pauseRestart;
-  public Group pauseResume;
-  public Group pauseQuit;
 
 
 
@@ -87,14 +65,14 @@ public class GUIController implements Initializable
    */
   public Object theTarget;
 
-  public GUIController()
+  public MainController()
   {
   }
-  void setModel(Model model)
+  public void setModel(Model model)
   {
     this.model=model;
   }
-  void setWindow(Stage window)
+  public void setWindow(Stage window)
   {
     this.window=window;
   }
@@ -103,6 +81,7 @@ public class GUIController implements Initializable
    */
   public void initialize(URL location,ResourceBundle resources)
   {
+    System.err.println("WQEEWWQEQWEQWE");
     goToState(State.FIRST_SCREEN);
     animationTimer=new AnimationTimer()
     {
@@ -146,7 +125,7 @@ public class GUIController implements Initializable
   /**
    * Następna inicjalizacja, ale taka później.
    */
-  void anotherInitialization()
+  public void anotherInitialization()
   {
     window.setOnCloseRequest(e->{e.consume();closeRequest();});
     theRoot.getScene().setOnKeyPressed(e->keyPressed(e));
@@ -183,19 +162,13 @@ public class GUIController implements Initializable
     switch(state)
     {
       case FIRST_SCREEN:
-        mainMenu.setOpacity(1.);
-        mainMenu.setScaleX(1.);
-        mainMenu.setScaleY(1.);
-        mainMenu.setVisible(true);
+        //mainMenu.setOpacity(1.);
+        //mainMenu.setScaleX(1.);
+        //mainMenu.setScaleY(1.);
+        //mainMenu.setVisible(true);
         gameCanvas.setVisible(false);
-        settingsSquare.setVisible(false);
-        helpSquare.setVisible(false);
-        quitSquare.setVisible(false);
         break;
       case MENU:
-        settingsSquare.setVisible(true);
-        helpSquare.setVisible(true);
-        quitSquare.setVisible(true);
         break;
       case STARTING_THE_GAME:
         gameCanvas.setVisible(true);
@@ -205,11 +178,9 @@ public class GUIController implements Initializable
         break;
       case THE_GAME_PAUSE:
         mainMenu.setVisible(false);
-        pauseMenu.setVisible(true);
         pauseGame();
         break;
       case RESUME_GAME:
-        pauseMenu.setVisible(false);
         resumeGame();
         goToState(State.THE_GAME);
         break;
@@ -227,91 +198,6 @@ public class GUIController implements Initializable
   {
     stateClock+=time;
     double x,y;
-    switch(this.state)
-    {
-      case FIRST_SCREEN:
-        {
-          y=theTarget==bigSquare?1.125:1.0;
-          x=bigSquare.getScaleX();
-          makeInterpolation(bigSquare,y,time,"scaleX","scaleY");
-          makeInterpolation(bigSquare,0.0,time,"translateY");
-        }
-        break;
-      case MENU:
-        {
-          y=theTarget==bigSquare?1.0625:1.0;
-          makeInterpolation(bigSquare,y,time,"scaleX","scaleY");
-          makeInterpolation(bigSquare,-60.0,time,"translateY");
-        }
-        {
-          // settingsSquare
-          y=theTarget==settingsSquare?180.0:150;
-          makeInterpolation(settingsSquare,y,time,"translateY");
-
-          // helpSquare
-          y=theTarget==helpSquare?180.0:150;
-          makeInterpolation(helpSquare,y,time,"translateY");
-
-          // quitSquare
-          y=theTarget==quitSquare?180.0:150;
-          makeInterpolation(quitSquare,y,time,"translateY");
-        }
-        break;
-      case STARTING_THE_GAME:
-        {
-          x=mainMenu.getScaleX();
-          y=2.7;
-          y=calculateInterpolation(x,y,time);
-          mainMenu.setScaleX(y);
-          mainMenu.setScaleY(y);
-
-          x=mainMenu.getOpacity();
-          y=0.0;
-          y=calculateInterpolation(x,y,time);
-          mainMenu.setOpacity(y);
-          if(y==0.0)
-          {
-            mainMenu.setVisible(false);
-            goToState(State.THE_GAME);
-          }
-        }
-        break;
-      case THE_GAME:
-      {
-        try
-        {
-          System.out.println(model.getScore());
-        }
-        catch(GameException exc){}
-      }
-        break;
-      case THE_GAME_PAUSE:
-      {
-        x=1.;
-        y=1.2;
-        makeInterpolation(pauseRestart,theTarget==pauseRestart?y:x,time,
-          "scaleX","scaleY");
-        makeInterpolation(pauseResume,theTarget==pauseResume?y:x,time,
-          "scaleX","scaleY");
-        makeInterpolation(pauseQuit,theTarget==pauseQuit?y:x,time,
-          "scaleX","scaleY");
-      }
-        break;
-      case RESUME_GAME:
-      {
-      }
-        break;
-      case GAME_OVER:
-      {
-        try
-        {
-          model.clearTheWorld();
-        }
-        catch(GameException exc)
-        {}
-      }
-        break;
-    }
   }
   /**
    * Ta funkcja wywołuje zaczęcie nowej gry w modelu.
@@ -351,70 +237,7 @@ public class GUIController implements Initializable
       exc.printStackTrace(System.err);
     }
   }
-  /**
-   * To jest funkcja używana przy przesuwaniu elementów w czasie.
-   */
-  public static double
-    calculateInterpolation(double now,double target,double time)
-  {
-    if(now!=target)
-    {
-      double a=target-now;
-      double b=Math.signum(a);
-      double neww=now+time*(a*9.0+0.24*b);
-      if(b*(neww-target)>0)
-        neww=target;
-      return neww;
-    }
-    return now;
-  }
-  /**
-   * Funkcja do zmieniania warotści jakichś rzeczy z interpolacją.
-   */
-  public void makeInterpolation
-    (Object thing,double target,double time,String ... numbers)
-  {
-    try
-    {
-      Class c=thing.getClass();
-      Class[] params=new Class[0];
-      Method meth=c.getMethod
-      (
-        "get"+
-        numbers[0].substring(0,1).toUpperCase()+
-        numbers[0].substring(1),
-        params
-      );
-      Object[] arglist=new Object[0];
-      Object ret=meth.invoke(thing,arglist);
-      Double retv=(Double)ret;
-      // Do wyliczenia początku brany jest tylko pierszy element z tablicy.
-      double x=Double.valueOf(retv);
-      double y=calculateInterpolation(x,target,time);
-      for(int i=0;i<numbers.length;++i)
-      {
-        params=new Class[1];
-        params[0]=Double.TYPE;
-        meth=c.getMethod
-        (
-          "set"+
-          numbers[i].substring(0,1).toUpperCase()+
-          numbers[i].substring(1),
-          params
-        );
-        arglist=new Object[1];
-        arglist[0]=new Double(y);
-        ret=meth.invoke(thing,arglist);
-      }
-    }
-    catch(NoSuchMethodException exc){}
-    catch(IllegalAccessException exc){}
-    catch(InvocationTargetException exc){}
-    finally
-    {
 
-    }
-  }
 
   //////
   //
@@ -428,7 +251,7 @@ public class GUIController implements Initializable
   // bigSquare
   public void bigSquareEntered()
   {
-    theTarget=bigSquare;
+    //theTarget=bigSquare;
   }
   public void bigSquareExited()
   {
@@ -450,7 +273,7 @@ public class GUIController implements Initializable
   //settingsSquare
   public void settingsSquareEntered()
   {
-    theTarget=settingsSquare;
+    //theTarget=settingsSquare;
   }
   public void settingsSquareExited()
   {
@@ -463,7 +286,7 @@ public class GUIController implements Initializable
   //helpSquare
   public void helpSquareEntered()
   {
-    theTarget=helpSquare;
+    //theTarget=helpSquare;
   }
   public void helpSquareExited()
   {
@@ -477,7 +300,7 @@ public class GUIController implements Initializable
   //quitSquare
   public void quitSquareEntered()
   {
-    theTarget=quitSquare;
+    //theTarget=quitSquare;
   }
   public void quitSquareExited()
   {
@@ -491,7 +314,7 @@ public class GUIController implements Initializable
 
   public void pauseRestartEntered()
   {
-    theTarget=pauseRestart;
+    //theTarget=pauseRestart;
   }
   public void pauseRestartExited()
   {
@@ -503,7 +326,7 @@ public class GUIController implements Initializable
 
   public void pauseResumeEntered()
   {
-    theTarget=pauseResume;
+    //theTarget=pauseResume;
   }
   public void pauseResumeExited()
   {
@@ -515,7 +338,7 @@ public class GUIController implements Initializable
 
   public void pauseQuitEntered()
   {
-    theTarget=pauseQuit;
+    //theTarget=pauseQuit;
   }
   public void pauseQuitExited()
   {
@@ -537,7 +360,7 @@ public class GUIController implements Initializable
         }
         else if(state==State.MENU)
         {
-          theTarget=quitSquare;
+      //    theTarget=quitSquare;
         }
         else if(state==State.THE_GAME||state==State.STARTING_THE_GAME)
         {
@@ -552,8 +375,8 @@ public class GUIController implements Initializable
         if(state==State.FIRST_SCREEN||
            state==State.MENU)
         {
-          if(theTarget==quitSquare)
-            quitSquareClicked();
+        //  if(theTarget==quitSquare)
+        //      quitSquareClicked();
         }
         break;
       case UP:

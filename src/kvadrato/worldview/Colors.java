@@ -1,4 +1,4 @@
-package kvadrato.view;
+package kvadrato.worldview;
 
 import javafx.scene.paint.Color;
 
