@@ -45,12 +45,12 @@ public class Model
 
   private Random rng;
 
-  int hiScore;
+  int savedScore;
 
   public Model() throws GameException
   {
     rng=new Random();
-    hiScore=0;
+    savedScore=0;
   }
   /**
    * Model musi być zainicjalizowany.
@@ -193,16 +193,20 @@ public class Model
         =(GameDaemonComponent)ent.getComponent("GameDaemonComponent");
       return gdc.getScore();
     });
-    if((int)o>hiScore)hiScore=(int)o;
     return (int)o;
   }
-  public int getHiScore()
+  public int getSavedScore()
   {
-    return hiScore;
+    return savedScore;
   }
-  public void clearHiScore()
+  public void saveScore()
+    throws GameException
   {
-    hiScore=0;
+    savedScore=getScore();
+  }
+  public void clearSavedScore()
+  {
+    savedScore=0;
   }
   public void pushWorld()
     throws GameException

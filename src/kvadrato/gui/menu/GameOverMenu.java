@@ -45,7 +45,7 @@ public class GameOverMenu extends StackPane implements GuiElement
     target=restartSquare;
     Procs.changeImmediately(restartSquare,1.0,"scaleX","scaleY");
     Procs.changeImmediately(backSquare,1.0,"scaleX","scaleY");
-    score.setText(""+getHiScore());
+    score.setText(""+getSavedScore());
   }
 
   public void keyPressed(KeyEvent ev)
@@ -87,9 +87,9 @@ public class GameOverMenu extends StackPane implements GuiElement
   public void setOnRestartRequest(GuiProcedure q){onRestartRequest=q;}
   private GuiProcedure onRestartRequest;
 
-  private int getHiScore()
-    {if(hiScoreGetter!=null)return hiScoreGetter.call();return -1;}
-  public void setHiScoreGetter(GuiIntFunction q){hiScoreGetter=q;}
-  private GuiIntFunction hiScoreGetter;
+  private int getSavedScore()
+    {if(savedScoreGetter!=null)return savedScoreGetter.call();return -1;}
+  public void setSavedScoreGetter(GuiIntFunction q){savedScoreGetter=q;}
+  private GuiIntFunction savedScoreGetter;
 
 }

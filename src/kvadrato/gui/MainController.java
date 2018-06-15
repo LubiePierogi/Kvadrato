@@ -82,7 +82,7 @@ public class MainController implements Initializable
     menu.setOnStartGameRequest(()->startNewGame());
     menu.setOnResumeGameRequest(()->resumeGame());
     menu.setOnThrowGameRequest(()->throwGame());
-    menu.setHiScoreGetter(()->getHiScore());
+    menu.setSavedScoreGetter(()->getSavedScore());
     gameView.setDrawProc(c->drawGame(c));
     gameView.setScoreGetter(()->getScore());
     gameView.setOnPauseRequest(()->pauseGame());
@@ -134,7 +134,7 @@ public class MainController implements Initializable
     menu.setVisible(false);
     gameView.setVisible(true);
     gameView.goToPlaying();
-    model.clearHiScore();
+    model.clearSavedScore();
     model.getControlProxy().clear();
     try
     {
@@ -209,16 +209,17 @@ public class MainController implements Initializable
     target=menu;
     menu.setVisible(true);
     gameView.setVisible(false);
-    menu.goToGameOverMenu();
     try
     {
       model.haltWorld();
+      model.saveScore();
       model.clearTheWorld();
     }
     catch(GameException exc)
     {
       exc.printStackTrace(System.err);
     }
+    menu.goToGameOverMenu();
   }
 
   private void keyPressed(KeyEvent ev)
@@ -242,9 +243,9 @@ public class MainController implements Initializable
     menu.setVisible(true);
     menu.goToMainMenu();
   }
-  private int getHiScore()
+  private int getSavedScore()
   {
-    return model.getHiScore();
+    return model.getSavedScore();
   }
   private final EventProxy.EventListener eventListener=s->
   {

@@ -50,7 +50,7 @@ public class Menu extends StackPane implements GuiElement,Initializable
     pauseMenu.setOnBackRequest(()->requestThrowGame());
     gameOverMenu.setOnBackRequest(()->goToMainMenu());
     gameOverMenu.setOnRestartRequest(()->requestStartGame());
-    gameOverMenu.setHiScoreGetter(()->getHiScore());
+    gameOverMenu.setSavedScoreGetter(()->getSavedScore());
   }
   public void resize(double w,double h)
   {
@@ -139,8 +139,8 @@ public class Menu extends StackPane implements GuiElement,Initializable
   public void setOnThrowGameRequest(GuiProcedure q){onThrowGameRequest=q;}
   private GuiProcedure onThrowGameRequest;
 
-  private int getHiScore()
-    {if(hiScoreGetter!=null)return hiScoreGetter.call();return -1;}
-  public void setHiScoreGetter(GuiIntFunction q){hiScoreGetter=q;}
-  private GuiIntFunction hiScoreGetter;
+  private int getSavedScore()
+    {if(savedScoreGetter!=null)return savedScoreGetter.call();return -1;}
+  public void setSavedScoreGetter(GuiIntFunction q){savedScoreGetter=q;}
+  private GuiIntFunction savedScoreGetter;
 }
