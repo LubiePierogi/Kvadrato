@@ -17,7 +17,6 @@
     </target>
     <target name="compile" description="make class files">
       <mkdir dir="build"/>
-      <mkdir dir="lib"/>
       <javac
         srcdir="src"
         destdir="build"
@@ -58,7 +57,7 @@
       </javac>
     </target>
     <target name="test" depends="compileTest">
-      <junit  printsummary="yes" haltonfailure="no" fork="true" dir="build">
+      <junit printsummary="yes" haltonfailure="no" fork="true" dir="build">
         <classpath refid="zxc"/>
         <classpath refid="java.class.path"/>
         <classpath path="/usr/share/java/junit.jar"/>
