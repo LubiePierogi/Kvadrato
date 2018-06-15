@@ -15,8 +15,8 @@ public class Health extends Component
   public static interface OnDeathFnType
   {void call(Entity e);}
 
-  private OnCosTamFnType onCosTamFn;
-  public static interface OnCosTamFnType
+  private OverTimeFnType overTimeFn;
+  public static interface OverTimeFnType
   {void call(Entity e);}
 
   public Health()
@@ -35,9 +35,9 @@ public class Health extends Component
   {
     onDeathFn=func;
   }
-  public void setOnCosTamFn(OnCosTamFnType func)
+  public void setOverTime(OverTimeFnType func)
   {
-    onCosTamFn=func;
+    overTimeFn=func;
   }
   public void change(double q)
   {
@@ -51,8 +51,8 @@ public class Health extends Component
   public void fix(){}
   public void doThings()
   {
-    if(onCosTamFn!=null)
-      onCosTamFn.call(getEntity());
+    if(overTimeFn!=null)
+      overTimeFn.call(getEntity());
   }
   public void update()
   {

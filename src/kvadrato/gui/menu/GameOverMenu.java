@@ -7,15 +7,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.Group;
+import javafx.scene.text.Text;
 
 import kvadrato.gui.GuiElement;
 import kvadrato.gui.GuiProcedure;
+import kvadrato.gui.GuiIntFunction;
 import kvadrato.gui.Procs;
 
 public class GameOverMenu extends StackPane implements GuiElement
 {
   @FXML private Group restartSquare;
   @FXML private Group backSquare;
+  @FXML private Text score;
 
   Object target;
 
@@ -42,6 +45,7 @@ public class GameOverMenu extends StackPane implements GuiElement
     target=restartSquare;
     Procs.changeImmediately(restartSquare,1.0,"scaleX","scaleY");
     Procs.changeImmediately(backSquare,1.0,"scaleX","scaleY");
+    score.setText(""+getHiScore());
   }
 
   public void keyPressed(KeyEvent ev)
@@ -82,5 +86,10 @@ public class GameOverMenu extends StackPane implements GuiElement
     {if(onRestartRequest!=null)onRestartRequest.call();}
   public void setOnRestartRequest(GuiProcedure q){onRestartRequest=q;}
   private GuiProcedure onRestartRequest;
+
+  private int getHiScore()
+    {if(hiScoreGetter!=null)return hiScoreGetter.call();return -1;}
+  public void setHiScoreGetter(GuiIntFunction q){hiScoreGetter=q;}
+  private GuiIntFunction hiScoreGetter;
 
 }

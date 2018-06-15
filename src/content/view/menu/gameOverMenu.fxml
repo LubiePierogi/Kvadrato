@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.paint.RadialGradient?>
-<?import javafx.scene.paint.Stop?>
-<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.Group?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.text.Font?>
 
 <?import kvadrato.gui.menu.GameOverMenu?>
 <?import kvadrato.gui.RectangleButton?>
+<?import kvadrato.gui.RectangleText?>
 
 <fx:root
   type="GameOverMenu"
@@ -17,6 +17,19 @@
   xmlns:fx="http://javafx.com/fxml/1"
 >
   <children>
+  <VBox translateY="-60">
+    <TextFlow textAlignment="LEFT" minWidth="350">
+      <Text>
+        <font><Font size="36"/></font>
+        Przegranko
+      </Text>
+    </TextFlow>
+    <TextFlow textAlignment="RIGHT" minWidth="400">
+      <Text fx:id="score">
+        <font><Font size="48"/></font>milion
+      </Text>
+    </TextFlow>
+  </VBox>
     <Group
       fx:id="restartSquare"
       translateX="-100.0"
@@ -25,10 +38,13 @@
       onMouseEntered="#restartEnter"
       onMouseMoved=  "#restartEnter"
     >
-      <RectangleButton
-        width="180.0"
-        height="180.0"
-      />
+      <StackPane>
+        <RectangleButton
+          width="180.0"
+          height="180.0"
+          />
+        <RectangleText text="Od nowa"/>
+      </StackPane>
     </Group>
     <Group
       fx:id="backSquare"
@@ -38,10 +54,13 @@
       onMouseEntered="#backEnter"
       onMouseMoved=  "#backEnter"
     >
-      <RectangleButton
-        width="180.0"
-        height="180.0"
-      />
+      <StackPane>
+        <RectangleButton
+          width="180.0"
+          height="180.0"
+          />
+        <RectangleText text="Menu"/>
+      </StackPane>
     </Group>
   </children>
 </fx:root>

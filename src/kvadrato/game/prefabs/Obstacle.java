@@ -109,6 +109,6 @@ public class Obstacle extends Prefab
     BgColor obg
       =((BgColorComponent)o.getComponent("BgColorComponent")).getColor();
     if(ebg!=obg)
-      ((Health)o.getComponent("Health")).change(-1800.*o.getDelta());
+      ((Health)o.getComponent("Health")).change(-2700.*o.getDelta());
   };
 }

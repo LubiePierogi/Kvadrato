@@ -3,7 +3,7 @@ package kvadrato.gui.gameview;
 import java.io.IOException;
 
 import javafx.scene.layout.StackPane;
-import javafx.scene.control.Label;
+import javafx.scene.text.Text;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
@@ -11,7 +11,7 @@ import kvadrato.gui.GuiElement;
 
 public class Hud extends StackPane
 {
-  @FXML Label scoreQuantity;
+  @FXML Text scoreQuantity;
 
   public Hud()
     throws IOException

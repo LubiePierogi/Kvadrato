@@ -5,14 +5,12 @@ import java.util.ResourceBundle;
 import java.net.URL;
 
 import javafx.stage.Stage;
-import javafx.scene.*;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.Group;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.input.KeyEvent;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
@@ -29,20 +27,6 @@ import kvadrato.game.EventProxy;
 
 public class MainController implements Initializable
 {
-  enum State
-  {
-    FIRST_SCREEN,
-    MENU,
-    RETURN_TO_FIRST_SCREEN,
-    STARTING_THE_GAME,
-    THE_GAME,
-    THE_GAME_PAUSE,
-    SETTINGS,
-    HELP,
-    RESUME_GAME,
-    GAME_OVER,
-  }
-  private State state;
   private Model model;
   private Stage window;
   private long lastAnimationUpdate;
@@ -98,6 +82,7 @@ public class MainController implements Initializable
     menu.setOnStartGameRequest(()->startNewGame());
     menu.setOnResumeGameRequest(()->resumeGame());
     menu.setOnThrowGameRequest(()->throwGame());
+    menu.setHiScoreGetter(()->getHiScore());
     gameView.setDrawProc(c->drawGame(c));
     gameView.setScoreGetter(()->getScore());
     gameView.setOnPauseRequest(()->pauseGame());
@@ -225,7 +210,6 @@ public class MainController implements Initializable
     menu.setVisible(true);
     gameView.setVisible(false);
     menu.goToGameOverMenu();
-    model.getHiScore();
     try
     {
       model.haltWorld();
@@ -258,6 +242,10 @@ public class MainController implements Initializable
     menu.setVisible(true);
     menu.goToMainMenu();
   }
+  public int getHiScore()
+  {
+    return model.getHiScore();
+  }
   public final EventProxy.EventListener eventListener=s->
   {
     switch(s)
@@ -285,4 +273,5 @@ public class MainController implements Initializable
   {
     model.getControlProxy().set(k,v);
   }
+
 }

@@ -69,7 +69,7 @@ public final class Colors
     switch(q)
     {
       case INFINITE:return new Color(0.03,0.03,0.03,1.);
-      case MOVING:return new Color(1.,0.,1.,.5);
+      case MOVING:return new Color(0.,0.,0.,.7);
       default:return Color.GREEN;
     }
   }

@@ -51,6 +51,8 @@ public class GameView extends StackPane implements GuiElement
   {
     gameCanvas.setWidth(w);
     gameCanvas.setHeight(h);
+    hud.setScaleX(h/600.);
+    hud.setScaleY(h/600.);
   }
 
   public void goToPlaying()

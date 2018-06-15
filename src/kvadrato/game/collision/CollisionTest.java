@@ -120,4 +120,46 @@ public class CollisionTest
       0.0001);
     }
   }
+  @Test
+  public void compute2()
+    throws GameException
+  {
+    BakedShape shape1=new BakedShape
+    (
+      new ElementaryShape
+      (
+        new Vec2d[]
+        {
+          new Vec2d(1,1),
+          new Vec2d(-1,1),
+          new Vec2d(-1,-1),
+          new Vec2d(1,-1),
+        }
+      ),
+      new Vec2drs(1.,0.,0.,1.)
+    );
+    BakedShape shape2=new BakedShape
+    (
+      new ElementaryShape
+      (
+        new Vec2d[]
+        {
+          new Vec2d(30,0),
+          new Vec2d(-30,0),
+          new Vec2d(-30,0.5),
+          new Vec2d(30,0.5),
+        }
+      ),
+      new Vec2drs(0,0,0,1.)
+    );
+    CollisionOccurrence co;
+    co=CollisionComputer.computeFromBaked(shape1,shape2);
+    if(co==null)
+    {
+      Assert.fail();
+    }
+    double dist=co.translation.dist();
+    System.err.println(dist);
+    Assert.assertNotEquals(0.0,dist,0.001);
+  }
 }

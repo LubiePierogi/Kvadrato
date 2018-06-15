@@ -153,12 +153,20 @@ public class Model
 
       Entity wall=wa.spawn("Wall");
       ((Physics)wall.getComponent("Physics")).addPlace
-        (new Vec2dr(0,1,0));
+        (new Vec2dr(0,-4,0));
       ((WallComponent)wall.getComponent("WallComponent")).setColor
         (WallColor.INFINITE);
       ((WallComponent)wall.getComponent("WallComponent")).setSize
         (new Vec2d(5,1./3.));
 
+
+      wall=wa.spawn("Wall");
+      ((Physics)wall.getComponent("Physics")).addPlace
+        (new Vec2dr(2,0,0));
+      ((WallComponent)wall.getComponent("WallComponent")).setColor
+        (WallColor.INFINITE);
+      ((WallComponent)wall.getComponent("WallComponent")).setSize
+        (new Vec2d(1./3.,6));
 
       Entity xz=wa.spawn("Obstacle");
       ((Physics)xz.getComponent("Physics")).addPlace

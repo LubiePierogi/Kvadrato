@@ -79,9 +79,9 @@ public class Wall extends Prefab
     return new ElementaryShape(new Vec2d[]
     {
       new Vec2d( size.x, size.y),
-      new Vec2d( size.x,-size.y),
+      new Vec2d(-size.x, size.y),
       new Vec2d(-size.x,-size.y),
-      new Vec2d(-size.x, size.y)
+      new Vec2d( size.x,-size.y)
     });
   };
   private final static Collider.OnCollideFnType onCollideFn=(e,o,c)->

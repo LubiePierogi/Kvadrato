@@ -33,7 +33,7 @@
     </target>
     <target name="jar" depends="compile" description="create jar">
       <jar destfile="Kvadrato.jar">
-        <fileset dir="build" includes="**/*.class" excludes="**/*Test.class"/>
+        <fileset dir="build" includes="**/*.class" excludes="**/*Test*.class"/>
         <fileset dir="build" includes="content/**/*"/>
         <manifest>
           <attribute name="Main-Class" value="kvadrato.App"/>

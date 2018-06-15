@@ -2,8 +2,8 @@
 
 <?import javafx.scene.Group?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.control.Label?>
 
+<?import kvadrato.gui.RectangleText?>
 <?import kvadrato.gui.RectangleButton?>
 <?import kvadrato.gui.menu.MainMenu?>
 
@@ -20,11 +20,13 @@
       onMouseEntered="#helpEnter"
       onMouseMoved=  "#helpEnter"
     >
-      <RectangleButton
-        width="180.0"
-        height="180.0"
-      />
-      <Label text="Pomoc"/>
+      <StackPane>
+        <RectangleButton
+          width="180.0"
+          height="180.0"
+        />
+        <RectangleText text="Pomoc"/>
+      </StackPane>
     </Group>
     <Group
       fx:id="quitSquare"
@@ -33,24 +35,28 @@
       onMouseEntered="#quitEnter"
       onMouseMoved=  "#quitEnter"
     >
-      <RectangleButton
-        width="180.0"
-        height="180.0"
-      />
-      <Label text="Wyjście"/>
+      <StackPane>
+        <RectangleButton
+          width="180.0"
+          height="180.0"
+        />
+        <RectangleText text="Wyjście"/>
+      </StackPane>
     </Group>
     <Group
       fx:id="playSquare"
+      onMouseClicked="#playClick"
+      onMouseEntered="#playEnter"
+      onMouseMoved=  "#playEnter"
+      onMouseExited= "#playExit"
     >
-      <RectangleButton
-        width="360.0"
-        height="360.0"
-        onMouseClicked="#playClick"
-        onMouseEntered="#playEnter"
-        onMouseMoved=  "#playEnter"
-        onMouseExited= "#playExit"
-      />
-      <Label text="Graj"/>
+      <StackPane>
+        <RectangleButton
+          width="360.0"
+          height="360.0"
+        />
+        <RectangleText text="Graj"/>
+      </StackPane>
     </Group>
   </children>
 </fx:root>

@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.paint.RadialGradient?>
-<?import javafx.scene.paint.Stop?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.Group?>
 
 <?import kvadrato.gui.menu.PauseMenu?>
 <?import kvadrato.gui.RectangleButton?>
+<?import kvadrato.gui.RectangleText?>
 
 <fx:root
   type="PauseMenu"
@@ -24,10 +20,13 @@
       onMouseEntered="#restartEnter"
       onMouseMoved=  "#restartEnter"
     >
-      <RectangleButton
-        width="180.0"
-        height="180.0"
-      />
+      <StackPane>
+        <RectangleButton
+          width="180.0"
+          height="180.0"
+          />
+        <RectangleText text="Od nowa"/>
+      </StackPane>
     </Group>
     <Group
       fx:id="resumeSquare"
@@ -35,10 +34,13 @@
       onMouseEntered="#resumeEnter"
       onMouseMoved=  "#resumeEnter"
     >
-      <RectangleButton
-        width="180.0"
-        height="180.0"
-      />
+      <StackPane>
+        <RectangleButton
+          width="180.0"
+          height="180.0"
+          />
+        <RectangleText text="Wróć"/>
+      </StackPane>
     </Group>
     <Group
       fx:id="backSquare"
@@ -47,10 +49,13 @@
       onMouseEntered="#backEnter"
       onMouseMoved=  "#backEnter"
     >
-      <RectangleButton
-        width="180.0"
-        height="180.0"
-      />
+      <StackPane>
+        <RectangleButton
+          width="180.0"
+          height="180.0"
+        />
+        <RectangleText text="Menu"/>
+      </StackPane>
     </Group>
   </children>
 </fx:root>

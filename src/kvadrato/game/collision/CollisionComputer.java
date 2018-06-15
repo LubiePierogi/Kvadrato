@@ -96,7 +96,7 @@ public final class CollisionComputer
         return w.greater-w.smaller;
     else
       if(q.smaller>w.smaller)
-        return q.smaller+q.greater;
+        return q.smaller-q.greater;
       else
         return w.smaller-q.greater;
   }

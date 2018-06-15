@@ -88,6 +88,7 @@ public class Square extends Prefab
       q.setMax(150.);
       q.change(1000.);
       q.setOnDeathFn(onDeathFn);
+      q.setOverTime(healthOverTimeFn);
     }
   }
   private final static Appearance.ListFnType
@@ -183,7 +184,7 @@ public class Square extends Prefab
   {
     ((EventSender)ent.getComponent("EventSender")).send("gameOver");
   };
-  private final static Health.OnCosTamFnType onCosTamFn=ent->
+  private final static Health.OverTimeFnType healthOverTimeFn=ent->
   {
     ((Health)ent.getComponent("Health")).change(900.*ent.getDelta());
   };

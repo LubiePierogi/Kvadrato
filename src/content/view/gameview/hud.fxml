@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.text.Font?>
 
 <?import kvadrato.gui.gameview.Hud?>
 
@@ -11,6 +12,12 @@
   xmlns:fx="http://javafx.com/fxml/1"
 >
   <children>
-    <Label fx:id="scoreQuantity" minWidth="300"/>
+    <TextFlow textAlignment="RIGHT" minWidth="750" translateY="270">
+      <Text fx:id="scoreQuantity" fill="#ffffff">
+        <font>
+          <Font size="17"/>
+        </font>
+      </Text>
+    </TextFlow>
   </children>
 </fx:root>
