@@ -162,4 +162,85 @@ public class CollisionTest
     System.err.println(dist);
     Assert.assertNotEquals(0.0,dist,0.001);
   }
+
+  public void compute3()
+    throws GameException
+  {
+    BakedShape shape1=new BakedShape
+    (
+      new ElementaryShape
+      (
+        new Vec2d[]
+        {
+          new Vec2d(1,1),
+          new Vec2d(-1,1),
+          new Vec2d(-1,-1),
+          new Vec2d(1,-1),
+        }
+      ),
+      new Vec2drs(0.,0.,0.,1.)
+    );
+    BakedShape shape2=new BakedShape
+    (
+      new ElementaryShape
+      (
+        new Vec2d[]
+        {
+          new Vec2d(30,0),
+          new Vec2d(-30,0),
+          new Vec2d(-30,0.5),
+          new Vec2d(30,0.5),
+        }
+      ),
+      new Vec2drs(3,3,Math.PI*0.25,1.)
+    );
+    CollisionOccurrence co;
+    co=CollisionComputer.computeFromBaked(shape1,shape2);
+    if(co!=null)
+    {
+      Assert.fail();
+    }
+  }
+
+
+  public void compute4() // Dotykają się brzegiem.
+    throws GameException
+  {
+    BakedShape shape1=new BakedShape
+    (
+      new ElementaryShape
+      (
+        new Vec2d[]
+        {
+          new Vec2d(1,1),
+          new Vec2d(-1,1),
+          new Vec2d(-1,-1),
+          new Vec2d(1,-1),
+        }
+      ),
+      new Vec2drs(0.,0.,0.,1.)
+    );
+    BakedShape shape2=new BakedShape
+    (
+      new ElementaryShape
+      (
+        new Vec2d[]
+        {
+          new Vec2d(1,1),
+          new Vec2d(-1,1),
+          new Vec2d(-1,-1),
+          new Vec2d(1,-1),
+        }
+      ),
+      new Vec2drs(2,0,0.,1.)
+    );
+    CollisionOccurrence co;
+    co=CollisionComputer.computeFromBaked(shape1,shape2);
+    if(co!=null)
+    {
+      Assert.assertEquals("Miało być zero albo null",0.0,co.translation.dist(),
+        0.0001);
+    }
+  }
+
 }

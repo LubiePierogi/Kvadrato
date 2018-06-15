@@ -31,8 +31,7 @@ public final class Renderer
     throws GameException
   {
     ViewOfWorld view=model.getWorldView(10.);
-    if(view==null)
-      return;
+    if(view==null)return;
     BgColor bgColor=view.getBgColor();
     ViewAppearanceElement vae;
     context.setTransform(1.,0.,0.,1.,0.,0.);

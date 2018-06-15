@@ -5,9 +5,6 @@ import java.lang.Math;
 import kvadrato.utils.vec2.Vec2dr;
 import kvadrato.utils.vec2.Vec2drs;
 
-/**
- * Wektor z dwoma wymiarami. Jest to klasa niezmiennicza czy jakoś tak.
- */
 public class Vec2d
 {
   public final double x;

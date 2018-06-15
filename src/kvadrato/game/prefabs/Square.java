@@ -86,10 +86,12 @@ public class Square extends Prefab
     {
       Health q=(Health)ent.getComponent("Health");
       q.setMax(150.);
-      q.change(1000.);
+      q.fullHeal();
       q.setOnDeathFn(onDeathFn);
       q.setOverTime(healthOverTimeFn);
     }
+
+    ent.update();
   }
   private final static Appearance.ListFnType
     appearanceFn

@@ -12,5 +12,6 @@ public class GameDaemon extends Prefab
     ent.setTag("Daemon");
 
     ent.addComponent("GameDaemonComponent");
+    ent.update();
   }
 }

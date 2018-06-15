@@ -81,15 +81,19 @@ public class MainMenu extends StackPane implements GuiElement
         else if(target==quitSquare)quitClick();
         break;
       case UP:
+        if(!menuIsOpen)break;
         target=playSquare;
         break;
       case DOWN:
+        if(!menuIsOpen)break;
         if(target==playSquare||target==null)target=helpSquare;
         break;
       case LEFT:
+        if(!menuIsOpen)break;
         if(target==quitSquare)target=helpSquare;
         break;
       case RIGHT:
+        if(!menuIsOpen)break;
         if(target==helpSquare)target=quitSquare;
         break;
     }

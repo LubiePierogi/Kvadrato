@@ -130,6 +130,7 @@ public class Physics extends Component
   }
   public void update()
   {
+    placeNew=new Vec2dr(placeNew.x,placeNew.y,(placeNew.angle)%(2.*Math.PI));
     place=placeNew;
     velocity=velocityNew;
     anchor=anchorNew;

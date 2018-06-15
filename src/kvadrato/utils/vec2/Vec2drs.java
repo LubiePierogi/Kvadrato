@@ -5,10 +5,7 @@ import java.lang.Math;
 import kvadrato.utils.vec2.Vec2d;
 import kvadrato.utils.vec2.Vec2dr;
 
-/**
- * He he
- */
-public class Vec2drs// extends Vec2dr
+public class Vec2drs
 {
   public final double x;
   public final double y;

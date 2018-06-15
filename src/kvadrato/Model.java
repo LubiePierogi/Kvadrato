@@ -64,7 +64,7 @@ public class Model
   }
   /**
    * Ta funkcja musi być wywołana przed zamknięciem programu, bo inaczej wątek
-   * świata będzie blokował to zamknięcie.
+   * świata będzie mógł blokować to zamknięcie.
    */
   public void close()
   {

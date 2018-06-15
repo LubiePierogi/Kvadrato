@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
   <project name="Kvadrato" default="compile">
-    <path id="3classpath">
+    <path id="java.class.path">
       <fileset dir="lib">
         <include name="**/*.jar"/>
       </fileset>
@@ -9,7 +9,7 @@
        <pathelement location="build"/>
     </path>
     <manifestclasspath property="libs.cp" jarfile="Kvadrato.jar">
-      <classpath refid="3classpath"/>
+      <classpath refid="java.class.path"/>
     </manifestclasspath>
     <target name="clean" description="delete all ??non-source?? files">
       <delete dir="build"/>
@@ -24,7 +24,7 @@
         includeantruntime="false"
         excludes="**/*Test.java"
       >
-        <classpath refid="3classpath"/>
+        <classpath refid="java.class.path"/>
       </javac>
       <copy todir="build/content"
       >
@@ -52,21 +52,20 @@
         includeantruntime="false"
         includes="**/*Test.java"
       >
-        <classpath refid="3classpath"/>
+        <classpath refid="java.class.path"/>
         <classpath path="/usr/share/java/junit.jar"/>
         <classpath path="/usr/share/java/hamcrest-core.jar"/>
       </javac>
     </target>
     <target name="test" depends="compileTest">
-      <junit  printsummary="yes" haltonfailure="yes" fork="true" dir="build">
+      <junit  printsummary="yes" haltonfailure="no" fork="true" dir="build">
         <classpath refid="zxc"/>
-        <classpath refid="3classpath"/>
+        <classpath refid="java.class.path"/>
         <classpath path="/usr/share/java/junit.jar"/>
         <classpath path="/usr/share/java/hamcrest-core.jar"/>
         <formatter type="plain"/>
         <batchtest todir="testResult">
           <fileset dir="build" includes="**/*Test.class"/>
-          <!--name="kvadrato.OverallTest">-->
         </batchtest>
       </junit>
     </target>

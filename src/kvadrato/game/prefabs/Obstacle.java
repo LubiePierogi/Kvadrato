@@ -50,6 +50,8 @@ public class Obstacle extends Prefab
       q.setShapeFn(shapeFn);
       q.setOnCollideFn(onCollideFn);
     }
+
+    ent.update();
   }
   private final static Appearance.ListFnType
     appearanceFn

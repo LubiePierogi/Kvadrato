@@ -34,7 +34,6 @@ public class GameView extends StackPane implements GuiElement
   public void animate(double diff)
   {
     if(!isVisible())return;
-    //Renderer.draw
     try
     {
       drawGame();

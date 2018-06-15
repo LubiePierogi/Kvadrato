@@ -5,10 +5,7 @@ import java.lang.Math;
 import kvadrato.utils.vec2.Vec2d;
 import kvadrato.utils.vec2.Vec2drs;
 
-/**
- * Wektor z dwoma wymiarami i jeszcze z kątem.
- */
-public class Vec2dr// extends Vec2d
+public class Vec2dr
 {
   public final double x;
   public final double y;

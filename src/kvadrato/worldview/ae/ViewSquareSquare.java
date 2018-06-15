@@ -26,5 +26,7 @@ public class ViewSquareSquare extends ViewAppearanceElement
   {
     context.setFill(Colors.bgToSquare(bg));
     context.fillRect(-.125,-.125,.25,.25);
+    context.setFill(Colors.bgToSquareTriangle(bg));
+    context.fillPolygon(new double[]{.08,.01,.01},new double[]{0.,.07,-.07},3);
   }
 }

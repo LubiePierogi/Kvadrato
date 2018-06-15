@@ -29,7 +29,7 @@ public class App extends Application
     }
     catch(GameException exc)
     {
-      System.out.println("Nie udało się włączyć gry.");
+      System.err.println("Nie udało się włączyć gry.");
     }
     finally
     {

@@ -108,7 +108,7 @@ public class MainController implements Initializable
   /**
    * Funkcja zamykająca okno, a więc i program.
    */
-  public void closeProgram()
+  private void closeProgram()
   {
     try
     {
@@ -121,14 +121,14 @@ public class MainController implements Initializable
   /**
    * Funkcja wywoływana przy próbie zamknięcia okna.
    */
-  public void closeRequest()
+  private void closeRequest()
   {
     closeProgram();
   }
   /**
    * Ta funkcja wywołuje zaczęcie nowej gry w modelu.
    */
-  void startNewGame()
+  private void startNewGame()
   {
     target=gameView;
     menu.setVisible(false);
@@ -221,14 +221,14 @@ public class MainController implements Initializable
     }
   }
 
-  public void keyPressed(KeyEvent ev)
+  private void keyPressed(KeyEvent ev)
   {
     if(gameView==target)
       gameView.keyPressed(ev);
     else if(menu==target)
       menu.keyPressed(ev);
   }
-  public void keyReleased(KeyEvent ev)
+  private void keyReleased(KeyEvent ev)
   {
     if(gameView==target)
       gameView.keyReleased(ev);
@@ -242,11 +242,11 @@ public class MainController implements Initializable
     menu.setVisible(true);
     menu.goToMainMenu();
   }
-  public int getHiScore()
+  private int getHiScore()
   {
     return model.getHiScore();
   }
-  public final EventProxy.EventListener eventListener=s->
+  private final EventProxy.EventListener eventListener=s->
   {
     switch(s)
     {

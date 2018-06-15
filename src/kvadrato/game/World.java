@@ -3,8 +3,6 @@ package kvadrato.game;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.function.Function;
-import java.util.function.Consumer;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -81,7 +79,7 @@ public final class World
    */
   private boolean ender;
   /**
-   * zmienna przechowująca numer, który dostanie następna jednostka.
+   * Zmienna przechowująca numer, który dostanie następna jednostka.
    */
   private int nextEntId;
   /**

@@ -50,6 +50,7 @@ public class Wall extends Prefab
       q.setShapeFn(shapeFn);
       q.setOnCollideFn(onCollideFn);
     }
+    ent.update();
   }
   public final static Appearance.ListFnType appearanceFn=ent->
   {
