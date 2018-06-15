@@ -41,11 +41,7 @@ public class Health extends Component
   }
   public void change(double q)
   {
-    System.err.println("Zmiana ilości życia.");
-    System.err.println(current);
-    System.err.println(q);
     currentNew+=q;
-    System.err.println(currentNew);
   }
   public void setMax(double q)
   {
